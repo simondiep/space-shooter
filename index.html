@@ -1,0 +1,118 @@
+<script>
+  let canvas;
+  let context;
+  let player;
+  let projectiles = [];
+  let score;
+
+  const PROJECTILE_SIZE = 5;
+  const PROJECTILE_SPEED = 5;
+
+  window.onload = function() {
+    score = 0;
+    canvas = document.getElementById('canvas');
+    context = canvas.getContext('2d');
+    player = {
+      x: canvas.width/2,
+      y: canvas.height/2,
+      size: 20,
+      speed: 10,
+      topSpeed: 10,
+      vx: 0,
+      vy: 0,
+    }
+
+    window.addEventListener('keydown', keyDownHandler);
+    window.addEventListener('keyup', keyUpHandler);
+    
+    setInterval(()=>requestAnimationFrame(update), 1000/30);
+  }
+
+  function update() {
+    context.fillStyle = 'black';
+    context.fillRect(0,0,canvas.width,canvas.height);
+
+    // Clean up projectiles
+    projectiles = projectiles.filter(function(projectile) { 
+      if (projectile.y >= 0) {
+        return true;
+      }
+      score++;
+    });
+
+    // Move and draw projectiles
+    context.fillStyle = 'blue';
+    for (const projectile of projectiles) {
+      projectile.y -= PROJECTILE_SPEED;
+      context.beginPath();
+      context.arc(projectile.x, projectile.y, PROJECTILE_SIZE, 0, 2*Math.PI);
+      context.closePath();
+      context.fill();
+    }
+
+    // Player
+    player.x += player.vx;
+    player.y += player.vy;
+
+    context.fillStyle = 'white';
+    context.beginPath();
+    context.moveTo(player.x, player.y);
+    context.lineTo(player.x - player.size/2, player.y + player.size);
+    context.lineTo(player.x + player.size/2, player.y + player.size);
+    context.closePath();
+    context.fill();
+
+    document.getElementById('scoreLabel').innerHTML = score;
+  }
+
+  function keyDownHandler(event) {
+    switch (event.keyCode) {
+      case 32: // Space
+        projectiles.push({x: player.x, y: player.y});
+        break;
+      case 87: // W
+        if (player.vy > -player.topSpeed) {
+          player.vy -= player.speed;
+        }
+        break;
+      case 65: // A
+        if (player.vx > -player.topSpeed) {
+          player.vx -= player.speed;
+        }
+        break;
+      case 83: // S
+        if (player.vy < player.topSpeed) {
+          player.vy += player.speed;
+        }
+        break;
+      case 68: // D
+        if (player.vx < player.topSpeed) {
+          player.vx += player.speed;
+        }
+        break;
+    }
+  }
+
+  function keyUpHandler(event) {
+    switch (event.keyCode) {
+      case 87: // W
+        player.vy = 0;
+        break;
+      case 65: // A
+        player.vx = 0;
+        break;
+      case 83: // S
+        player.vy = 0;
+        break;
+      case 68: // D
+        player.vx = 0;
+        break;
+    }
+  }
+</script>
+<div>
+  Score:
+  <div id="scoreLabel" style="display:inline-block"></div>
+</div>
+<canvas id="canvas" width=640 height=480></canvas>
+<div>WASD to move, space to shoot</div>
