@@ -2,16 +2,27 @@
   let canvas;
   let context;
   let player;
-  let projectiles = [];
+  let enemies;
+  let projectiles;
   let score;
-
-  const PROJECTILE_SIZE = 5;
-  const PROJECTILE_SPEED = 5;
+  let highScore = 0;
 
   window.onload = function() {
-    score = 0;
     canvas = document.getElementById('canvas');
     context = canvas.getContext('2d');
+    initializeGame();
+
+    window.addEventListener('keydown', keyDownHandler);
+    window.addEventListener('keyup', keyUpHandler);
+
+    setInterval(()=>requestAnimationFrame(update), 1000/60);
+
+    setInterval(()=>requestAnimationFrame(spawnEnemy), 1000);
+  }
+
+  function initializeGame() {
+    score = 0;
+    document.getElementById('scoreLabel').innerHTML = score;
     player = {
       x: canvas.width/2,
       y: canvas.height/2,
@@ -20,55 +31,134 @@
       topSpeed: 10,
       vx: 0,
       vy: 0,
-    }
+      projectileSize: 5,
+      projectileSpeed: 5,
+    };
+    enemies = [];
+    projectiles = [];
+  }
 
-    window.addEventListener('keydown', keyDownHandler);
-    window.addEventListener('keyup', keyUpHandler);
-    
-    setInterval(()=>requestAnimationFrame(update), 1000/30);
+  function getRandomNumber(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function spawnEnemy() {
+    enemies.push({
+      x: getRandomNumber(0, canvas.width),
+      y: -10,
+      vy: getRandomNumber(2, 7),
+      size: getRandomNumber(10, 40),
+    });
   }
 
   function update() {
     context.fillStyle = 'black';
     context.fillRect(0,0,canvas.width,canvas.height);
 
+    // Clean up enemies
+    enemies = enemies.filter(function(enemy) { 
+      if (enemy.y <= canvas.height) {
+        return true;
+      }
+    });
+
     // Clean up projectiles
     projectiles = projectiles.filter(function(projectile) { 
       if (projectile.y >= 0) {
         return true;
       }
-      score++;
     });
 
     // Move and draw projectiles
     context.fillStyle = 'blue';
     for (const projectile of projectiles) {
-      projectile.y -= PROJECTILE_SPEED;
+      projectile.y -= player.projectileSpeed;
       context.beginPath();
-      context.arc(projectile.x, projectile.y, PROJECTILE_SIZE, 0, 2*Math.PI);
+      context.arc(projectile.x, projectile.y, projectile.size, 0, 2*Math.PI);
       context.closePath();
       context.fill();
     }
 
     // Player
-    player.x += player.vx;
-    player.y += player.vy;
+    if (player.x + player.vx > 0 && player.x + player.vx < canvas.width) {
+      player.x += player.vx;
+    }
+    if (player.y + player.vy > 0 && player.y + player.vy < canvas.height) {
+      player.y += player.vy;
+    }
 
+    context.fillStyle = 'gray';
+    context.beginPath();
+    context.arc(player.x, player.y, player.size, 0, 2*Math.PI);
+    context.closePath();
+    context.fill();
     context.fillStyle = 'white';
     context.beginPath();
-    context.moveTo(player.x, player.y);
-    context.lineTo(player.x - player.size/2, player.y + player.size);
-    context.lineTo(player.x + player.size/2, player.y + player.size);
+    context.moveTo(player.x, player.y - player.size);
+    context.lineTo(player.x - player.size, player.y + player.size);
+    context.lineTo(player.x + player.size, player.y + player.size);
     context.closePath();
     context.fill();
 
-    document.getElementById('scoreLabel').innerHTML = score;
+    // Move and draw enemies
+    context.fillStyle = 'red';
+    for (let enemyIndex = enemies.length -1; enemyIndex >= 0; enemyIndex--) {
+      const enemy = enemies[enemyIndex];
+      enemy.y += enemy.vy;
+
+      // check for collision of player
+      if (hasCollided(player, enemy)) {
+        context.fillStyle = 'red';
+        context.fillRect(0,0,canvas.width,canvas.height);
+
+        initializeGame();
+        return;
+      }
+
+      let hasBeenDestroyed = false;
+      // check for collision of projectile
+      for (let projIndex = projectiles.length -1; projIndex >= 0; projIndex--) {
+        const projectile = projectiles[projIndex];
+        if (hasCollided(projectile, enemy)) {
+          // Remove enemy
+          enemies.splice(enemyIndex, 1);
+          // Remove projectile
+          projectiles.splice(projIndex, 1);
+          hasBeenDestroyed = true;
+          score++;
+          document.getElementById('scoreLabel').innerHTML = score;
+          if (score > highScore) {
+            highScore = score;
+            document.getElementById('highScoreLabel').innerHTML = highScore;
+          }
+          break;
+        }
+      }
+
+      if (!hasBeenDestroyed) {
+        context.beginPath();
+        context.arc(enemy.x, enemy.y, enemy.size, 0, 2*Math.PI);
+        context.closePath();
+        context.fill();
+      }
+    }
+  }
+
+  function hasCollided(obj1, obj2) {
+    const dx = obj1.x - obj2.x;
+    const dy = obj1.y - obj2.y;
+    const distance = Math.sqrt(dx*dx + dy*dy);
+    return distance < (obj1.size + obj2.size);
   }
 
   function keyDownHandler(event) {
     switch (event.keyCode) {
       case 32: // Space
-        projectiles.push({x: player.x, y: player.y});
+        projectiles.push({
+          x: player.x,
+          y: player.y,
+          size: player.projectileSize,
+        });
         break;
       case 87: // W
         if (player.vy > -player.topSpeed) {
@@ -110,9 +200,20 @@
     }
   }
 </script>
+<style type="text/css">
+  label {
+    display: inlineBlock;
+  }
+</style>
 <div>
+<label>
   Score:
-  <div id="scoreLabel" style="display:inline-block"></div>
+  <label id="scoreLabel"></label>
+</label>
+<label style="padding-left: 20px">
+  High Score:
+  <label id="highScoreLabel">0</label>
+</label>
 </div>
 <canvas id="canvas" width=640 height=480></canvas>
 <div>WASD to move, space to shoot</div>
