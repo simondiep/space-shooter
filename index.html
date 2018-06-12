@@ -28,8 +28,14 @@
       x: canvas.width/2,
       y: canvas.height - 30,
       size: 20,
-      speed: 10,
+      speed: 2,
       topSpeed: 10,
+      directionsPressed: {
+        UP: false,
+        DOWN: false,
+        LEFT: false,
+        RIGHT: false,
+      },
       vx: 0,
       vy: 0,
       projectileSize: 5,
@@ -82,7 +88,27 @@
       context.fill();
     }
 
-    // Player
+    // Player Movement
+    if (player.directionsPressed.UP && player.vy > -player.topSpeed) {
+      player.vy -= player.speed;
+    }
+    if (player.directionsPressed.DOWN && player.vy < player.topSpeed) {
+      player.vy += player.speed;
+    }
+    if (player.directionsPressed.LEFT && player.vx > -player.topSpeed) {
+      player.vx -= player.speed;
+    }
+    if (player.directionsPressed.RIGHT && player.vx < player.topSpeed) {
+      player.vx += player.speed;
+    }
+
+    if (!player.directionsPressed.UP && !player.directionsPressed.DOWN) {
+      player.vy = 0;
+    }
+    if (!player.directionsPressed.LEFT && !player.directionsPressed.RIGHT) {
+      player.vx = 0;
+    }
+
     if (player.x + player.vx > 0 && player.x + player.vx < canvas.width) {
       player.x += player.vx;
     }
@@ -90,6 +116,7 @@
       player.y += player.vy;
     }
 
+    // Draw player
     context.fillStyle = 'gray';
     context.beginPath();
     context.arc(player.x, player.y, player.size, 0, 2*Math.PI);
@@ -245,24 +272,16 @@
         }
         break;
       case 87: // W
-        if (player.vy > -player.topSpeed) {
-          player.vy -= player.speed;
-        }
+        player.directionsPressed.UP = true;
         break;
       case 65: // A
-        if (player.vx > -player.topSpeed) {
-          player.vx -= player.speed;
-        }
+        player.directionsPressed.LEFT = true;
         break;
       case 83: // S
-        if (player.vy < player.topSpeed) {
-          player.vy += player.speed;
-        }
+        player.directionsPressed.DOWN = true;
         break;
       case 68: // D
-        if (player.vx < player.topSpeed) {
-          player.vx += player.speed;
-        }
+        player.directionsPressed.RIGHT = true;
         break;
     }
   }
@@ -270,16 +289,16 @@
   function keyUpHandler(event) {
     switch (event.keyCode) {
       case 87: // W
-        player.vy = 0;
+        player.directionsPressed.UP = false;
         break;
       case 65: // A
-        player.vx = 0;
+        player.directionsPressed.LEFT = false;
         break;
       case 83: // S
-        player.vy = 0;
+        player.directionsPressed.DOWN = false;
         break;
       case 68: // D
-        player.vx = 0;
+        player.directionsPressed.RIGHT = false;
         break;
     }
   }
