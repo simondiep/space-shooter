@@ -17,13 +17,15 @@
 
     setInterval(()=>requestAnimationFrame(update), 1000/60);
 
-    setInterval(()=>requestAnimationFrame(spawnEnemy), 1000);
+    setInterval(()=>requestAnimationFrame(spawnEnemy), 500);
   }
 
   function initializeGame() {
     score = 0;
     document.getElementById('scoreLabel').innerHTML = score;
     document.getElementById('shot-type-single').checked = true;
+    document.getElementById('shot-modifier-pierce-once').checked = false;
+    document.getElementById('shot-modifier-fork-once').checked = false;
     player = {
       x: canvas.width/2,
       y: canvas.height - 30,
@@ -41,6 +43,10 @@
       projectileSize: 5,
       projectileSpeed: 5,
       shotType: 'single',
+      shotModifiers: {
+        pierce: 0,
+        fork: 0,
+      }
     };
     enemies = [];
     projectiles = [];
@@ -145,16 +151,43 @@
         return;
       }
 
-      let hasBeenDestroyed = false;
+      let enemyHasBeenDestroyed = false;
       // check for collision of projectile
       for (let projIndex = projectiles.length -1; projIndex >= 0; projIndex--) {
         const projectile = projectiles[projIndex];
         if (hasCollided(projectile, enemy)) {
           // Remove enemy
           enemies.splice(enemyIndex, 1);
-          // Remove projectile
-          projectiles.splice(projIndex, 1);
-          hasBeenDestroyed = true;
+
+          // Pierce
+          if (projectile.modifiers.pierce) {
+            projectile.modifiers.pierce--;
+          } else {
+            // Remove projectile
+            projectiles.splice(projIndex, 1);
+          }
+          // Fork
+          if (projectile.modifiers.fork) {
+            projectile.modifiers.fork--;
+            projectiles.push({
+              x: projectile.x,
+              y: projectile.y,
+              vx: -projectile.vy/2,
+              vy: projectile.vy,
+              size: projectile.size,
+              modifiers: projectile.modifiers,
+            });
+            projectiles.push({
+              x: projectile.x,
+              y: projectile.y,
+              vx: projectile.vy/2,
+              vy: projectile.vy,
+              size: projectile.size,
+              modifiers: projectile.modifiers,
+            });
+          }
+
+          enemyHasBeenDestroyed = true;
           score++;
           document.getElementById('scoreLabel').innerHTML = score;
           if (score > highScore) {
@@ -165,7 +198,7 @@
         }
       }
 
-      if (!hasBeenDestroyed) {
+      if (!enemyHasBeenDestroyed) {
         context.beginPath();
         context.arc(enemy.x, enemy.y, enemy.size, 0, 2*Math.PI);
         context.closePath();
@@ -193,6 +226,7 @@
               vx: 0,
               vy: -player.projectileSpeed,
               size: player.projectileSize,
+              modifiers: getShotModifiers(),
             });
             projectiles.push({
               x: player.x + player.size/2,
@@ -200,6 +234,7 @@
               vx: 0,
               vy: -player.projectileSpeed,
               size: player.projectileSize,
+              modifiers: getShotModifiers(),
             });
             break;
           case 'ball':
@@ -209,6 +244,7 @@
               vx: 0,
               vy: -player.projectileSpeed/2,
               size: player.projectileSize*4,
+              modifiers: getShotModifiers(),
             });
             break;
           case 'laser':
@@ -219,6 +255,7 @@
                 vx: 0,
                 vy: -player.projectileSpeed*10,
                 size: player.projectileSize*2,
+                modifiers: getShotModifiers(),
               });
             }
             break;
@@ -229,6 +266,7 @@
               vx: -player.projectileSpeed/2,
               vy: -player.projectileSpeed,
               size: player.projectileSize,
+              modifiers: getShotModifiers(),
             });
             projectiles.push({
               x: player.x,
@@ -236,6 +274,7 @@
               vx: 0,
               vy: -player.projectileSpeed,
               size: player.projectileSize,
+              modifiers: getShotModifiers(),
             });
             projectiles.push({
               x: player.x + player.size/2,
@@ -243,6 +282,7 @@
               vx: player.projectileSpeed/2,
               vy: -player.projectileSpeed,
               size: player.projectileSize,
+              modifiers: getShotModifiers(),
             });
             break;
           case 'side':
@@ -252,6 +292,7 @@
               vx: -player.projectileSpeed,
               vy: 0,
               size: player.projectileSize,
+              modifiers: getShotModifiers(),
             });
             projectiles.push({
               x: player.x,
@@ -259,6 +300,7 @@
               vx: player.projectileSpeed,
               vy: 0,
               size: player.projectileSize,
+              modifiers: getShotModifiers(),
             });
             break;
           default:
@@ -268,6 +310,7 @@
               vx: 0,
               vy: -player.projectileSpeed,
               size: player.projectileSize,
+              modifiers: getShotModifiers(),
             });
         }
         break;
@@ -303,9 +346,32 @@
     }
   }
 
+  function getShotModifiers() {
+    return Object.assign({}, player.shotModifiers);
+  }
+
   function onShotSelected(shotType) {
     player.shotType = shotType;
   }
+
+  function onShotModifierPierceOnceChange() {
+    const pierceSelected = document.getElementById('shot-modifier-pierce-once').checked;
+    if (pierceSelected) {
+      player.shotModifiers.pierce = 1;
+    } else {
+      player.shotModifiers.pierce = 0;
+    }
+  }
+
+  function onShotModifierForkOnceChange() {
+    const forkSelected = document.getElementById('shot-modifier-fork-once').checked;
+    if (forkSelected) {
+      player.shotModifiers.fork = 1;
+    } else {
+      player.shotModifiers.fork = 0;
+    }
+  }
+
 </script>
 <style type="text/css">
   label {
@@ -338,6 +404,15 @@
     <label for="shot-type-laser">Laser</label>
     <input type="radio" id="shot-type-side" name="shot-type" onclick="onShotSelected('side')"/>
     <label for="shot-type-side">Side</label>
+  </div>
+</fieldset>
+<fieldset>
+  <legend>Select your Shot Modifier</legend>
+  <div>
+    <input type="checkbox" id="shot-modifier-pierce-once" name="shot-modifier" onchange="onShotModifierPierceOnceChange()"/>
+    <label for="shot-modifier-pierce-once">Pierce once</label>
+    <input type="checkbox" id="shot-modifier-fork-once" name="shot-modifier" onchange="onShotModifierForkOnceChange()"/>
+    <label for="shot-modifier-fork-once">Fork once</label>
   </div>
 </fieldset>
 <div>WASD to move, space to shoot</div>
