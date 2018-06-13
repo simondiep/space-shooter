@@ -4,6 +4,7 @@
   let player;
   let enemies;
   let projectiles;
+  let nextProjectileId = 1;
   let score;
   let highScore = 0;
 
@@ -18,6 +19,8 @@
     setInterval(()=>requestAnimationFrame(update), 1000/60);
 
     setInterval(()=>requestAnimationFrame(spawnEnemy), 500);
+
+    setInterval(()=>requestAnimationFrame(spawnBoss), 20000);
   }
 
   function initializeGame() {
@@ -57,11 +60,27 @@
   }
 
   function spawnEnemy() {
+    const size = getRandomNumber(10, 40);
     enemies.push({
       x: getRandomNumber(0, canvas.width),
       y: -10,
-      vy: getRandomNumber(2, 7),
-      size: getRandomNumber(10, 40),
+      vy: getRandomNumber(2, 5),
+      size,
+      health: Math.floor(size/10),
+      recentlyDamaged: false,
+      hitByProjectiles: [],
+    });
+  }
+
+  function spawnBoss() {
+    enemies.push({
+      x: getRandomNumber(0, canvas.width),
+      y: -200,
+      vy: getRandomNumber(1, 2),
+      size: getRandomNumber(100, 200),
+      health: 30,
+      recentlyDamaged: false,
+      hitByProjectiles: [],
     });
   }
 
@@ -137,7 +156,6 @@
     context.fill();
 
     // Move and draw enemies
-    context.fillStyle = 'red';
     for (let enemyIndex = enemies.length -1; enemyIndex >= 0; enemyIndex--) {
       const enemy = enemies[enemyIndex];
       enemy.y += enemy.vy;
@@ -156,8 +174,20 @@
       for (let projIndex = projectiles.length -1; projIndex >= 0; projIndex--) {
         const projectile = projectiles[projIndex];
         if (hasCollided(projectile, enemy)) {
-          // Remove enemy
-          enemies.splice(enemyIndex, 1);
+          // Ensure a single projectile doesn't hit an enemy multiple times
+          if (enemy.hitByProjectiles.includes(projectile.id)) {
+            continue;
+          } else {
+            enemy.hitByProjectiles.push(projectile.id);
+          }
+
+          enemy.health -= projectile.damage;
+          enemy.recentlyDamaged = true;
+          if (enemy.health <= 0) {
+            // Remove enemy
+            enemies.splice(enemyIndex, 1);
+            enemyHasBeenDestroyed = true;
+          }
 
           // Pierce
           if (projectile.modifiers.pierce) {
@@ -169,36 +199,44 @@
           // Fork
           if (projectile.modifiers.fork) {
             projectile.modifiers.fork--;
-            projectiles.push({
+            projectiles.push(createProjectile({
               x: projectile.x,
               y: projectile.y,
               vx: -projectile.vy/2,
               vy: projectile.vy,
               size: projectile.size,
+              damage: projectile.damage,
               modifiers: projectile.modifiers,
-            });
-            projectiles.push({
+            }));
+            projectiles.push(createProjectile({
               x: projectile.x,
               y: projectile.y,
               vx: projectile.vy/2,
               vy: projectile.vy,
               size: projectile.size,
+              damage: projectile.damage,
               modifiers: projectile.modifiers,
-            });
-          }
-
-          enemyHasBeenDestroyed = true;
-          score++;
-          document.getElementById('scoreLabel').innerHTML = score;
-          if (score > highScore) {
-            highScore = score;
-            document.getElementById('highScoreLabel').innerHTML = highScore;
+            }));
           }
           break;
         }
       }
 
-      if (!enemyHasBeenDestroyed) {
+      if (enemyHasBeenDestroyed) {
+        score++;
+        document.getElementById('scoreLabel').innerHTML = score;
+        if (score > highScore) {
+          highScore = score;
+          document.getElementById('highScoreLabel').innerHTML = highScore;
+        }
+      } else {
+        // Draw enemy
+        let enemyColor = 'gray'
+        if (enemy.recentlyDamaged) {
+          enemyColor = 'red';
+          enemy.recentlyDamaged = false;
+        }
+        context.fillStyle = enemyColor;
         context.beginPath();
         context.arc(enemy.x, enemy.y, enemy.size, 0, 2*Math.PI);
         context.closePath();
@@ -220,98 +258,51 @@
         event.preventDefault();
         switch (player.shotType) {
           case 'double':
-            projectiles.push({
+            projectiles.push(createProjectile({
               x: player.x - player.size/2,
-              y: player.y,
-              vx: 0,
-              vy: -player.projectileSpeed,
-              size: player.projectileSize,
-              modifiers: getShotModifiers(),
-            });
-            projectiles.push({
+            }));
+            projectiles.push(createProjectile({
               x: player.x + player.size/2,
-              y: player.y,
-              vx: 0,
-              vy: -player.projectileSpeed,
-              size: player.projectileSize,
-              modifiers: getShotModifiers(),
-            });
+            }));
             break;
           case 'ball':
-            projectiles.push({
-              x: player.x,
-              y: player.y,
-              vx: 0,
+            projectiles.push(createProjectile({
               vy: -player.projectileSpeed/2,
               size: player.projectileSize*4,
-              modifiers: getShotModifiers(),
-            });
+            }));
             break;
           case 'laser':
             for (let i = 1; i <= 30; i++) {
-              projectiles.push({
-                x: player.x,
+              projectiles.push(createProjectile({
                 y: player.y - i*10,
-                vx: 0,
                 vy: -player.projectileSpeed*10,
                 size: player.projectileSize*2,
-                modifiers: getShotModifiers(),
-              });
+              }));
             }
             break;
           case 'spread':
-            projectiles.push({
+            projectiles.push(createProjectile({
               x: player.x - player.size/2,
-              y: player.y,
               vx: -player.projectileSpeed/2,
-              vy: -player.projectileSpeed,
-              size: player.projectileSize,
-              modifiers: getShotModifiers(),
-            });
-            projectiles.push({
-              x: player.x,
-              y: player.y,
-              vx: 0,
-              vy: -player.projectileSpeed,
-              size: player.projectileSize,
-              modifiers: getShotModifiers(),
-            });
-            projectiles.push({
+            }));
+            projectiles.push(createProjectile());
+            projectiles.push(createProjectile({
               x: player.x + player.size/2,
-              y: player.y,
               vx: player.projectileSpeed/2,
-              vy: -player.projectileSpeed,
-              size: player.projectileSize,
-              modifiers: getShotModifiers(),
-            });
+            }));
             break;
           case 'side':
-            projectiles.push({
-              x: player.x,
-              y: player.y,
+            projectiles.push(createProjectile({
               vx: -player.projectileSpeed,
               vy: 0,
-              size: player.projectileSize,
-              modifiers: getShotModifiers(),
-            });
-            projectiles.push({
-              x: player.x,
-              y: player.y,
+            }));
+            projectiles.push(createProjectile({
               vx: player.projectileSpeed,
               vy: 0,
-              size: player.projectileSize,
-              modifiers: getShotModifiers(),
-            });
+            }));
             break;
           default:
-            projectiles.push({
-              x: player.x,
-              y: player.y,
-              vx: 0,
-              vy: -player.projectileSpeed,
-              size: player.projectileSize,
-              modifiers: getShotModifiers(),
-            });
+            projectiles.push(createProjectile());
         }
         break;
       case 87: // W
@@ -344,6 +335,25 @@
         player.directionsPressed.RIGHT = false;
         break;
     }
+  }
+
+  function getNextProjectileId() {
+    nextProjectileId++;
+    return nextProjectileId;
+  }
+
+  function createProjectile(options) {
+    const defaultValues = {
+      id: getNextProjectileId(),
+      x: player.x,
+      y: player.y,
+      vx: 0,
+      vy: -player.projectileSpeed,
+      size: player.projectileSize,
+      damage: 1,
+      modifiers: getShotModifiers(),
+    };
+    return Object.assign({}, defaultValues, options);
   }
 
   function getShotModifiers() {
