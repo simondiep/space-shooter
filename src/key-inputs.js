@@ -1,0 +1,108 @@
+import {
+  addProjectile,
+  createProjectile,
+  getPlayer,
+} from "./persistent-entities.js";
+
+export function keyDownHandler(event) {
+  const player = getPlayer();
+  switch (event.keyCode) {
+    case 32: // Space
+      event.preventDefault();
+      switch (player.shotType) {
+        case "double":
+          addProjectile(
+            createProjectile({
+              x: player.x - player.size / 2,
+            }),
+          );
+          addProjectile(
+            createProjectile({
+              x: player.x + player.size / 2,
+            }),
+          );
+          break;
+        case "ball":
+          addProjectile(
+            createProjectile({
+              vy: -player.projectileSpeed / 2,
+              size: player.projectileSize * 4,
+            }),
+          );
+          break;
+        case "laser":
+          for (let i = 1; i <= 30; i++) {
+            addProjectile(
+              createProjectile({
+                y: player.y - i * 10,
+                vy: -player.projectileSpeed * 10,
+                size: player.projectileSize * 2,
+              }),
+            );
+          }
+          break;
+        case "spread":
+          addProjectile(
+            createProjectile({
+              x: player.x - player.size / 2,
+              vx: -player.projectileSpeed / 2,
+            }),
+          );
+          addProjectile(createProjectile());
+          addProjectile(
+            createProjectile({
+              x: player.x + player.size / 2,
+              vx: player.projectileSpeed / 2,
+            }),
+          );
+          break;
+        case "side":
+          addProjectile(
+            createProjectile({
+              vx: -player.projectileSpeed,
+              vy: 0,
+            }),
+          );
+          addProjectile(
+            createProjectile({
+              vx: player.projectileSpeed,
+              vy: 0,
+            }),
+          );
+          break;
+        default:
+          addProjectile(createProjectile());
+      }
+      break;
+    case 87: // W
+      player.directionsPressed.UP = true;
+      break;
+    case 65: // A
+      player.directionsPressed.LEFT = true;
+      break;
+    case 83: // S
+      player.directionsPressed.DOWN = true;
+      break;
+    case 68: // D
+      player.directionsPressed.RIGHT = true;
+      break;
+  }
+}
+
+export function keyUpHandler(event) {
+  const player = getPlayer();
+  switch (event.keyCode) {
+    case 87: // W
+      player.directionsPressed.UP = false;
+      break;
+    case 65: // A
+      player.directionsPressed.LEFT = false;
+      break;
+    case 83: // S
+      player.directionsPressed.DOWN = false;
+      break;
+    case 68: // D
+      player.directionsPressed.RIGHT = false;
+      break;
+  }
+}

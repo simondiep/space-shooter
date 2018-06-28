@@ -1,448 +1,52 @@
-<script>
-  // constants file: canvas width and height
-  let canvas;
-
-  // canvas view
-  let context;
-
-  let player;
-  let enemies;
-  let projectiles;
-  let nextProjectileId = 1;
-  let score;
-  let highScore = 0;
-  let spaceInvaderImage;
-
-  window.onload = function () {
-    canvas = document.getElementById('canvas');
-    context = canvas.getContext('2d');
-    initializeGame();
-
-    window.addEventListener('keydown', keyDownHandler);
-    window.addEventListener('keyup', keyUpHandler);
-
-    spaceInvaderImage = document.getElementById('spaceInvaderImage');
-
-    setInterval(() => requestAnimationFrame(update), 1000 / 60);
-
-    setInterval(() => requestAnimationFrame(spawnEnemy), 500);
-
-    setInterval(() => requestAnimationFrame(spawnBoss), 20000);
-  }
-
-  function initializeGame() {
-    score = 0;
-    document.getElementById('scoreLabel').innerHTML = score;
-    document.getElementById('shot-type-single').checked = true;
-    document.getElementById('shot-modifier-pierce-once').checked = false;
-    document.getElementById('shot-modifier-fork-once').checked = false;
-    player = {
-      x: canvas.width / 2,
-      y: canvas.height - 30,
-      size: 20,
-      speed: 2,
-      topSpeed: 10,
-      directionsPressed: {
-        UP: false,
-        DOWN: false,
-        LEFT: false,
-        RIGHT: false,
-      },
-      vx: 0,
-      vy: 0,
-      projectileSize: 5,
-      projectileSpeed: 5,
-      shotType: 'single',
-      shotModifiers: {
-        pierce: 0,
-        fork: 0,
-      }
-    };
-    enemies = [];
-    projectiles = [];
-  }
-
-  function getRandomNumber(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
-  function spawnEnemy() {
-    const size = getRandomNumber(20, 40);
-    enemies.push({
-      x: getRandomNumber(0, canvas.width),
-      y: -10,
-      vy: getRandomNumber(2, 5),
-      size,
-      health: Math.floor(size / 10),
-      recentlyDamaged: false,
-      hitByProjectiles: [],
-    });
-  }
-
-  function spawnBoss() {
-    enemies.push({
-      x: getRandomNumber(0, canvas.width),
-      y: -200,
-      vy: getRandomNumber(1, 2),
-      size: getRandomNumber(100, 200),
-      health: 30,
-      recentlyDamaged: false,
-      hitByProjectiles: [],
-    });
-  }
-
-  function update() {
-    context.fillStyle = 'black';
-    context.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Clean up enemies
-    enemies = enemies.filter(function (enemy) {
-      if (enemy.y <= canvas.height) {
-        return true;
-      }
-    });
-
-    // Clean up projectiles
-    projectiles = projectiles.filter(function (projectile) {
-      if (projectile.y >= 0) {
-        return true;
-      }
-    });
-
-    // Move and draw projectiles
-    context.fillStyle = 'blue';
-    for (const projectile of projectiles) {
-      projectile.x += projectile.vx;
-      projectile.y += projectile.vy;
-      context.beginPath();
-      context.arc(projectile.x, projectile.y, projectile.size, 0, 2 * Math.PI);
-      context.closePath();
-      context.fill();
+<head>
+  <style type="text/css">
+    label {
+      display: inlineBlock;
     }
+  </style>
+  <script src="src/main.js" type="module"></script>
+</head>
 
-    // Player Movement
-    if (player.directionsPressed.UP && player.vy > -player.topSpeed) {
-      player.vy -= player.speed;
-    }
-    if (player.directionsPressed.DOWN && player.vy < player.topSpeed) {
-      player.vy += player.speed;
-    }
-    if (player.directionsPressed.LEFT && player.vx > -player.topSpeed) {
-      player.vx -= player.speed;
-    }
-    if (player.directionsPressed.RIGHT && player.vx < player.topSpeed) {
-      player.vx += player.speed;
-    }
-
-    if (!player.directionsPressed.UP && !player.directionsPressed.DOWN) {
-      player.vy = 0;
-    }
-    if (!player.directionsPressed.LEFT && !player.directionsPressed.RIGHT) {
-      player.vx = 0;
-    }
-
-    if (player.x + player.vx > 0 && player.x + player.vx < canvas.width) {
-      player.x += player.vx;
-    }
-    if (player.y + player.vy > 0 && player.y + player.vy < canvas.height) {
-      player.y += player.vy;
-    }
-
-    // Draw player
-    context.fillStyle = 'blue';
-    context.beginPath();
-    context.arc(player.x, player.y, player.size, 0, 2 * Math.PI);
-    context.closePath();
-    context.fill();
-    context.fillStyle = 'white';
-    context.beginPath();
-    context.moveTo(player.x, player.y - player.size);
-    context.lineTo(player.x - player.size, player.y + player.size);
-    context.lineTo(player.x + player.size, player.y + player.size);
-    context.closePath();
-    context.fill();
-
-    // Move and draw enemies
-    for (let enemyIndex = enemies.length - 1; enemyIndex >= 0; enemyIndex--) {
-      const enemy = enemies[enemyIndex];
-      enemy.y += enemy.vy;
-
-      // check for collision of player
-      if (hasCollided(player, enemy)) {
-        context.fillStyle = 'red';
-        context.fillRect(0, 0, canvas.width, canvas.height);
-
-        initializeGame();
-        return;
-      }
-
-      let enemyHasBeenDestroyed = false;
-      // check for collision of projectile
-      for (let projIndex = projectiles.length - 1; projIndex >= 0; projIndex--) {
-        const projectile = projectiles[projIndex];
-        if (hasCollided(projectile, enemy)) {
-          // Ensure a single projectile doesn't hit an enemy multiple times
-          if (enemy.hitByProjectiles.includes(projectile.id)) {
-            continue;
-          } else {
-            enemy.hitByProjectiles.push(projectile.id);
-          }
-
-          enemy.health -= projectile.damage;
-          enemy.recentlyDamaged = true;
-          if (enemy.health <= 0) {
-            // Remove enemy
-            enemies.splice(enemyIndex, 1);
-            enemyHasBeenDestroyed = true;
-          }
-
-          // Pierce
-          if (projectile.modifiers.pierce) {
-            projectile.modifiers.pierce--;
-          } else {
-            // Remove projectile
-            projectiles.splice(projIndex, 1);
-          }
-          // Fork
-          if (projectile.modifiers.fork) {
-            projectile.modifiers.fork--;
-            projectiles.push(createProjectile({
-              x: projectile.x,
-              y: projectile.y,
-              vx: projectile.vx ? projectile.vx : -projectile.vy / 2,
-              vy: projectile.vy,
-              size: projectile.size,
-              damage: projectile.damage,
-              modifiers: projectile.modifiers,
-            }));
-            projectiles.push(createProjectile({
-              x: projectile.x,
-              y: projectile.y,
-              vx: projectile.vx ? projectile.vx : projectile.vy / 2,
-              vy: projectile.vy,
-              size: projectile.size,
-              damage: projectile.damage,
-              modifiers: projectile.modifiers,
-            }));
-          }
-          break;
-        }
-      }
-
-      if (enemyHasBeenDestroyed) {
-        score++;
-        document.getElementById('scoreLabel').innerHTML = score;
-        if (score > highScore) {
-          highScore = score;
-          document.getElementById('highScoreLabel').innerHTML = highScore;
-        }
-      } else {
-        // Draw enemy
-        let enemyColor = 'gray'
-        if (enemy.recentlyDamaged) {
-          enemyColor = 'red';
-          enemy.recentlyDamaged = false;
-        }
-
-        // To see collision circle, uncomment this
-        // context.fillStyle = enemyColor;
-        // context.beginPath();
-        // context.arc(enemy.x, enemy.y, enemy.size, 0, 2 * Math.PI);
-        // context.closePath();
-        // context.fill();
-
-        context.drawImage(
-          spaceInvaderImage,
-          enemy.x - enemy.size,
-          enemy.y - enemy.size,
-          enemy.size * 2,
-          enemy.size * 2,
-        );
-      }
-    }
-  }
-
-  function hasCollided(obj1, obj2) {
-    const dx = obj1.x - obj2.x;
-    const dy = obj1.y - obj2.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-    return distance < (obj1.size + obj2.size);
-  }
-
-  function keyDownHandler(event) {
-    switch (event.keyCode) {
-      case 32: // Space
-        event.preventDefault();
-        switch (player.shotType) {
-          case 'double':
-            projectiles.push(createProjectile({
-              x: player.x - player.size / 2,
-            }));
-            projectiles.push(createProjectile({
-              x: player.x + player.size / 2,
-            }));
-            break;
-          case 'ball':
-            projectiles.push(createProjectile({
-              vy: -player.projectileSpeed / 2,
-              size: player.projectileSize * 4,
-            }));
-            break;
-          case 'laser':
-            for (let i = 1; i <= 30; i++) {
-              projectiles.push(createProjectile({
-                y: player.y - i * 10,
-                vy: -player.projectileSpeed * 10,
-                size: player.projectileSize * 2,
-              }));
-            }
-            break;
-          case 'spread':
-            projectiles.push(createProjectile({
-              x: player.x - player.size / 2,
-              vx: -player.projectileSpeed / 2,
-            }));
-            projectiles.push(createProjectile());
-            projectiles.push(createProjectile({
-              x: player.x + player.size / 2,
-              vx: player.projectileSpeed / 2,
-            }));
-            break;
-          case 'side':
-            projectiles.push(createProjectile({
-              vx: -player.projectileSpeed,
-              vy: 0,
-            }));
-            projectiles.push(createProjectile({
-              vx: player.projectileSpeed,
-              vy: 0,
-            }));
-            break;
-          default:
-            projectiles.push(createProjectile());
-        }
-        break;
-      case 87: // W
-        player.directionsPressed.UP = true;
-        break;
-      case 65: // A
-        player.directionsPressed.LEFT = true;
-        break;
-      case 83: // S
-        player.directionsPressed.DOWN = true;
-        break;
-      case 68: // D
-        player.directionsPressed.RIGHT = true;
-        break;
-    }
-  }
-
-  function keyUpHandler(event) {
-    switch (event.keyCode) {
-      case 87: // W
-        player.directionsPressed.UP = false;
-        break;
-      case 65: // A
-        player.directionsPressed.LEFT = false;
-        break;
-      case 83: // S
-        player.directionsPressed.DOWN = false;
-        break;
-      case 68: // D
-        player.directionsPressed.RIGHT = false;
-        break;
-    }
-  }
-
-  function getNextProjectileId() {
-    nextProjectileId++;
-    return nextProjectileId;
-  }
-
-  function createProjectile(options) {
-    const defaultValues = {
-      id: getNextProjectileId(),
-      x: player.x,
-      y: player.y,
-      vx: 0,
-      vy: -player.projectileSpeed,
-      size: player.projectileSize,
-      damage: 1,
-      modifiers: getShotModifiers(),
-    };
-    return Object.assign({}, defaultValues, options);
-  }
-
-  function getShotModifiers() {
-    return Object.assign({}, player.shotModifiers);
-  }
-
-  function onShotSelected(shotType) {
-    player.shotType = shotType;
-  }
-
-  function onShotModifierPierceOnceChange() {
-    const pierceSelected = document.getElementById('shot-modifier-pierce-once').checked;
-    if (pierceSelected) {
-      player.shotModifiers.pierce = 1;
-    } else {
-      player.shotModifiers.pierce = 0;
-    }
-  }
-
-  function onShotModifierForkOnceChange() {
-    const forkSelected = document.getElementById('shot-modifier-fork-once').checked;
-    if (forkSelected) {
-      player.shotModifiers.fork = 1;
-    } else {
-      player.shotModifiers.fork = 0;
-    }
-  }
-
-</script>
-<style type="text/css">
-  label {
-    display: inlineBlock;
-  }
-</style>
-<div>
-  <label>
-    Score:
-    <label id="scoreLabel"></label>
-  </label>
-  <label style="padding-left: 20px">
-    High Score:
-    <label id="highScoreLabel">0</label>
-  </label>
-</div>
-<canvas id="canvas" width=640 height=480></canvas>
-<fieldset>
-  <legend>Select your Shot Type</legend>
+<body>
   <div>
-    <input type="radio" id="shot-type-single" name="shot-type" onclick="onShotSelected('single')" checked/>
-    <label for="shot-type-single">Single</label>
-    <input type="radio" id="shot-type-double" name="shot-type" onclick="onShotSelected('double')" />
-    <label for="shot-type-double">Double</label>
-    <input type="radio" id="shot-type-spread" name="shot-type" onclick="onShotSelected('spread')" />
-    <label for="shot-type-spread">Spread</label>
-    <input type="radio" id="shot-type-ball" name="shot-type" onclick="onShotSelected('ball')" />
-    <label for="shot-type-ball">Ball</label>
-    <input type="radio" id="shot-type-laser" name="shot-type" onclick="onShotSelected('laser')" />
-    <label for="shot-type-laser">Laser</label>
-    <input type="radio" id="shot-type-side" name="shot-type" onclick="onShotSelected('side')" />
-    <label for="shot-type-side">Side</label>
+    <label>
+      Score:
+      <label id="scoreLabel">0</label>
+    </label>
+    <label style="padding-left: 20px">
+      High Score:
+      <label id="highScoreLabel">0</label>
+    </label>
   </div>
-</fieldset>
-<fieldset>
-  <legend>Select your Shot Modifier</legend>
-  <div>
-    <input type="checkbox" id="shot-modifier-pierce-once" name="shot-modifier" onchange="onShotModifierPierceOnceChange()" />
-    <label for="shot-modifier-pierce-once">Pierce once</label>
-    <input type="checkbox" id="shot-modifier-fork-once" name="shot-modifier" onchange="onShotModifierForkOnceChange()" />
-    <label for="shot-modifier-fork-once">Fork once</label>
+  <canvas id="canvas"></canvas>
+  <fieldset>
+    <legend>Select your Shot Type</legend>
+    <div>
+      <input type="radio" id="shot-type-single" name="shot-type" checked/>
+      <label for="shot-type-single">Single</label>
+      <input type="radio" id="shot-type-double" name="shot-type" />
+      <label for="shot-type-double">Double</label>
+      <input type="radio" id="shot-type-spread" name="shot-type" />
+      <label for="shot-type-spread">Spread</label>
+      <input type="radio" id="shot-type-ball" name="shot-type" />
+      <label for="shot-type-ball">Ball</label>
+      <input type="radio" id="shot-type-laser" name="shot-type" />
+      <label for="shot-type-laser">Laser</label>
+      <input type="radio" id="shot-type-side" name="shot-type" />
+      <label for="shot-type-side">Side</label>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Select your Shot Modifier</legend>
+    <div>
+      <input type="checkbox" id="shot-modifier-pierce-once" name="shot-modifier" />
+      <label for="shot-modifier-pierce-once">Pierce once</label>
+      <input type="checkbox" id="shot-modifier-fork-once" name="shot-modifier" />
+      <label for="shot-modifier-fork-once">Fork once</label>
+    </div>
+  </fieldset>
+  <div>WASD to move, space to shoot</div>
+  <div style="display: none">
+    <img id="spaceInvaderImage" src="./space_invader.png"></img>
   </div>
-</fieldset>
-<div>WASD to move, space to shoot</div>
-<div style="display: none">
-  <img id="spaceInvaderImage" src="./space_invader.png"></img>
-</div>
+</body>

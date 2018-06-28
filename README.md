@@ -4,7 +4,6 @@ Choose your weapon and shoot space aliens in your spaceship
 
 # Ideas
 
-Split up code into multiple files
 Convert to left to right scroller for more screen space
 Enemy death animation (explosion?)
 Display damage numbers
