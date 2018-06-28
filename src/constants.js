@@ -1,2 +1,2 @@
-export const CANVAS_WIDTH = 640;
-export const CANVAS_HEIGHT = 480;
+export const CANVAS_WIDTH = 1280;
+export const CANVAS_HEIGHT = 600;

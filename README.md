@@ -2,6 +2,10 @@
 
 Choose your weapon and shoot space aliens in your spaceship
 
+# How to start
+
+npm i && npm start
+
 # Ideas
 
 Convert to left to right scroller for more screen space

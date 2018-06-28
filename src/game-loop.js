@@ -9,11 +9,10 @@ import {
   removeProjectilesThatAreOffScreen,
 } from "./persistent-entities.js";
 import { initializeGame } from "./main.js";
+import { clearScreen, deathScreen, drawFilledCircle, drawPlayer, drawEnemy } from "./canvas-view.js";
 
 export function update() {
-  const context = document.getElementById("canvas").getContext("2d");
-  context.fillStyle = "black";
-  context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  clearScreen();
 
   removeEnemiesThatAreOffScreen();
   removeProjectilesThatAreOffScreen();
@@ -21,16 +20,12 @@ export function update() {
   const enemies = getEnemies();
   const player = getPlayer();
   const projectiles = getProjectiles();
-  const spaceInvaderImage = document.getElementById("spaceInvaderImage");
+
   // Move and draw projectiles
-  context.fillStyle = "blue";
   for (const projectile of projectiles) {
     projectile.x += projectile.vx;
     projectile.y += projectile.vy;
-    context.beginPath();
-    context.arc(projectile.x, projectile.y, projectile.size, 0, 2 * Math.PI);
-    context.closePath();
-    context.fill();
+    drawFilledCircle(projectile.x, projectile.y, projectile.size, "blue");
   }
 
   // Player Movement
@@ -61,19 +56,7 @@ export function update() {
     player.y += player.vy;
   }
 
-  // Draw player
-  context.fillStyle = "blue";
-  context.beginPath();
-  context.arc(player.x, player.y, player.size, 0, 2 * Math.PI);
-  context.closePath();
-  context.fill();
-  context.fillStyle = "white";
-  context.beginPath();
-  context.moveTo(player.x, player.y - player.size);
-  context.lineTo(player.x - player.size, player.y + player.size);
-  context.lineTo(player.x + player.size, player.y + player.size);
-  context.closePath();
-  context.fill();
+  drawPlayer(player.x, player.y, player.size);
 
   // Move and draw enemies
   for (let enemyIndex = enemies.length - 1; enemyIndex >= 0; enemyIndex--) {
@@ -82,9 +65,7 @@ export function update() {
 
     // check for collision of player
     if (hasCollided(player, enemy)) {
-      context.fillStyle = "red";
-      context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
+      deathScreen();
       initializeGame();
       return;
     }
@@ -157,20 +138,7 @@ export function update() {
         enemy.recentlyDamaged = false;
       }
 
-      // To see collision circle, uncomment this
-      // context.fillStyle = enemyColor;
-      // context.beginPath();
-      // context.arc(enemy.x, enemy.y, enemy.size, 0, 2 * Math.PI);
-      // context.closePath();
-      // context.fill();
-
-      context.drawImage(
-        spaceInvaderImage,
-        enemy.x - enemy.size,
-        enemy.y - enemy.size,
-        enemy.size * 2,
-        enemy.size * 2,
-      );
+      drawEnemy(enemy.x - enemy.size, enemy.y - enemy.size, enemy.size * 2);
     }
   }
 }

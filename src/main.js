@@ -1,20 +1,12 @@
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from "./constants.js";
 import { spawnBoss, spawnEnemy } from "./enemy-spawner.js";
 import { keyDownHandler, keyUpHandler } from "./key-inputs.js";
-import {
-  clearEnemies,
-  clearProjectiles,
-  clearScore,
-  getPlayer,
-  replacePlayer,
-} from "./persistent-entities.js";
-import { update } from "./gameLoop.js";
+import { clearEnemies, clearProjectiles, clearScore, getPlayer, replacePlayer } from "./persistent-entities.js";
+import { update } from "./game-loop.js";
 import { initializeShotModifiers } from "./shot-modifiers.js";
+import { initializeCanvas } from "./canvas-view.js";
 
-const canvas = document.getElementById("canvas");
-canvas.width = CANVAS_WIDTH;
-canvas.height = CANVAS_HEIGHT;
-
+initializeCanvas();
 initializeGame();
 initializeShotModifiers();
 
