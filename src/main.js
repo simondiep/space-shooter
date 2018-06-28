@@ -26,8 +26,8 @@ export function initializeGame() {
   document.getElementById("shot-modifier-pierce-once").checked = false;
   document.getElementById("shot-modifier-fork-once").checked = false;
   replacePlayer({
-    x: CANVAS_WIDTH / 2,
-    y: CANVAS_HEIGHT - 30,
+    x: 50,
+    y: CANVAS_HEIGHT / 2,
     size: 20,
     speed: 2,
     topSpeed: 10,

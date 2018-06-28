@@ -45,11 +45,11 @@ export function drawPlayer(x, y, size) {
   context.arc(x, y, size, 0, 2 * Math.PI);
   context.closePath();
   context.fill();
-  context.fillStyle = "white";
+  context.fillStyle = "skyblue";
   context.beginPath();
-  context.moveTo(x, y - size);
+  context.moveTo(x - size, y - size);
   context.lineTo(x - size, y + size);
-  context.lineTo(x + size, y + size);
+  context.lineTo(x + size, y);
   context.closePath();
   context.fill();
 }

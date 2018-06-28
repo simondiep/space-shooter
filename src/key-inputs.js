@@ -1,8 +1,4 @@
-import {
-  addProjectile,
-  createProjectile,
-  getPlayer,
-} from "./persistent-entities.js";
+import { addProjectile, createProjectile, getPlayer } from "./persistent-entities.js";
 
 export function keyDownHandler(event) {
   const player = getPlayer();
@@ -13,19 +9,19 @@ export function keyDownHandler(event) {
         case "double":
           addProjectile(
             createProjectile({
-              x: player.x - player.size / 2,
+              y: player.y - player.size / 2,
             }),
           );
           addProjectile(
             createProjectile({
-              x: player.x + player.size / 2,
+              y: player.y + player.size / 2,
             }),
           );
           break;
         case "ball":
           addProjectile(
             createProjectile({
-              vy: -player.projectileSpeed / 2,
+              vx: player.projectileSpeed / 2,
               size: player.projectileSize * 4,
             }),
           );
@@ -34,8 +30,8 @@ export function keyDownHandler(event) {
           for (let i = 1; i <= 30; i++) {
             addProjectile(
               createProjectile({
-                y: player.y - i * 10,
-                vy: -player.projectileSpeed * 10,
+                x: player.x + i * 10,
+                vx: player.projectileSpeed * 10,
                 size: player.projectileSize * 2,
               }),
             );
@@ -44,29 +40,29 @@ export function keyDownHandler(event) {
         case "spread":
           addProjectile(
             createProjectile({
-              x: player.x - player.size / 2,
-              vx: -player.projectileSpeed / 2,
+              y: player.y - player.size / 2,
+              vy: -player.projectileSpeed / 2,
             }),
           );
           addProjectile(createProjectile());
           addProjectile(
             createProjectile({
-              x: player.x + player.size / 2,
-              vx: player.projectileSpeed / 2,
+              y: player.y + player.size / 2,
+              vy: player.projectileSpeed / 2,
             }),
           );
           break;
         case "side":
           addProjectile(
             createProjectile({
-              vx: -player.projectileSpeed,
-              vy: 0,
+              vx: 0,
+              vy: -player.projectileSpeed,
             }),
           );
           addProjectile(
             createProjectile({
-              vx: player.projectileSpeed,
-              vy: 0,
+              vx: 0,
+              vy: player.projectileSpeed,
             }),
           );
           break;

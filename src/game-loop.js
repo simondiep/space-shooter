@@ -61,6 +61,7 @@ export function update() {
   // Move and draw enemies
   for (let enemyIndex = enemies.length - 1; enemyIndex >= 0; enemyIndex--) {
     const enemy = enemies[enemyIndex];
+    enemy.x += enemy.vx;
     enemy.y += enemy.vy;
 
     // check for collision of player
@@ -103,8 +104,8 @@ export function update() {
           const forkedProj1 = createProjectile({
             x: projectile.x,
             y: projectile.y,
-            vx: projectile.vx ? projectile.vx : -projectile.vy / 2,
-            vy: projectile.vy,
+            vx: projectile.vx,
+            vy: projectile.vy ? projectile.vy : -projectile.vx / 2,
             size: projectile.size,
             damage: projectile.damage,
             modifiers: projectile.modifiers,
@@ -112,8 +113,8 @@ export function update() {
           const forkedProj2 = createProjectile({
             x: projectile.x,
             y: projectile.y,
-            vx: projectile.vx ? projectile.vx : projectile.vy / 2,
-            vy: projectile.vy,
+            vx: projectile.vx,
+            vy: projectile.vy ? projectile.vy : projectile.vx / 2,
             size: projectile.size,
             damage: projectile.damage,
             modifiers: projectile.modifiers,
