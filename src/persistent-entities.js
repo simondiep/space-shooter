@@ -15,8 +15,8 @@ export function clearScore() {
   document.getElementById("scoreLabel").innerHTML = score;
 }
 
-export function incrementScore() {
-  score++;
+export function incrementScore(scoreToAdd) {
+  score = score + scoreToAdd;
   document.getElementById("scoreLabel").innerHTML = score;
   if (score > highScore) {
     highScore = score;

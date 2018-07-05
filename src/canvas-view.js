@@ -2,6 +2,7 @@ import { CANVAS_WIDTH, CANVAS_HEIGHT } from "./constants.js";
 
 let context;
 let spaceInvaderImage;
+let spaceInvaderDamagedImage;
 
 export function initializeCanvas() {
   const canvas = document.getElementById("canvas");
@@ -9,6 +10,7 @@ export function initializeCanvas() {
   canvas.height = CANVAS_HEIGHT;
   context = document.getElementById("canvas").getContext("2d");
   spaceInvaderImage = document.getElementById("spaceInvaderImage");
+  spaceInvaderDamagedImage = document.getElementById("spaceInvaderDamagedImage");
 }
 
 export function clearScreen() {
@@ -21,14 +23,14 @@ export function deathScreen() {
   context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 }
 
-export function drawEnemy(x, y, size) {
+export function drawEnemy(x, y, size, isDamaged) {
   // To see collision circle, uncomment this
   // context.fillStyle = enemyColor;
   // context.beginPath();
   // context.arc(enemy.x, enemy.y, enemy.size, 0, 2 * Math.PI);
   // context.closePath();
   // context.fill();
-  context.drawImage(spaceInvaderImage, x, y, size, size);
+  context.drawImage(isDamaged ? spaceInvaderDamagedImage : spaceInvaderImage, x, y, size, size);
 }
 
 export function drawFilledCircle(x, y, radius, color) {

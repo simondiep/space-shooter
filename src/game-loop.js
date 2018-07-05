@@ -130,16 +130,13 @@ export function update() {
     }
 
     if (enemyHasBeenDestroyed) {
-      incrementScore();
+      incrementScore(enemy.score);
     } else {
-      // Draw enemy
-      let enemyColor = "gray";
+      drawEnemy(enemy.x - enemy.size, enemy.y - enemy.size, enemy.size * 2, enemy.recentlyDamaged);
+      // Reset damage state
       if (enemy.recentlyDamaged) {
-        enemyColor = "red";
         enemy.recentlyDamaged = false;
       }
-
-      drawEnemy(enemy.x - enemy.size, enemy.y - enemy.size, enemy.size * 2);
     }
   }
 }
