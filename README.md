@@ -8,7 +8,6 @@ npm i && npm start
 
 # Ideas
 
-Enemy death animation (explosion?)
 Display damage numbers
 
 # Longer term

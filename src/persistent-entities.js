@@ -1,8 +1,9 @@
-import { CANVAS_HEIGHT } from "./constants.js";
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants.js";
 
 let player;
 let enemies = [];
 let projectiles = [];
+let enemyExplosions = [];
 let score = 0;
 let highScore = 0;
 let nextProjectileId = 1;
@@ -41,10 +42,14 @@ export function clearEnemies() {
 
 export function removeEnemiesThatAreOffScreen() {
   enemies = enemies.filter(function(enemy) {
-    if (enemy.x > -10) {
+    if (enemy.x > -30) {
       return true;
     }
   });
+}
+
+export function getEnemyExplosions() {
+  return enemyExplosions;
 }
 
 /***************************
@@ -75,7 +80,7 @@ export function clearProjectiles() {
 
 export function removeProjectilesThatAreOffScreen() {
   projectiles = projectiles.filter(function(projectile) {
-    if (projectile.x > -10) {
+    if (projectile.x < CANVAS_WIDTH + 20) {
       return true;
     }
   });

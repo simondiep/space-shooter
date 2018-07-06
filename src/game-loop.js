@@ -2,6 +2,7 @@ import { CANVAS_WIDTH, CANVAS_HEIGHT } from "./constants.js";
 import {
   createProjectile,
   getEnemies,
+  getEnemyExplosions,
   getPlayer,
   getProjectiles,
   incrementScore,
@@ -9,7 +10,14 @@ import {
   removeProjectilesThatAreOffScreen,
 } from "./persistent-entities.js";
 import { initializeGame } from "./main.js";
-import { drawBackground, deathScreen, drawFilledCircle, drawPlayer, drawEnemy } from "./canvas-view.js";
+import {
+  drawBackground,
+  drawEnemyExplosion,
+  deathScreen,
+  drawFilledCircle,
+  drawPlayer,
+  drawEnemy,
+} from "./canvas-view.js";
 
 export function update() {
   drawBackground();
@@ -57,6 +65,12 @@ export function update() {
   }
 
   drawPlayer(player.x, player.y, player.size);
+  const enemyExplosions = getEnemyExplosions();
+  for (let enemyExplosionIndex = enemyExplosions.length - 1; enemyExplosionIndex >= 0; enemyExplosionIndex--) {
+    const enemyExplosion = enemyExplosions[enemyExplosionIndex];
+    drawEnemyExplosion(enemyExplosion.x, enemyExplosion.y, enemyExplosion.size);
+    enemyExplosions.splice(enemyExplosionIndex, 1);
+  }
 
   // Move and draw enemies
   for (let enemyIndex = enemies.length - 1; enemyIndex >= 0; enemyIndex--) {
@@ -130,6 +144,7 @@ export function update() {
     }
 
     if (enemyHasBeenDestroyed) {
+      enemyExplosions.push(enemy);
       incrementScore(enemy.score);
     } else {
       drawEnemy(enemy.x - enemy.size, enemy.y - enemy.size, enemy.size * 2, enemy.recentlyDamaged);

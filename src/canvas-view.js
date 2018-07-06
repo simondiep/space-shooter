@@ -43,13 +43,12 @@ export function deathScreen() {
 }
 
 export function drawEnemy(x, y, size, isDamaged) {
-  // To see collision circle, uncomment this
-  // context.fillStyle = enemyColor;
-  // context.beginPath();
-  // context.arc(enemy.x, enemy.y, enemy.size, 0, 2 * Math.PI);
-  // context.closePath();
-  // context.fill();
   context.drawImage(isDamaged ? spaceInvaderDamagedImage : spaceInvaderImage, x, y, size, size);
+}
+
+export function drawEnemyExplosion(x, y, size) {
+  drawFilledCircle(x, y, size, "red");
+  drawFilledCircle(x, y, size / 2, "orange");
 }
 
 export function drawFilledCircle(x, y, radius, color) {
