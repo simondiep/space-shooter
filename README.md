@@ -9,13 +9,21 @@ npm i && npm start
 # Ideas
 
 Display damage numbers
+Game Polish
+
+- Longer projectiles that look cool but don't have additional power
+- Faster projectiles
+- Faster pace like videoball
+- Fast asteroids in addition to enemies
+- Concept of waves of enemies
+- More satisfying explosions
+- Add sound effects - http://www.drpetter.se/project_sfxr.html
 
 # Longer term
 
 Non-circle projectiles
 Add art assets
 Add background music
-Add sound effects
 Mouse movement
 Shield
 Twin ships
