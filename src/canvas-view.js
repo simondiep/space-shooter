@@ -4,7 +4,6 @@ let context;
 let spaceInvaderImage;
 let spaceInvaderDamagedImage;
 let backgroundImage;
-let tempContext;
 let backgroundScrollX = 0;
 let backgroundScrollXSpeed = 2;
 
@@ -16,27 +15,26 @@ export function initializeCanvas() {
   spaceInvaderImage = document.getElementById("spaceInvaderImage");
   spaceInvaderDamagedImage = document.getElementById("spaceInvaderDamagedImage");
   backgroundImage = document.getElementById("backgroundImage");
-  const canvasTemp = document.createElement("canvas");
-  canvasTemp.width = backgroundImage.width;
-  canvasTemp.height = backgroundImage.height;
-  tempContext = canvasTemp.getContext("2d");
-  // Draw image on hidden context so it can be retrieved for performance
-  tempContext.drawImage(backgroundImage, 0, 0, backgroundImage.width, backgroundImage.height);
 }
 
+// Infinite scrolling background
 export function drawBackground() {
   context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-  if (backgroundScrollX <= backgroundScrollXSpeed) {
-    backgroundScrollX = CANVAS_WIDTH;
+  if (backgroundScrollX >= CANVAS_WIDTH) {
+    backgroundScrollX = 0;
   }
 
-  backgroundScrollX -= backgroundScrollXSpeed;
+  backgroundScrollX += backgroundScrollXSpeed;
 
-  let imageData = tempContext.getImageData(CANVAS_WIDTH - backgroundScrollX, 0, backgroundScrollX, CANVAS_HEIGHT);
-  context.putImageData(imageData, 0, 0);
-  imageData = tempContext.getImageData(0, 0, CANVAS_WIDTH - backgroundScrollX, CANVAS_HEIGHT);
-  context.putImageData(imageData, backgroundScrollX, 0);
+  context.drawImage(backgroundImage, -backgroundScrollX, 0, backgroundImage.width, backgroundImage.height);
+  context.drawImage(
+    backgroundImage,
+    CANVAS_WIDTH - backgroundScrollX,
+    0,
+    backgroundImage.width,
+    backgroundImage.height,
+  );
 }
 
 export function deathScreen() {
