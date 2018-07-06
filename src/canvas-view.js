@@ -3,6 +3,10 @@ import { CANVAS_WIDTH, CANVAS_HEIGHT } from "./constants.js";
 let context;
 let spaceInvaderImage;
 let spaceInvaderDamagedImage;
+let backgroundImage;
+let tempContext;
+let backgroundScrollX = 0;
+let backgroundScrollXSpeed = 2;
 
 export function initializeCanvas() {
   const canvas = document.getElementById("canvas");
@@ -11,11 +15,28 @@ export function initializeCanvas() {
   context = document.getElementById("canvas").getContext("2d");
   spaceInvaderImage = document.getElementById("spaceInvaderImage");
   spaceInvaderDamagedImage = document.getElementById("spaceInvaderDamagedImage");
+  backgroundImage = document.getElementById("backgroundImage");
+  const canvasTemp = document.createElement("canvas");
+  canvasTemp.width = backgroundImage.width;
+  canvasTemp.height = backgroundImage.height;
+  tempContext = canvasTemp.getContext("2d");
+  // Draw image on hidden context so it can be retrieved for performance
+  tempContext.drawImage(backgroundImage, 0, 0, backgroundImage.width, backgroundImage.height);
 }
 
-export function clearScreen() {
-  context.fillStyle = "black";
-  context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+export function drawBackground() {
+  context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+  if (backgroundScrollX <= backgroundScrollXSpeed) {
+    backgroundScrollX = CANVAS_WIDTH;
+  }
+
+  backgroundScrollX -= backgroundScrollXSpeed;
+
+  let imageData = tempContext.getImageData(CANVAS_WIDTH - backgroundScrollX, 0, backgroundScrollX, CANVAS_HEIGHT);
+  context.putImageData(imageData, 0, 0);
+  imageData = tempContext.getImageData(0, 0, CANVAS_WIDTH - backgroundScrollX, CANVAS_HEIGHT);
+  context.putImageData(imageData, backgroundScrollX, 0);
 }
 
 export function deathScreen() {

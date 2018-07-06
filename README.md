@@ -15,7 +15,6 @@ Display damage numbers
 
 Non-circle projectiles
 Add art assets
-Add scrolling background
 Add background music
 Add sound effects
 Mouse movement

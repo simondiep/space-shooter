@@ -9,10 +9,10 @@ import {
   removeProjectilesThatAreOffScreen,
 } from "./persistent-entities.js";
 import { initializeGame } from "./main.js";
-import { clearScreen, deathScreen, drawFilledCircle, drawPlayer, drawEnemy } from "./canvas-view.js";
+import { drawBackground, deathScreen, drawFilledCircle, drawPlayer, drawEnemy } from "./canvas-view.js";
 
 export function update() {
-  clearScreen();
+  drawBackground();
 
   removeEnemiesThatAreOffScreen();
   removeProjectilesThatAreOffScreen();

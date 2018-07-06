@@ -7,7 +7,7 @@ export function spawnEnemy() {
   addEnemy({
     x: CANVAS_WIDTH + 10,
     y: getRandomNumber(0, CANVAS_HEIGHT),
-    vx: -getRandomNumber(2, 5),
+    vx: -getRandomNumber(3, 6),
     vy: 0,
     size,
     health,
