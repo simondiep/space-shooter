@@ -18,6 +18,7 @@ Game Polish
 - Concept of waves of enemies
 - More satisfying explosions
 - Add sound effects - http://www.drpetter.se/project_sfxr.html
+- screen shake on death
 
 # Longer term
 

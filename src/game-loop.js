@@ -17,6 +17,7 @@ import {
   drawFilledCircle,
   drawPlayer,
   drawEnemy,
+  shakeScreen,
 } from "./canvas-view.js";
 
 export function update() {
@@ -80,6 +81,8 @@ export function update() {
 
     // check for collision of player
     if (hasCollided(player, enemy)) {
+      shakeScreen(3);
+      // TODO delay these actions for a few renders
       deathScreen();
       initializeGame();
       return;
@@ -145,8 +148,12 @@ export function update() {
 
     if (enemyHasBeenDestroyed) {
       enemyExplosions.push(enemy);
+      shakeScreen(2);
       incrementScore(enemy.score);
     } else {
+      if (enemy.recentlyDamaged) {
+        shakeScreen(1);
+      }
       drawEnemy(enemy.x - enemy.size, enemy.y - enemy.size, enemy.size * 2, enemy.recentlyDamaged);
       // Reset damage state
       if (enemy.recentlyDamaged) {

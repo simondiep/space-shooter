@@ -6,10 +6,10 @@ let spaceInvaderDamagedImage;
 let backgroundImage;
 let backgroundScrollX = 0;
 let backgroundScrollXSpeed = 2;
-let translatedX = 0;
-let translatedY = 0;
+let screenShakeTranslatedX = 0;
+let screenShakeTranslatedY = 0;
 // Number of renders before resetting the screen to original state
-let screenShakeTurns = 0;
+let screenShakeDuration = 0;
 
 export function initializeCanvas() {
   const canvas = document.getElementById("canvas");
@@ -23,15 +23,15 @@ export function initializeCanvas() {
 
 // Infinite scrolling background
 export function drawBackground() {
-  if (screenShakeTurns > 0) {
-    screenShakeTurns--;
+  if (screenShakeDuration > 0) {
+    screenShakeDuration--;
   }
-  if (screenShakeTurns === 0) {
-    context.translate(-translatedX, -translatedY);
-    translatedX = 0;
-    translatedY = 0;
+  if (screenShakeDuration === 0) {
+    context.translate(-screenShakeTranslatedX, -screenShakeTranslatedY);
+    screenShakeTranslatedX = 0;
+    screenShakeTranslatedY = 0;
   }
-  context.clearRect(-translatedX, -translatedY, CANVAS_WIDTH, CANVAS_HEIGHT);
+  context.clearRect(-screenShakeTranslatedX, -screenShakeTranslatedY, CANVAS_WIDTH, CANVAS_HEIGHT);
 
   if (backgroundScrollX >= CANVAS_WIDTH) {
     backgroundScrollX = 0;
@@ -54,16 +54,7 @@ export function deathScreen() {
   context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 }
 
-// Shake screen when enemy damaged
 export function drawEnemy(x, y, size, isDamaged) {
-  if (isDamaged) {
-    screenShakeTurns += 5;
-    const dx = getRandomNumber(-10, 10);
-    const dy = getRandomNumber(-10, 10);
-    context.translate(dx, dy);
-    translatedX += dx;
-    translatedY += dy;
-  }
   context.drawImage(isDamaged ? spaceInvaderDamagedImage : spaceInvaderImage, x, y, size, size);
 }
 
@@ -93,6 +84,15 @@ export function drawPlayer(x, y, size) {
   context.lineTo(x + size, y);
   context.closePath();
   context.fill();
+}
+
+export function shakeScreen(scale) {
+  screenShakeDuration += 2 * scale;
+  const dx = getRandomNumber(-5 * scale, 5 * scale);
+  const dy = getRandomNumber(-5 * scale, 5 * scale);
+  context.translate(dx, dy);
+  screenShakeTranslatedX += dx;
+  screenShakeTranslatedY += dy;
 }
 
 function getRandomNumber(min, max) {
