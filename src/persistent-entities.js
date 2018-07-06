@@ -41,7 +41,7 @@ export function clearEnemies() {
 
 export function removeEnemiesThatAreOffScreen() {
   enemies = enemies.filter(function(enemy) {
-    if (enemy.y <= CANVAS_HEIGHT) {
+    if (enemy.x > -10) {
       return true;
     }
   });
@@ -75,7 +75,7 @@ export function clearProjectiles() {
 
 export function removeProjectilesThatAreOffScreen() {
   projectiles = projectiles.filter(function(projectile) {
-    if (projectile.y >= 0) {
+    if (projectile.x > -10) {
       return true;
     }
   });
