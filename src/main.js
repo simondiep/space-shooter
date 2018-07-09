@@ -42,7 +42,7 @@ export function initializeGame() {
     vx: 0,
     vy: 0,
     projectileSize: 5,
-    projectileSpeed: 5,
+    projectileSpeed: 25,
     shotType: "single",
     shotModifiers: {
       pierce: 0,

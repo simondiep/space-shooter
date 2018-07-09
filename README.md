@@ -12,15 +12,18 @@ Display damage numbers
 
 Game Polish
 
+- intro screen with instructions
+- death screen (display score)
 - Longer projectiles that look cool but don't have additional power
-- Faster projectiles
 - Faster pace like videoball
 - Concept of waves of enemies
 - More satisfying explosions
-- screen shake on death
+- screen shake on death (with audio then transition to death screen)
 
 # Longer term
 
+Hotkeys to switch between weapons
+Rotating asteroids
 Non-circle projectiles
 Add art assets
 Mouse movement
