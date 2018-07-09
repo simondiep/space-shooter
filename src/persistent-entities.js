@@ -1,4 +1,5 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants.js";
+import { playShootSound } from "./sounds.js";
 
 let player;
 let enemies = [];
@@ -68,6 +69,7 @@ export function replacePlayer(newPlayer) {
  *******************************/
 export function addProjectile(proj) {
   projectiles.push(proj);
+  playShootSound();
 }
 
 export function getProjectiles() {

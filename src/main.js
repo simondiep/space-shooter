@@ -5,6 +5,7 @@ import { clearEnemies, clearProjectiles, clearScore, getPlayer, replacePlayer } 
 import { update } from "./game-loop.js";
 import { initializeShotModifiers } from "./shot-modifiers.js";
 import { initializeCanvas } from "./canvas-view.js";
+import { muteSound } from "./sounds.js";
 
 initializeCanvas();
 initializeGame();
@@ -12,6 +13,7 @@ initializeShotModifiers();
 
 window.addEventListener("keydown", keyDownHandler);
 window.addEventListener("keyup", keyUpHandler);
+document.getElementById("muteButton").addEventListener("click", muteSound);
 
 setInterval(() => requestAnimationFrame(update), 1000 / 60);
 

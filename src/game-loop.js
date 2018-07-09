@@ -19,6 +19,7 @@ import {
   drawEnemy,
   shakeScreen,
 } from "./canvas-view.js";
+import { playHitSound, playExplosionSound } from "./sounds.js";
 
 export function update() {
   drawBackground();
@@ -149,6 +150,7 @@ export function update() {
     if (enemyHasBeenDestroyed) {
       enemyExplosions.push(enemy);
       shakeScreen(2);
+      playExplosionSound();
       incrementScore(enemy.score);
     } else {
       if (enemy.recentlyDamaged) {
@@ -157,6 +159,7 @@ export function update() {
       drawEnemy(enemy.x - enemy.size, enemy.y - enemy.size, enemy.size * 2, enemy.recentlyDamaged);
       // Reset damage state
       if (enemy.recentlyDamaged) {
+        playHitSound();
         enemy.recentlyDamaged = false;
       }
     }

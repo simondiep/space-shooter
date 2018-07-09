@@ -17,6 +17,7 @@
       High Score:
       <label id="highScoreLabel">0</label>
     </label>
+    <button id="muteButton" style="display: inline-block; margin-left: 20px;">Mute</button>
   </div>
   <canvas id="canvas"></canvas>
   <fieldset>
@@ -46,9 +47,13 @@
     </div>
   </fieldset>
   <div>WASD to move, space to shoot</div>
-  <div style="display: none">
-    <img id="spaceInvaderImage" src="./space_invader.png" />
-    <img id="spaceInvaderDamagedImage" src="./space_invader_damaged.png" />
-    <img id="backgroundImage" src="./space_bg.png" />
+  <div id="assets" style="display: none">
+    <img id="spaceInvaderImage" src="assets/images/space_invader.png" />
+    <img id="spaceInvaderDamagedImage" src="assets/images/space_invader_damaged.png" />
+    <img id="backgroundImage" src="assets/images/space_bg.png" />
+    <audio id="music-background" src="assets/sounds/Death_Sword_v1.0.mp3" type="audio/mpeg" autostart="0" loop="true"></audio>
+    <audio id="sound-explosion" src="assets/sounds/explosion.wav" type="audio/wav" autostart="0"></audio>
+    <audio id="sound-hit" src="assets/sounds/hit.wav" type="audio/wav" autostart="0"></audio>
+    <audio id="sound-shoot" src="assets/sounds/shoot.wav" type="audio/wav" autostart="0"></audio>
   </div>
 </body>
