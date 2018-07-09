@@ -156,7 +156,7 @@ export function update() {
       if (enemy.recentlyDamaged) {
         shakeScreen(1);
       }
-      drawEnemy(enemy.x - enemy.size, enemy.y - enemy.size, enemy.size * 2, enemy.recentlyDamaged);
+      drawEnemy(enemy);
       // Reset damage state
       if (enemy.recentlyDamaged) {
         playHitSound();

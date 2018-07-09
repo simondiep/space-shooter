@@ -15,7 +15,6 @@ Game Polish
 - Longer projectiles that look cool but don't have additional power
 - Faster projectiles
 - Faster pace like videoball
-- Fast asteroids in addition to enemies
 - Concept of waves of enemies
 - More satisfying explosions
 - screen shake on death

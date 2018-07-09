@@ -1,5 +1,5 @@
-import { CANVAS_WIDTH, CANVAS_HEIGHT } from "./constants.js";
-import { spawnBoss, spawnEnemy } from "./enemy-spawner.js";
+import { CANVAS_HEIGHT } from "./constants.js";
+import { spawnAsteroid, spawnBoss, spawnEnemy } from "./enemy-spawner.js";
 import { keyDownHandler, keyUpHandler } from "./key-inputs.js";
 import { clearEnemies, clearProjectiles, clearScore, getPlayer, replacePlayer } from "./persistent-entities.js";
 import { update } from "./game-loop.js";
@@ -17,8 +17,8 @@ document.getElementById("muteButton").addEventListener("click", muteSound);
 
 setInterval(() => requestAnimationFrame(update), 1000 / 60);
 
+setInterval(() => requestAnimationFrame(spawnAsteroid), 1000);
 setInterval(() => requestAnimationFrame(spawnEnemy), 500);
-
 setInterval(() => requestAnimationFrame(spawnBoss), 20000);
 
 // Reusable function to start or restart a game

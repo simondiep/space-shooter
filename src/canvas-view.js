@@ -1,8 +1,6 @@
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from "./constants.js";
 
 let context;
-let spaceInvaderImage;
-let spaceInvaderDamagedImage;
 let backgroundImage;
 let backgroundScrollX = 0;
 let backgroundScrollXSpeed = 2;
@@ -16,8 +14,6 @@ export function initializeCanvas() {
   canvas.width = CANVAS_WIDTH;
   canvas.height = CANVAS_HEIGHT;
   context = document.getElementById("canvas").getContext("2d");
-  spaceInvaderImage = document.getElementById("spaceInvaderImage");
-  spaceInvaderDamagedImage = document.getElementById("spaceInvaderDamagedImage");
   backgroundImage = document.getElementById("backgroundImage");
 }
 
@@ -54,8 +50,14 @@ export function deathScreen() {
   context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 }
 
-export function drawEnemy(x, y, size, isDamaged) {
-  context.drawImage(isDamaged ? spaceInvaderDamagedImage : spaceInvaderImage, x, y, size, size);
+export function drawEnemy(enemy) {
+  context.drawImage(
+    enemy.recentlyDamaged ? enemy.images.damaged : enemy.images.normal,
+    enemy.x - enemy.size,
+    enemy.y - enemy.size,
+    enemy.size * 2,
+    enemy.size * 2,
+  );
 }
 
 export function drawEnemyExplosion(x, y, size) {
