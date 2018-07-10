@@ -4,8 +4,34 @@ import { addEnemy } from "./persistent-entities.js";
 const asteroidImage = document.getElementById("asteroidImage");
 const spaceInvaderImage = document.getElementById("spaceInvaderImage");
 const spaceInvaderDamagedImage = document.getElementById("spaceInvaderDamagedImage");
+const speedsterImage = document.getElementById("speedsterImage");
+const speedsterDamagedImage = document.getElementById("speedsterDamagedImage");
 
-export function spawnEnemy() {
+export function spawnSpeedster() {
+  const size = getRandomNumber(15, 30);
+  const health = Math.floor(size / 15) + 1;
+  addEnemy({
+    x: CANVAS_WIDTH + 10,
+    y: getRandomNumber(0, CANVAS_HEIGHT),
+    vx: -getRandomNumber(6, 9),
+    vy: 0,
+    size,
+    health,
+    score: health * 2,
+    recentlyDamaged: false,
+    turnsToDisplayDamage: 0,
+    hitByProjectiles: [],
+    onHit: self => {
+      self.vx -= 2;
+    },
+    images: {
+      normal: speedsterImage,
+      damaged: speedsterDamagedImage,
+    },
+  });
+}
+
+export function spawnSpaceInvader() {
   const size = getRandomNumber(20, 40);
   const health = Math.floor(size / 10);
   addEnemy({
@@ -17,6 +43,7 @@ export function spawnEnemy() {
     health,
     score: health,
     recentlyDamaged: false,
+    turnsToDisplayDamage: 0,
     hitByProjectiles: [],
     images: {
       normal: spaceInvaderImage,
@@ -26,23 +53,52 @@ export function spawnEnemy() {
 }
 
 export function spawnBoss() {
-  const size = getRandomNumber(100, 200);
-  const health = Math.floor(size / 10) * 2;
-  addEnemy({
-    x: CANVAS_WIDTH + 200,
-    y: getRandomNumber(0, CANVAS_HEIGHT),
-    vx: -getRandomNumber(1, 2),
-    vy: 0,
-    size,
-    health,
-    score: health,
-    recentlyDamaged: false,
-    hitByProjectiles: [],
-    images: {
-      normal: spaceInvaderImage,
-      damaged: spaceInvaderDamagedImage,
-    },
-  });
+  const bossType = getRandomNumber(1, 2);
+  switch (bossType) {
+    case 1: // Space invader
+      const invaderSize = getRandomNumber(100, 200);
+      const invaderHealth = Math.floor(invaderSize / 10) * 2;
+      addEnemy({
+        x: CANVAS_WIDTH + 200,
+        y: getRandomNumber(0, CANVAS_HEIGHT),
+        vx: -getRandomNumber(1, 2),
+        vy: 0,
+        size: invaderSize,
+        health: invaderHealth,
+        score: invaderHealth,
+        recentlyDamaged: false,
+        turnsToDisplayDamage: 0,
+        hitByProjectiles: [],
+        images: {
+          normal: spaceInvaderImage,
+          damaged: spaceInvaderDamagedImage,
+        },
+      });
+      break;
+    case 2: // speedster
+      const speedsterSize = getRandomNumber(50, 100);
+      const speedsterHealth = Math.floor(speedsterSize / 7);
+      addEnemy({
+        x: CANVAS_WIDTH + 200,
+        y: getRandomNumber(0, CANVAS_HEIGHT),
+        vx: -getRandomNumber(3, 5),
+        vy: 0,
+        size: speedsterSize,
+        health: speedsterHealth,
+        score: speedsterHealth * 2,
+        recentlyDamaged: false,
+        turnsToDisplayDamage: 0,
+        hitByProjectiles: [],
+        onHit: self => {
+          self.vx--;
+        },
+        images: {
+          normal: speedsterImage,
+          damaged: speedsterDamagedImage,
+        },
+      });
+      break;
+  }
 }
 
 export function spawnAsteroid() {
@@ -57,6 +113,7 @@ export function spawnAsteroid() {
     health,
     score: 0,
     recentlyDamaged: false,
+    turnsToDisplayDamage: 0,
     hitByProjectiles: [],
     images: {
       normal: asteroidImage,

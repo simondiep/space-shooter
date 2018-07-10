@@ -52,7 +52,7 @@ export function deathScreen() {
 
 export function drawEnemy(enemy) {
   context.drawImage(
-    enemy.recentlyDamaged ? enemy.images.damaged : enemy.images.normal,
+    enemy.turnsToDisplayDamage > 0 ? enemy.images.damaged : enemy.images.normal,
     enemy.x - enemy.size,
     enemy.y - enemy.size,
     enemy.size * 2,

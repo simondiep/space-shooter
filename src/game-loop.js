@@ -103,10 +103,14 @@ export function update() {
 
         enemy.health -= projectile.damage;
         enemy.recentlyDamaged = true;
+        enemy.turnsToDisplayDamage = 5;
         if (enemy.health <= 0) {
           // Remove enemy
           enemies.splice(enemyIndex, 1);
           enemyHasBeenDestroyed = true;
+        }
+        if (enemy.onHit) {
+          enemy.onHit(enemy);
         }
 
         // Pierce
@@ -158,6 +162,7 @@ export function update() {
       }
       drawEnemy(enemy);
       // Reset damage state
+      enemy.turnsToDisplayDamage--;
       if (enemy.recentlyDamaged) {
         playHitSound();
         enemy.recentlyDamaged = false;
