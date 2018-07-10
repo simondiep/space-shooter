@@ -44,6 +44,7 @@ export function stopGame() {
   for (let intervalId of gameIntervals) {
     clearInterval(intervalId);
   }
+  gameIntervals.length = 0;
   window.addEventListener("keydown", startGameEventListener);
 }
 
