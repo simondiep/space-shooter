@@ -1,5 +1,5 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants.js";
-import { addEnemy } from "./persistent-entities.js";
+import { addEnemy, getTimeAliveInSeconds } from "./persistent-entities.js";
 
 const asteroidImage = document.getElementById("asteroidImage");
 const spaceInvaderImage = document.getElementById("spaceInvaderImage");
@@ -7,13 +7,15 @@ const spaceInvaderDamagedImage = document.getElementById("spaceInvaderDamagedIma
 const speedsterImage = document.getElementById("speedsterImage");
 const speedsterDamagedImage = document.getElementById("speedsterDamagedImage");
 
+const MAX_Y_SPAWN = CANVAS_HEIGHT - 30;
+
 export function spawnSpeedster() {
   const size = getRandomNumber(15, 30);
-  const health = Math.floor(size / 15) + 1;
+  const health = Math.floor(size / 15) + Math.floor(getTimeAliveInSeconds() / 20);
   addEnemy({
     x: CANVAS_WIDTH + 10,
-    y: getRandomNumber(0, CANVAS_HEIGHT),
-    vx: -getRandomNumber(6, 9),
+    y: getRandomNumber(0, MAX_Y_SPAWN),
+    vx: -getRandomNumber(6, 9) - Math.floor(getTimeAliveInSeconds() / 20),
     vy: 0,
     size,
     health,
@@ -32,11 +34,11 @@ export function spawnSpeedster() {
 }
 
 export function spawnSpaceInvader() {
-  const size = getRandomNumber(20, 40);
+  const size = getRandomNumber(20, 40) + Math.floor(getTimeAliveInSeconds() / 20);
   const health = Math.floor(size / 10);
   addEnemy({
     x: CANVAS_WIDTH + 10,
-    y: getRandomNumber(0, CANVAS_HEIGHT),
+    y: getRandomNumber(0, MAX_Y_SPAWN),
     vx: -getRandomNumber(3, 6),
     vy: 0,
     size,
@@ -52,20 +54,27 @@ export function spawnSpaceInvader() {
   });
 }
 
+export function spawnSpaceInvaderWave() {
+  const count = 5 + Math.floor(getTimeAliveInSeconds() / 10);
+  for (let i = 0; i < count; i++) {
+    spawnSpaceInvader();
+  }
+}
+
 export function spawnBoss() {
   const bossType = getRandomNumber(1, 2);
   switch (bossType) {
     case 1: // Space invader
-      const invaderSize = getRandomNumber(100, 200);
+      const invaderSize = getRandomNumber(100, 200) + Math.floor(getTimeAliveInSeconds() / 2);
       const invaderHealth = Math.floor(invaderSize / 10) * 2;
       addEnemy({
         x: CANVAS_WIDTH + 200,
-        y: getRandomNumber(0, CANVAS_HEIGHT),
+        y: getRandomNumber(0, MAX_Y_SPAWN),
         vx: -getRandomNumber(1, 2),
         vy: 0,
         size: invaderSize,
         health: invaderHealth,
-        score: invaderHealth,
+        score: invaderHealth * 3,
         recentlyDamaged: false,
         turnsToDisplayDamage: 0,
         hitByProjectiles: [],
@@ -76,16 +85,16 @@ export function spawnBoss() {
       });
       break;
     case 2: // speedster
-      const speedsterSize = getRandomNumber(50, 100);
+      const speedsterSize = getRandomNumber(75, 100) + Math.floor(getTimeAliveInSeconds() / 5);
       const speedsterHealth = Math.floor(speedsterSize / 7);
       addEnemy({
         x: CANVAS_WIDTH + 200,
-        y: getRandomNumber(0, CANVAS_HEIGHT),
+        y: getRandomNumber(0, MAX_Y_SPAWN),
         vx: -getRandomNumber(3, 5),
         vy: 0,
         size: speedsterSize,
         health: speedsterHealth,
-        score: speedsterHealth * 2,
+        score: speedsterHealth * 5,
         recentlyDamaged: false,
         turnsToDisplayDamage: 0,
         hitByProjectiles: [],
@@ -102,11 +111,11 @@ export function spawnBoss() {
 }
 
 export function spawnAsteroid() {
-  const size = getRandomNumber(20, 40);
+  const size = getRandomNumber(20, 40) + Math.floor(getTimeAliveInSeconds() / 25);
   const health = size;
   addEnemy({
     x: CANVAS_WIDTH + 10,
-    y: getRandomNumber(0, CANVAS_HEIGHT),
+    y: getRandomNumber(0, MAX_Y_SPAWN),
     vx: -getRandomNumber(3, 6),
     vy: getRandomNumber(-1, 1),
     size,

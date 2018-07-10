@@ -1,5 +1,5 @@
 import { CANVAS_HEIGHT } from "./constants.js";
-import { spawnAsteroid, spawnBoss, spawnSpaceInvader, spawnSpeedster } from "./enemy-spawner.js";
+import { spawnAsteroid, spawnBoss, spawnSpaceInvader, spawnSpeedster, spawnSpaceInvaderWave } from "./enemy-spawner.js";
 import { keyDownHandler, keyUpHandler } from "./key-inputs.js";
 import { clearEnemies, clearProjectiles, clearScore, getPlayer, replacePlayer } from "./persistent-entities.js";
 import { update } from "./game-loop.js";
@@ -20,7 +20,9 @@ setInterval(() => requestAnimationFrame(update), 1000 / 60);
 setInterval(() => requestAnimationFrame(spawnAsteroid), 1000);
 setInterval(() => requestAnimationFrame(spawnSpaceInvader), 500);
 setInterval(() => requestAnimationFrame(spawnSpeedster), 2000);
-setInterval(() => requestAnimationFrame(spawnBoss), 20000);
+setInterval(() => requestAnimationFrame(spawnBoss), 10000);
+
+setInterval(() => requestAnimationFrame(spawnSpaceInvaderWave), 30000);
 
 // Reusable function to start or restart a game
 export function initializeGame() {

@@ -8,6 +8,7 @@ import {
   incrementScore,
   removeEnemiesThatAreOffScreen,
   removeProjectilesThatAreOffScreen,
+  updateTimeAliveInSeconds,
 } from "./persistent-entities.js";
 import { initializeGame } from "./main.js";
 import {
@@ -22,6 +23,7 @@ import {
 import { playHitSound, playExplosionSound } from "./sounds.js";
 
 export function update() {
+  updateTimeAliveInSeconds();
   drawBackground();
 
   removeEnemiesThatAreOffScreen();
@@ -62,7 +64,7 @@ export function update() {
   if (player.x + player.vx > 0 && player.x + player.vx < CANVAS_WIDTH) {
     player.x += player.vx;
   }
-  if (player.y + player.vy > 0 && player.y + player.vy < CANVAS_HEIGHT) {
+  if (player.y + player.vy > 0 && player.y + player.vy < CANVAS_HEIGHT - player.size * 3) {
     player.y += player.vy;
   }
 
