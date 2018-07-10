@@ -17,15 +17,50 @@ export function initializeCanvas() {
   backgroundImage = document.getElementById("backgroundImage");
 }
 
+export function drawIntroScreen() {
+  context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  drawText(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 3, "#dbfaff", "Space Shooter");
+  drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 2) / 3, "#fffbbc", "Press Space to begin", 36);
+  drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 4) / 5, "#dbdbdb", "WASD or Arrow keys to move, Space to shoot", 24);
+}
+
+export function drawGameOverScreen() {
+  resetScreenShake();
+  drawText(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 3, "#ffa0a0", "Game Over");
+  drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 2) / 3, "#fffbbc", "Press Space to restart", 36);
+}
+
+function drawText(centerX, centerY, color, text, fontSize = 72) {
+  context.save();
+  context.lineWidth = 5;
+  context.strokeStyle = "black";
+  context.fillStyle = color;
+  context.font = `bold ${fontSize}px Arial`;
+
+  const textWidth = context.measureText(text).width;
+  const textHeight = 24;
+  let x = centerX - textWidth / 2;
+  let y = centerY + textHeight / 2;
+
+  context.strokeText(text, x, y);
+  context.fillText(text, x, y);
+  context.restore();
+}
+
+function resetScreenShake() {
+  screenShakeDuration = 0;
+  context.translate(-screenShakeTranslatedX, -screenShakeTranslatedY);
+  screenShakeTranslatedX = 0;
+  screenShakeTranslatedY = 0;
+}
+
 // Infinite scrolling background
 export function drawBackground() {
   if (screenShakeDuration > 0) {
     screenShakeDuration--;
   }
   if (screenShakeDuration === 0) {
-    context.translate(-screenShakeTranslatedX, -screenShakeTranslatedY);
-    screenShakeTranslatedX = 0;
-    screenShakeTranslatedY = 0;
+    resetScreenShake();
   }
   context.clearRect(-screenShakeTranslatedX, -screenShakeTranslatedY, CANVAS_WIDTH, CANVAS_HEIGHT);
 
@@ -43,11 +78,6 @@ export function drawBackground() {
     backgroundImage.width,
     backgroundImage.height,
   );
-}
-
-export function deathScreen() {
-  context.fillStyle = "red";
-  context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 }
 
 export function drawEnemy(enemy) {

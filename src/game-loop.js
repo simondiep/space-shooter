@@ -10,11 +10,11 @@ import {
   removeProjectilesThatAreOffScreen,
   updateTimeAliveInSeconds,
 } from "./persistent-entities.js";
-import { initializeGame } from "./main.js";
+import { stopGame } from "./main.js";
 import {
   drawBackground,
   drawEnemyExplosion,
-  deathScreen,
+  drawGameOverScreen,
   drawFilledCircle,
   drawPlayer,
   drawEnemy,
@@ -76,6 +76,8 @@ export function update() {
     enemyExplosions.splice(enemyExplosionIndex, 1);
   }
 
+  let gameOver = false;
+
   // Move and draw enemies
   for (let enemyIndex = enemies.length - 1; enemyIndex >= 0; enemyIndex--) {
     const enemy = enemies[enemyIndex];
@@ -84,11 +86,7 @@ export function update() {
 
     // check for collision of player
     if (hasCollided(player, enemy)) {
-      shakeScreen(3);
-      // TODO delay these actions for a few renders
-      deathScreen();
-      initializeGame();
-      return;
+      gameOver = true;
     }
 
     let enemyHasBeenDestroyed = false;
@@ -169,6 +167,11 @@ export function update() {
         playHitSound();
         enemy.recentlyDamaged = false;
       }
+    }
+
+    if (gameOver) {
+      drawGameOverScreen();
+      stopGame();
     }
   }
 }

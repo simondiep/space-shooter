@@ -1,13 +1,10 @@
 import { addProjectile, createProjectile, getPlayer } from "./persistent-entities.js";
-import { playBackgroundMusic } from "./sounds.js";
 
 export function keyDownHandler(event) {
   event.preventDefault();
-  playBackgroundMusic();
   const player = getPlayer();
   switch (event.keyCode) {
     case 32: // Space
-      event.preventDefault();
       switch (player.shotType) {
         case "double":
           addProjectile(

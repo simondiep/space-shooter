@@ -12,8 +12,6 @@ Display damage numbers
 
 Game Polish
 
-- intro screen with instructions
-- death screen (display score)
 - Longer projectiles that look cool but don't have additional power
 - Faster pace like videoball
 - Concept of waves of enemies
