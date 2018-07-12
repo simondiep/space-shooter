@@ -64,11 +64,12 @@ export function update() {
   if (player.x + player.vx > 0 && player.x + player.vx < CANVAS_WIDTH) {
     player.x += player.vx;
   }
-  if (player.y + player.vy > 0 && player.y + player.vy < CANVAS_HEIGHT - player.size * 3) {
+  if (player.y + player.vy > 0 && player.y + player.vy < CANVAS_HEIGHT - player.size) {
     player.y += player.vy;
   }
 
-  drawPlayer(player.x, player.y, player.size);
+  drawPlayer(player);
+  player.turnsAlive++;
   const enemyExplosions = getEnemyExplosions();
   for (let enemyExplosionIndex = enemyExplosions.length - 1; enemyExplosionIndex >= 0; enemyExplosionIndex--) {
     const enemyExplosion = enemyExplosions[enemyExplosionIndex];

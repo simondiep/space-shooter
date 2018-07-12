@@ -23,7 +23,6 @@ Game Polish
 Hotkeys to switch between weapons
 Rotating asteroids
 Non-circle projectiles
-Add art assets
 Mouse movement
 Shield
 Twin ships

@@ -1,5 +1,12 @@
 import { CANVAS_HEIGHT } from "./constants.js";
-import { spawnAsteroid, spawnBoss, spawnSpaceInvader, spawnSpeedster, spawnSpaceInvaderWave } from "./enemy-spawner.js";
+import {
+  spawnAsteroid,
+  spawnBoss,
+  spawnHearty,
+  spawnSpaceInvader,
+  spawnSpeedster,
+  spawnSpaceInvaderWave,
+} from "./enemy-spawner.js";
 import { keyDownHandler, keyUpHandler } from "./key-inputs.js";
 import { clearEnemies, clearProjectiles, clearScore, replacePlayer } from "./persistent-entities.js";
 import { update } from "./game-loop.js";
@@ -7,6 +14,9 @@ import { initializeShotModifiers } from "./shot-modifiers.js";
 import { initializeCanvas, drawIntroScreen } from "./canvas-view.js";
 import { muteSound } from "./sounds.js";
 import { playBackgroundMusic } from "./sounds.js";
+
+const ship1Image = document.getElementById("ship1Image");
+const ship2Image = document.getElementById("ship2Image");
 
 let oneTimeInit = false;
 
@@ -52,6 +62,7 @@ function startGameIntervals() {
   gameIntervals.push(setInterval(() => requestAnimationFrame(update), 1000 / 60));
 
   gameIntervals.push(setInterval(() => requestAnimationFrame(spawnAsteroid), 1000));
+  gameIntervals.push(setInterval(() => requestAnimationFrame(spawnHearty), 1000));
   gameIntervals.push(setInterval(() => requestAnimationFrame(spawnSpaceInvader), 500));
   gameIntervals.push(setInterval(() => requestAnimationFrame(spawnSpeedster), 2000));
   gameIntervals.push(setInterval(() => requestAnimationFrame(spawnBoss), 10000));
@@ -70,6 +81,7 @@ function resetGameState() {
     size: 20,
     speed: 2,
     topSpeed: 10,
+    turnsAlive: 0,
     directionsPressed: {
       UP: false,
       DOWN: false,
@@ -84,6 +96,10 @@ function resetGameState() {
     shotModifiers: {
       pierce: 0,
       fork: 0,
+    },
+    images: {
+      one: ship1Image,
+      two: ship2Image,
     },
   });
   clearEnemies();

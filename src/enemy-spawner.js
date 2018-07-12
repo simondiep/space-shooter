@@ -2,12 +2,38 @@ import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants.js";
 import { addEnemy, getTimeAliveInSeconds } from "./persistent-entities.js";
 
 const asteroidImage = document.getElementById("asteroidImage");
+const heartyImage = document.getElementById("heartyImage");
+const heartyDamagedImage = document.getElementById("heartyDamagedImage");
 const spaceInvaderImage = document.getElementById("spaceInvaderImage");
 const spaceInvaderDamagedImage = document.getElementById("spaceInvaderDamagedImage");
 const speedsterImage = document.getElementById("speedsterImage");
 const speedsterDamagedImage = document.getElementById("speedsterDamagedImage");
 
 const MAX_Y_SPAWN = CANVAS_HEIGHT - 30;
+
+export function spawnHearty() {
+  const size = getRandomNumber(20, 30) + Math.floor(getTimeAliveInSeconds() / 15);
+  const health = Math.floor(size / 5);
+  addEnemy({
+    x: CANVAS_WIDTH + 10,
+    y: getRandomNumber(0, MAX_Y_SPAWN),
+    vx: -getRandomNumber(2, 4),
+    vy: 0,
+    size,
+    health,
+    score: health,
+    recentlyDamaged: false,
+    turnsToDisplayDamage: 0,
+    hitByProjectiles: [],
+    onHit: self => {
+      self.size += 5;
+    },
+    images: {
+      normal: heartyImage,
+      damaged: heartyDamagedImage,
+    },
+  });
+}
 
 export function spawnSpeedster() {
   const size = getRandomNumber(15, 30);
@@ -62,7 +88,7 @@ export function spawnSpaceInvaderWave() {
 }
 
 export function spawnBoss() {
-  const bossType = getRandomNumber(1, 2);
+  const bossType = getRandomNumber(3, 3);
   switch (bossType) {
     case 1: // Space invader
       const invaderSize = getRandomNumber(100, 200) + Math.floor(getTimeAliveInSeconds() / 2);
@@ -107,6 +133,28 @@ export function spawnBoss() {
         },
       });
       break;
+    case 3: // hearty
+      const heartySize = getRandomNumber(50, 60) + Math.floor(getTimeAliveInSeconds() / 5);
+      const heartyHealth = Math.floor(heartySize / 2);
+      addEnemy({
+        x: CANVAS_WIDTH + 10,
+        y: getRandomNumber(0, MAX_Y_SPAWN),
+        vx: -getRandomNumber(1, 3),
+        vy: 0,
+        size: heartySize,
+        health: heartyHealth,
+        score: heartyHealth * 5,
+        recentlyDamaged: false,
+        turnsToDisplayDamage: 0,
+        hitByProjectiles: [],
+        onHit: self => {
+          self.size += 5;
+        },
+        images: {
+          normal: heartyImage,
+          damaged: heartyDamagedImage,
+        },
+      });
   }
 }
 

@@ -18,7 +18,7 @@ export function initializeCanvas() {
 }
 
 export function drawIntroScreen() {
-  context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  context.drawImage(backgroundImage, 0, 0, backgroundImage.width, backgroundImage.height);
   drawText(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 3, "#dbfaff", "Space Shooter");
   drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 2) / 3, "#fffbbc", "Press Space to begin", 36);
   drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 4) / 5, "#dbdbdb", "WASD or Arrow keys to move, Space to shoot", 24);
@@ -103,19 +103,14 @@ export function drawFilledCircle(x, y, radius, color) {
   context.fill();
 }
 
-export function drawPlayer(x, y, size) {
-  context.fillStyle = "blue";
-  context.beginPath();
-  context.arc(x, y, size, 0, 2 * Math.PI);
-  context.closePath();
-  context.fill();
-  context.fillStyle = "skyblue";
-  context.beginPath();
-  context.moveTo(x - size, y - size);
-  context.lineTo(x - size, y + size);
-  context.lineTo(x + size, y);
-  context.closePath();
-  context.fill();
+export function drawPlayer(player) {
+  context.drawImage(
+    player.turnsAlive % 5 === 0 ? player.images.one : player.images.two,
+    player.x - player.size,
+    player.y - player.size,
+    player.size * 2,
+    player.size * 2,
+  );
 }
 
 export function shakeScreen(scale) {
