@@ -1,6 +1,8 @@
 <head>
   <style type="text/css">
     body {
+      display: table;
+      margin: 0 auto;
       background: black;
       font-family: Arial;
       font-weight: 600;
@@ -55,6 +57,11 @@
   <canvas id="canvas"></canvas>
   <div id="customization">
     <div style="text-align: center; font-size: 36px; padding-top: 25px; margin-bottom: 25px;">Customize your Ship</div>
+    <div style="text-align: center; margin: 20px;">
+      <label>You have </label>
+      <label id="numberOfCredits" style="color: #fffbbc;"></label>
+      <label> Credits to spend</label>
+    </div>
     <fieldset>
       <legend>Shot Type</legend>
       <div>
@@ -98,7 +105,7 @@
       <label id="shipTopSpeed"></label>
       <button id="increaseShipTopSpeedButton" class="increaseStatButton">Increase</button>
     </div>
-    <div style="text-align: center; font-size: 36px; margin-top: 50px; color: #fffbbc;">Press Space to Start Game</div>
+    <div style="text-align: center; font-size: 36px; margin-top: 20px; color: #fffbbc;">Press Space to Start Game</div>
   </div>
   <div id="assets" style="display: none">
     <img id="asteroidImage" src="assets/images/asteroid.png" />

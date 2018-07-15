@@ -9,7 +9,7 @@ npm i && npm start
 # Ideas
 
 - Credits System
-  - Each upgrade costs credits
+  - Each upgrade costs set amount of credits
 - Revamp shot modifiers
 - Longer projectiles that look cool but don't have additional power
 - Faster pace like videoball

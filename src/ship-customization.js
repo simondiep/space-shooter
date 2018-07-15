@@ -1,4 +1,4 @@
-import { getPlayer } from "./persistent-entities.js";
+import { getCredits, getPlayer, spendCredits } from "./persistent-entities.js";
 import { playUpgradeSound } from "./sounds.js";
 
 export const INITIAL_PLAYER_STATS = {
@@ -27,15 +27,32 @@ export function initializeStatIncreaseButtons() {
 
 export function populateShipCustomizationStats() {
   const player = getPlayer();
+  document.getElementById("numberOfCredits").innerHTML = getCredits();
   document.getElementById("projectileSize").innerHTML = player.projectileSize;
   document.getElementById("projectileSpeed").innerHTML = player.projectileSpeed;
   document.getElementById("shipSpeed").innerHTML = player.speed;
   document.getElementById("shipTopSpeed").innerHTML = player.topSpeed;
+
+  if (getCredits() <= 0) {
+    enableDisableUpgradeStatButtons(false);
+  } else {
+    enableDisableUpgradeStatButtons(true);
+  }
 }
 
 function increaseStat(statName) {
-  const player = getPlayer();
-  player[statName]++;
-  populateShipCustomizationStats();
-  playUpgradeSound();
+  if (getCredits() > 0) {
+    spendCredits(1);
+    const player = getPlayer();
+    player[statName]++;
+    populateShipCustomizationStats();
+    playUpgradeSound();
+  }
+}
+
+function enableDisableUpgradeStatButtons(enable) {
+  document.getElementById("increaseProjectileSizeButton").disabled = !enable;
+  document.getElementById("increaseProjectileSpeedButton").disabled = !enable;
+  document.getElementById("increaseShipSpeedButton").disabled = !enable;
+  document.getElementById("increaseShipTopSpeedButton").disabled = !enable;
 }

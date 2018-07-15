@@ -8,6 +8,7 @@ let screenShakeTranslatedX = 0;
 let screenShakeTranslatedY = 0;
 // Number of renders before resetting the screen to original state
 let screenShakeDuration = 0;
+const MAX_SCREEN_SHAKE_DURATION = 30;
 
 export function initializeCanvas() {
   const canvas = document.getElementById("canvas");
@@ -116,6 +117,9 @@ export function drawPlayer(player) {
 
 export function shakeScreen(scale) {
   screenShakeDuration += 2 * scale;
+  if (screenShakeDuration > MAX_SCREEN_SHAKE_DURATION) {
+    screenShakeDuration = MAX_SCREEN_SHAKE_DURATION;
+  }
   const dx = getRandomNumber(-5 * scale, 5 * scale);
   const dy = getRandomNumber(-5 * scale, 5 * scale);
   context.translate(dx, dy);

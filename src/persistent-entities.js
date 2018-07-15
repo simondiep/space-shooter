@@ -28,6 +28,7 @@ let projectiles = [];
 let enemyExplosions = [];
 let score = 0;
 let highScore = 0;
+let credits = 0;
 let gameStartTime;
 let timeAliveInSeconds = 0;
 let longestTimeAliveInSeconds = 0;
@@ -44,7 +45,8 @@ export function clearScore() {
 }
 
 export function incrementScore(scoreToAdd) {
-  score = score + scoreToAdd;
+  score += scoreToAdd;
+  credits += scoreToAdd;
   document.getElementById("scoreLabel").innerHTML = score;
   if (score > highScore) {
     highScore = score;
@@ -63,6 +65,14 @@ export function updateTimeAliveInSeconds() {
     longestTimeAliveInSeconds = timeAliveInSeconds;
     document.getElementById("longestTimeAliveInSeconds").innerHTML = longestTimeAliveInSeconds;
   }
+}
+
+export function getCredits() {
+  return credits;
+}
+
+export function spendCredits(amount) {
+  credits -= amount;
 }
 
 /**************************
