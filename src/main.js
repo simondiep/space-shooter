@@ -1,4 +1,3 @@
-import { CANVAS_HEIGHT } from "./constants.js";
 import {
   spawnAsteroid,
   spawnBoss,
@@ -8,7 +7,7 @@ import {
   spawnSpaceInvaderWave,
 } from "./enemy-spawner.js";
 import { keyDownHandler, keyUpHandler } from "./key-inputs.js";
-import { clearEnemies, clearProjectiles, clearScore, replacePlayer } from "./persistent-entities.js";
+import { clearEnemies, clearProjectiles, clearScore, resetPlayer, getPlayer } from "./persistent-entities.js";
 import { update } from "./game-loop.js";
 import { initializeShotModifiers } from "./shot-modifiers.js";
 import { initializeCanvas, drawIntroScreen } from "./canvas-view.js";
@@ -28,6 +27,11 @@ function startGameEventListener(event) {
   switch (event.keyCode) {
     case 32: // Space
       startGame();
+      break;
+    case 67: // c
+      document.getElementById("canvas").style.display = "none";
+      document.getElementById("customization").style.display = "block";
+      break;
   }
 }
 
@@ -37,6 +41,8 @@ let gameIntervals = [];
 
 function startGame() {
   window.removeEventListener("keydown", startGameEventListener);
+  document.getElementById("canvas").style.display = "block";
+  document.getElementById("customization").style.display = "none";
   if (!oneTimeInit) {
     playBackgroundMusic();
     initializeShotModifiers();
@@ -72,36 +78,7 @@ function startGameIntervals() {
 
 function resetGameState() {
   clearScore();
-  document.getElementById("shot-type-single").checked = true;
-  document.getElementById("shot-modifier-pierce-once").checked = false;
-  document.getElementById("shot-modifier-fork-once").checked = false;
-  replacePlayer({
-    x: 50,
-    y: CANVAS_HEIGHT / 2,
-    size: 20,
-    speed: 2,
-    topSpeed: 10,
-    turnsAlive: 0,
-    directionsPressed: {
-      UP: false,
-      DOWN: false,
-      LEFT: false,
-      RIGHT: false,
-    },
-    vx: 0,
-    vy: 0,
-    projectileSize: 5,
-    projectileSpeed: 25,
-    shotType: "single",
-    shotModifiers: {
-      pierce: 0,
-      fork: 0,
-    },
-    images: {
-      one: ship1Image,
-      two: ship2Image,
-    },
-  });
+  resetPlayer();
   clearEnemies();
   clearProjectiles();
 }

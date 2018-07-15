@@ -1,7 +1,38 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants.js";
 import { playShootSound } from "./sounds.js";
 
-let player;
+const PLAYER_DEFAULTS = {
+  x: 50,
+  y: CANVAS_HEIGHT / 2,
+  turnsAlive: 0,
+  directionsPressed: {
+    UP: false,
+    DOWN: false,
+    LEFT: false,
+    RIGHT: false,
+  },
+  vx: 0,
+  vy: 0,
+  images: {
+    one: ship1Image,
+    two: ship2Image,
+  },
+};
+
+const INITIAL_PLAYER_STATS = {
+  size: 20,
+  speed: 2,
+  topSpeed: 10,
+  projectileSize: 5,
+  projectileSpeed: 25,
+  shotType: "single",
+  shotModifiers: {
+    pierce: 0,
+    fork: 0,
+  },
+};
+
+let player = Object.assign({}, PLAYER_DEFAULTS, INITIAL_PLAYER_STATS);
 let enemies = [];
 let projectiles = [];
 let enemyExplosions = [];
@@ -78,8 +109,8 @@ export function getPlayer() {
   return player;
 }
 
-export function replacePlayer(newPlayer) {
-  player = newPlayer;
+export function resetPlayer() {
+  player = Object.assign(player, PLAYER_DEFAULTS);
 }
 
 /*******************************

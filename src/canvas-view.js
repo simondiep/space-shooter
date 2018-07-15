@@ -28,6 +28,7 @@ export function drawGameOverScreen() {
   resetScreenShake();
   drawText(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 3, "#ffa0a0", "Game Over");
   drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 2) / 3, "#fffbbc", "Press Space to restart", 36);
+  drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 4) / 5, "#fffbbc", "Press 'c' to customize your ship", 36);
 }
 
 function drawText(centerX, centerY, color, text, fontSize = 72) {

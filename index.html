@@ -1,7 +1,28 @@
 <head>
   <style type="text/css">
+    body {
+      background: black;
+      font-family: Arial;
+      font-weight: 600;
+    }
+
     label {
+      color: white;
       display: inlineBlock;
+    }
+
+    #customization {
+      display: none;
+      background-image: url('assets/images/space_bg.png');
+      width: 1280px;
+      height: 600px;
+      color: white;
+    }
+
+    fieldset {
+      text-align: center;
+      width: 500px;
+      margin: auto;
     }
   </style>
   <script src="src/main.js" type="module"></script>
@@ -28,32 +49,36 @@
     <button id="muteButton" style="display: inline-block; margin-left: 20px;">Mute</button>
   </div>
   <canvas id="canvas"></canvas>
-  <fieldset>
-    <legend>Select your Shot Type</legend>
-    <div>
-      <input type="radio" id="shot-type-single" name="shot-type" checked/>
-      <label for="shot-type-single">Single</label>
-      <input type="radio" id="shot-type-double" name="shot-type" />
-      <label for="shot-type-double">Double</label>
-      <input type="radio" id="shot-type-spread" name="shot-type" />
-      <label for="shot-type-spread">Spread</label>
-      <input type="radio" id="shot-type-ball" name="shot-type" />
-      <label for="shot-type-ball">Ball</label>
-      <input type="radio" id="shot-type-laser" name="shot-type" />
-      <label for="shot-type-laser">Laser</label>
-      <input type="radio" id="shot-type-side" name="shot-type" />
-      <label for="shot-type-side">Side</label>
-    </div>
-  </fieldset>
-  <fieldset>
-    <legend>Select your Shot Modifier</legend>
-    <div>
-      <input type="checkbox" id="shot-modifier-pierce-once" name="shot-modifier" />
-      <label for="shot-modifier-pierce-once">Pierce once</label>
-      <input type="checkbox" id="shot-modifier-fork-once" name="shot-modifier" />
-      <label for="shot-modifier-fork-once">Fork once</label>
-    </div>
-  </fieldset>
+  <div id="customization">
+    <div style="text-align: center; font-size: 36px; padding-top: 25px; margin-bottom: 25px;">Customize your Ship</div>
+    <fieldset>
+      <legend>Shot Type</legend>
+      <div>
+        <input type="radio" id="shot-type-single" name="shot-type" checked/>
+        <label for="shot-type-single">Single</label>
+        <input type="radio" id="shot-type-double" name="shot-type" />
+        <label for="shot-type-double">Double</label>
+        <input type="radio" id="shot-type-spread" name="shot-type" />
+        <label for="shot-type-spread">Spread</label>
+        <input type="radio" id="shot-type-ball" name="shot-type" />
+        <label for="shot-type-ball">Ball</label>
+        <input type="radio" id="shot-type-laser" name="shot-type" />
+        <label for="shot-type-laser">Laser</label>
+        <input type="radio" id="shot-type-side" name="shot-type" />
+        <label for="shot-type-side">Side</label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Shot Modifiers</legend>
+      <div>
+        <input type="checkbox" id="shot-modifier-pierce-once" name="shot-modifier" />
+        <label for="shot-modifier-pierce-once">Pierce once</label>
+        <input type="checkbox" id="shot-modifier-fork-once" name="shot-modifier" />
+        <label for="shot-modifier-fork-once">Fork once</label>
+      </div>
+    </fieldset>
+    <div style="text-align: center; font-size: 36px; margin-top: 250px; color: #fffbbc;">Press Space to Start Game</div>
+  </div>
   <div id="assets" style="display: none">
     <img id="asteroidImage" src="assets/images/asteroid.png" />
     <img id="heartyImage" src="assets/images/hearty.png" />
