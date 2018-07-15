@@ -8,10 +8,9 @@ npm i && npm start
 
 # Ideas
 
-Display damage numbers
-
-Game Polish
-
+- Credits System
+  - Each upgrade costs credits
+- Revamp shot modifiers
 - Longer projectiles that look cool but don't have additional power
 - Faster pace like videoball
 - Concept of waves of enemies
@@ -20,6 +19,7 @@ Game Polish
 
 # Longer term
 
+Display damage numbers
 Hotkeys to switch between weapons
 Rotating asteroids
 Non-circle projectiles

@@ -25,6 +25,10 @@ export function playShootSound() {
   playSound("sound-shoot");
 }
 
+export function playUpgradeSound() {
+  playSound("sound-upgrade");
+}
+
 function playSound(soundId) {
   if (!muted) {
     const music = document.getElementById(soundId).cloneNode();

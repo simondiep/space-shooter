@@ -1,6 +1,9 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants.js";
 import { playShootSound } from "./sounds.js";
+import { INITIAL_PLAYER_STATS } from "./ship-customization.js";
 
+const ship1Image = document.getElementById("ship1Image");
+const ship2Image = document.getElementById("ship2Image");
 const PLAYER_DEFAULTS = {
   x: 50,
   y: CANVAS_HEIGHT / 2,
@@ -16,19 +19,6 @@ const PLAYER_DEFAULTS = {
   images: {
     one: ship1Image,
     two: ship2Image,
-  },
-};
-
-const INITIAL_PLAYER_STATS = {
-  size: 20,
-  speed: 2,
-  topSpeed: 10,
-  projectileSize: 5,
-  projectileSpeed: 25,
-  shotType: "single",
-  shotModifiers: {
-    pierce: 0,
-    fork: 0,
   },
 };
 

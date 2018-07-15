@@ -7,17 +7,16 @@ import {
   spawnSpaceInvaderWave,
 } from "./enemy-spawner.js";
 import { keyDownHandler, keyUpHandler } from "./key-inputs.js";
-import { clearEnemies, clearProjectiles, clearScore, resetPlayer, getPlayer } from "./persistent-entities.js";
+import { clearEnemies, clearProjectiles, clearScore, resetPlayer } from "./persistent-entities.js";
 import { update } from "./game-loop.js";
 import { initializeShotModifiers } from "./shot-modifiers.js";
 import { initializeCanvas, drawIntroScreen } from "./canvas-view.js";
+import { initializeStatIncreaseButtons, populateShipCustomizationStats } from "./ship-customization.js";
 import { muteSound } from "./sounds.js";
 import { playBackgroundMusic } from "./sounds.js";
 
-const ship1Image = document.getElementById("ship1Image");
-const ship2Image = document.getElementById("ship2Image");
-
-let oneTimeInit = false;
+let oneTimePlayerInit = false;
+let oneTimeCustomizationInit = false;
 
 initializeCanvas();
 drawIntroScreen();
@@ -30,7 +29,12 @@ function startGameEventListener(event) {
       break;
     case 67: // c
       document.getElementById("canvas").style.display = "none";
+      populateShipCustomizationStats();
       document.getElementById("customization").style.display = "block";
+      if (!oneTimeCustomizationInit) {
+        initializeStatIncreaseButtons();
+        oneTimeCustomizationInit = true;
+      }
       break;
   }
 }
@@ -43,14 +47,14 @@ function startGame() {
   window.removeEventListener("keydown", startGameEventListener);
   document.getElementById("canvas").style.display = "block";
   document.getElementById("customization").style.display = "none";
-  if (!oneTimeInit) {
+  if (!oneTimePlayerInit) {
     playBackgroundMusic();
     initializeShotModifiers();
 
     window.addEventListener("keydown", keyDownHandler);
     window.addEventListener("keyup", keyUpHandler);
     document.getElementById("muteButton").addEventListener("click", muteSound);
-    oneTimeInit = true;
+    oneTimePlayerInit = true;
   }
   resetGameState();
   startGameIntervals();

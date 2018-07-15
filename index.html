@@ -24,6 +24,10 @@
       width: 500px;
       margin: auto;
     }
+
+    .increaseStatButton {
+      margin: 20px;
+    }
   </style>
   <script src="src/main.js" type="module"></script>
 </head>
@@ -77,7 +81,24 @@
         <label for="shot-modifier-fork-once">Fork once</label>
       </div>
     </fieldset>
-    <div style="text-align: center; font-size: 36px; margin-top: 250px; color: #fffbbc;">Press Space to Start Game</div>
+    <div id="shipCustomizeStats" style="text-align: center; margin: 20px;">
+      <label>Projectile Size: </label>
+      <label id="projectileSize"></label>
+      <button id="increaseProjectileSizeButton" class="increaseStatButton">Increase</button>
+      <br/>
+      <label>Projectile Speed: </label>
+      <label id="projectileSpeed"></label>
+      <button id="increaseProjectileSpeedButton" class="increaseStatButton">Increase</button>
+      <br/>
+      <label>Ship Speed: </label>
+      <label id="shipSpeed"></label>
+      <button id="increaseShipSpeedButton" class="increaseStatButton">Increase</button>
+      <br/>
+      <label>Ship Top Speed: </label>
+      <label id="shipTopSpeed"></label>
+      <button id="increaseShipTopSpeedButton" class="increaseStatButton">Increase</button>
+    </div>
+    <div style="text-align: center; font-size: 36px; margin-top: 50px; color: #fffbbc;">Press Space to Start Game</div>
   </div>
   <div id="assets" style="display: none">
     <img id="asteroidImage" src="assets/images/asteroid.png" />
@@ -94,5 +115,6 @@
     <audio id="sound-explosion" src="assets/sounds/explosion.wav" type="audio/wav" autostart="0"></audio>
     <audio id="sound-hit" src="assets/sounds/hit.wav" type="audio/wav" autostart="0"></audio>
     <audio id="sound-shoot" src="assets/sounds/shoot.wav" type="audio/wav" autostart="0"></audio>
+    <audio id="sound-upgrade" src="assets/sounds/upgrade.wav" type="audio/wav" autostart="0"></audio>
   </div>
 </body>
