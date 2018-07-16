@@ -2,10 +2,10 @@ import { getCredits, getPlayer, spendCredits } from "./persistent-entities.js";
 import { playUpgradeSound } from "./sounds.js";
 
 export const INITIAL_PLAYER_STATS = {
-  size: 20,
+  size: 50,
   speed: 1,
   topSpeed: 5,
-  projectileSize: 3,
+  projectileSize: 5,
   projectileSpeed: 5,
   shotType: "single",
   shotModifiers: {
@@ -14,6 +14,9 @@ export const INITIAL_PLAYER_STATS = {
   },
 };
 
+const DECREASE_STAT_PRICES = {
+  size: 2,
+};
 const STAT_PRICES = {
   projectileSize: 5,
   projectileSpeed: 1,
@@ -37,6 +40,7 @@ export function initializeStatIncreaseButtons() {
   document
     .getElementById("increaseProjectileSpeedButton")
     .addEventListener("click", () => increaseStat("projectileSpeed"));
+  document.getElementById("decreaseSizeButton").addEventListener("click", () => decreaseStat("size"));
   document.getElementById("increaseSpeedButton").addEventListener("click", () => increaseStat("speed"));
   document.getElementById("increaseTopSpeedButton").addEventListener("click", () => increaseStat("topSpeed"));
 }
@@ -50,6 +54,8 @@ export function populateShipCustomizationStats() {
   document.getElementById("projectileSizeCost").innerHTML = STAT_PRICES.projectileSize;
   document.getElementById("projectileSpeed").innerHTML = player.projectileSpeed;
   document.getElementById("projectileSpeedCost").innerHTML = STAT_PRICES.projectileSpeed;
+  document.getElementById("shipSize").innerHTML = player.size;
+  document.getElementById("shipSizeCost").innerHTML = DECREASE_STAT_PRICES.size;
   document.getElementById("shipSpeed").innerHTML = player.speed;
   document.getElementById("shipSpeedCost").innerHTML = STAT_PRICES.speed;
   document.getElementById("shipTopSpeed").innerHTML = player.topSpeed;
@@ -58,6 +64,11 @@ export function populateShipCustomizationStats() {
   for (const [priceKey, priceValue] of Object.entries(STAT_PRICES)) {
     const upperCasedKey = capitalizeFirstLetter(priceKey);
     document.getElementById(`increase${upperCasedKey}Button`).disabled = getCredits() < priceValue;
+  }
+
+  for (const [priceKey, priceValue] of Object.entries(DECREASE_STAT_PRICES)) {
+    const upperCasedKey = capitalizeFirstLetter(priceKey);
+    document.getElementById(`decrease${upperCasedKey}Button`).disabled = getCredits() < priceValue;
   }
 
   enableDisabledShotTypes(getCredits() >= MISC_PRICES.shotType);
@@ -74,6 +85,16 @@ function increaseStat(statName) {
   player[statName]++;
   populateShipCustomizationStats();
   playUpgradeSound();
+}
+
+function decreaseStat(statName) {
+  const player = getPlayer();
+  if (player[statName] > 5) {
+    spendCredits(DECREASE_STAT_PRICES[statName]);
+    player[statName]--;
+    populateShipCustomizationStats();
+    playUpgradeSound();
+  }
 }
 
 /****************************
