@@ -8,18 +8,21 @@ npm i && npm start
 
 # Ideas
 
-- Credits System
-  - Each upgrade costs set amount of credits
 - Revamp shot modifiers
+- Shot Range stat
+- Lower initial stats
 - Longer projectiles that look cool but don't have additional power
 - Faster pace like videoball
 - Concept of waves of enemies
 - More satisfying explosions
 - screen shake on death (with audio then transition to death screen)
+- stylize radio/checkboxes
 
 # Longer term
 
 Display damage numbers
+Attack speed stat
+AoE
 Hotkeys to switch between weapons
 Rotating asteroids
 Non-circle projectiles

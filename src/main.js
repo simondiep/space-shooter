@@ -9,9 +9,12 @@ import {
 import { keyDownHandler, keyUpHandler } from "./key-inputs.js";
 import { clearEnemies, clearProjectiles, clearScore, resetPlayer } from "./persistent-entities.js";
 import { update } from "./game-loop.js";
-import { initializeShotModifiers } from "./shot-modifiers.js";
 import { initializeCanvas, drawIntroScreen } from "./canvas-view.js";
-import { initializeStatIncreaseButtons, populateShipCustomizationStats } from "./ship-customization.js";
+import {
+  initializeShotTypesAndModifiers,
+  initializeStatIncreaseButtons,
+  populateShipCustomizationStats,
+} from "./ship-customization.js";
 import { muteSound } from "./sounds.js";
 import { playBackgroundMusic } from "./sounds.js";
 
@@ -49,7 +52,7 @@ function startGame() {
   document.getElementById("customization").style.display = "none";
   if (!oneTimePlayerInit) {
     playBackgroundMusic();
-    initializeShotModifiers();
+    initializeShotTypesAndModifiers();
 
     window.addEventListener("keydown", keyDownHandler);
     window.addEventListener("keyup", keyUpHandler);

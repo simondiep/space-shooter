@@ -10,7 +10,6 @@
 
     label {
       color: white;
-      display: inlineBlock;
     }
 
     #customization {
@@ -24,11 +23,21 @@
     fieldset {
       text-align: center;
       width: 500px;
-      margin: auto;
+      margin: 10px auto;
     }
 
     .increaseStatButton {
-      margin: 20px;
+      margin: 10px;
+    }
+
+    .increaseStatCost {
+      font-size: 12px;
+      font-weight: 400px;
+      display: inline-block;
+    }
+
+    .increaseStatValueLabel {
+      color: #fffbbc;
     }
   </style>
   <script src="src/main.js" type="module"></script>
@@ -56,7 +65,7 @@
   </div>
   <canvas id="canvas"></canvas>
   <div id="customization">
-    <div style="text-align: center; font-size: 36px; padding-top: 25px; margin-bottom: 25px;">Customize your Ship</div>
+    <div style="text-align: center; font-size: 36px; padding-top: 25px; padding-bottom: 25px;">Customize your Ship</div>
     <div style="text-align: center; margin: 20px;">
       <label>You have </label>
       <label id="numberOfCredits" style="color: #fffbbc;"></label>
@@ -64,6 +73,11 @@
     </div>
     <fieldset>
       <legend>Shot Type</legend>
+      <div class="increaseStatCost">
+        <label>Cost: </label>
+        <label id="shotTypeCost" class="increaseStatValueLabel"></label>
+        <label> Credits</label>
+      </div>
       <div>
         <input type="radio" id="shot-type-single" name="shot-type" checked/>
         <label for="shot-type-single">Single</label>
@@ -81,6 +95,11 @@
     </fieldset>
     <fieldset>
       <legend>Shot Modifiers</legend>
+      <div class="increaseStatCost">
+        <label>Cost: </label>
+        <label id="shotModifierCost" class="increaseStatValueLabel"></label>
+        <label> Credits</label>
+      </div>
       <div>
         <input type="checkbox" id="shot-modifier-pierce-once" name="shot-modifier" />
         <label for="shot-modifier-pierce-once">Pierce once</label>
@@ -88,22 +107,42 @@
         <label for="shot-modifier-fork-once">Fork once</label>
       </div>
     </fieldset>
-    <div id="shipCustomizeStats" style="text-align: center; margin: 20px;">
+    <div id="shipCustomizeStats" style="display: table; margin: 10px auto; text-align: right;">
       <label>Projectile Size: </label>
-      <label id="projectileSize"></label>
+      <label id="projectileSize" class="increaseStatValueLabel"></label>
       <button id="increaseProjectileSizeButton" class="increaseStatButton">Increase</button>
+      <div class="increaseStatCost">
+        <label>Cost: </label>
+        <label id="projectileSizeCost" class="increaseStatValueLabel"></label>
+        <label> Credits</label>
+      </div>
       <br/>
       <label>Projectile Speed: </label>
-      <label id="projectileSpeed"></label>
+      <label id="projectileSpeed" class="increaseStatValueLabel"></label>
       <button id="increaseProjectileSpeedButton" class="increaseStatButton">Increase</button>
+      <div class="increaseStatCost">
+        <label>Cost: </label>
+        <label id="projectileSpeedCost" class="increaseStatValueLabel"></label>
+        <label> Credits</label>
+      </div>
       <br/>
       <label>Ship Speed: </label>
-      <label id="shipSpeed"></label>
-      <button id="increaseShipSpeedButton" class="increaseStatButton">Increase</button>
+      <label id="shipSpeed" class="increaseStatValueLabel"></label>
+      <button id="increaseSpeedButton" class="increaseStatButton">Increase</button>
+      <div class="increaseStatCost">
+        <label>Cost: </label>
+        <label id="shipSpeedCost" class="increaseStatValueLabel"></label>
+        <label> Credits</label>
+      </div>
       <br/>
       <label>Ship Top Speed: </label>
-      <label id="shipTopSpeed"></label>
-      <button id="increaseShipTopSpeedButton" class="increaseStatButton">Increase</button>
+      <label id="shipTopSpeed" class="increaseStatValueLabel"></label>
+      <button id="increaseTopSpeedButton" class="increaseStatButton">Increase</button>
+      <div class="increaseStatCost">
+        <label>Cost: </label>
+        <label id="shipTopSpeedCost" class="increaseStatValueLabel"></label>
+        <label> Credits</label>
+      </div>
     </div>
     <div style="text-align: center; font-size: 36px; margin-top: 20px; color: #fffbbc;">Press Space to Start Game</div>
   </div>
