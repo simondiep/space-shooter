@@ -133,7 +133,7 @@ export function clearProjectiles() {
 
 export function removeProjectilesThatAreOffScreen() {
   projectiles = projectiles.filter(function(projectile) {
-    if (projectile.x < CANVAS_WIDTH + 20) {
+    if (projectile.x < CANVAS_WIDTH + 20 && projectile.y > -20 && projectile.y < CANVAS_HEIGHT + 20) {
       return true;
     }
   });

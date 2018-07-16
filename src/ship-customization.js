@@ -87,11 +87,11 @@ function capitalizeFirstLetter(string) {
 }
 
 function increaseStat(statName) {
+  const player = getPlayer();
   if (statName === "numberOfProjectiles" && player.numberOfProjectiles >= 5) {
     return;
   }
   spendCredits(STAT_PRICES[statName]);
-  const player = getPlayer();
   player[statName]++;
   populateShipCustomizationStats();
   playUpgradeSound();
