@@ -97,12 +97,16 @@ export function drawEnemyExplosion(x, y, size) {
   drawFilledCircle(x, y, size / 2, "orange");
 }
 
-export function drawFilledCircle(x, y, radius, color) {
+function drawFilledCircle(x, y, radius, color) {
   context.fillStyle = color;
   context.beginPath();
   context.arc(x, y, radius, 0, 2 * Math.PI);
   context.closePath();
   context.fill();
+}
+
+export function drawImage(image, x, y, size) {
+  context.drawImage(image, x, y, size, size);
 }
 
 export function drawPlayer(player) {

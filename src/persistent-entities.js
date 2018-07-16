@@ -4,6 +4,7 @@ import { INITIAL_PLAYER_STATS } from "./ship-customization.js";
 
 const ship1Image = document.getElementById("ship1Image");
 const ship2Image = document.getElementById("ship2Image");
+const projectileImage = document.getElementById("projectileImage");
 const PLAYER_DEFAULTS = {
   x: 50,
   y: CANVAS_HEIGHT / 2,
@@ -19,6 +20,7 @@ const PLAYER_DEFAULTS = {
   images: {
     one: ship1Image,
     two: ship2Image,
+    projectile: projectileImage,
   },
 };
 

@@ -3,10 +3,10 @@ import { playUpgradeSound } from "./sounds.js";
 
 export const INITIAL_PLAYER_STATS = {
   size: 20,
-  speed: 2,
-  topSpeed: 10,
-  projectileSize: 5,
-  projectileSpeed: 25,
+  speed: 1,
+  topSpeed: 5,
+  projectileSize: 3,
+  projectileSpeed: 5,
   shotType: "single",
   shotModifiers: {
     pierce: 0,

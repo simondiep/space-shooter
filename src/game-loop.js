@@ -15,7 +15,7 @@ import {
   drawBackground,
   drawEnemyExplosion,
   drawGameOverScreen,
-  drawFilledCircle,
+  drawImage,
   drawPlayer,
   drawEnemy,
   shakeScreen,
@@ -37,7 +37,12 @@ export function update() {
   for (const projectile of projectiles) {
     projectile.x += projectile.vx;
     projectile.y += projectile.vy;
-    drawFilledCircle(projectile.x, projectile.y, projectile.size, "blue");
+    drawImage(
+      player.images.projectile,
+      projectile.x - projectile.size / 2,
+      projectile.y - projectile.size / 2,
+      projectile.size,
+    );
   }
 
   // Player Movement
