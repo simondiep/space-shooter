@@ -5,9 +5,10 @@ export const INITIAL_PLAYER_STATS = {
   size: 50,
   speed: 1,
   topSpeed: 5,
+  numberOfProjectiles: 1,
   projectileSize: 5,
   projectileSpeed: 5,
-  shotType: "single",
+  shotType: "standard",
   shotModifiers: {
     pierce: 0,
     fork: 0,
@@ -18,6 +19,7 @@ const DECREASE_STAT_PRICES = {
   size: 2,
 };
 const STAT_PRICES = {
+  numberOfProjectiles: 30,
   projectileSize: 5,
   projectileSpeed: 1,
   speed: 1,
@@ -35,6 +37,9 @@ const MISC_PRICES = {
 
 export function initializeStatIncreaseButtons() {
   document
+    .getElementById("increaseNumberOfProjectilesButton")
+    .addEventListener("click", () => increaseStat("numberOfProjectiles"));
+  document
     .getElementById("increaseProjectileSizeButton")
     .addEventListener("click", () => increaseStat("projectileSize"));
   document
@@ -50,6 +55,8 @@ export function populateShipCustomizationStats() {
   document.getElementById("numberOfCredits").innerHTML = getCredits();
   document.getElementById("shotTypeCost").innerHTML = MISC_PRICES.shotType;
   document.getElementById("shotModifierCost").innerHTML = MISC_PRICES.shotModifier;
+  document.getElementById("numberOfProjectiles").innerHTML = player.numberOfProjectiles;
+  document.getElementById("numberOfProjectilesCost").innerHTML = STAT_PRICES.numberOfProjectiles;
   document.getElementById("projectileSize").innerHTML = player.projectileSize;
   document.getElementById("projectileSizeCost").innerHTML = STAT_PRICES.projectileSize;
   document.getElementById("projectileSpeed").innerHTML = player.projectileSpeed;
@@ -80,6 +87,9 @@ function capitalizeFirstLetter(string) {
 }
 
 function increaseStat(statName) {
+  if (statName === "numberOfProjectiles" && player.numberOfProjectiles >= 5) {
+    return;
+  }
   spendCredits(STAT_PRICES[statName]);
   const player = getPlayer();
   player[statName]++;
@@ -102,11 +112,11 @@ function decreaseStat(statName) {
  ****************************/
 
 export function initializeShotTypesAndModifiers() {
-  document.getElementById("shot-type-single").addEventListener("click", () => onShotSelected("single"));
-  document.getElementById("shot-type-double").addEventListener("click", () => onShotSelected("double"));
+  document.getElementById("shot-type-standard").addEventListener("click", () => onShotSelected("standard"));
+  document.getElementById("shot-type-overlap").addEventListener("click", () => onShotSelected("overlap"));
   document.getElementById("shot-type-spread").addEventListener("click", () => onShotSelected("spread"));
   document.getElementById("shot-type-ball").addEventListener("click", () => onShotSelected("ball"));
-  document.getElementById("shot-type-laser").addEventListener("click", () => onShotSelected("laser"));
+  document.getElementById("shot-type-burst").addEventListener("click", () => onShotSelected("burst"));
   document.getElementById("shot-type-side").addEventListener("click", () => onShotSelected("side"));
 
   document
@@ -116,11 +126,11 @@ export function initializeShotTypesAndModifiers() {
 }
 
 export function enableDisabledShotTypes(enable) {
-  enableDisabledShotType(document.getElementById("shot-type-single"), enable);
-  enableDisabledShotType(document.getElementById("shot-type-double"), enable);
+  enableDisabledShotType(document.getElementById("shot-type-standard"), enable);
+  enableDisabledShotType(document.getElementById("shot-type-overlap"), enable);
   enableDisabledShotType(document.getElementById("shot-type-spread"), enable);
   enableDisabledShotType(document.getElementById("shot-type-ball"), enable);
-  enableDisabledShotType(document.getElementById("shot-type-laser"), enable);
+  enableDisabledShotType(document.getElementById("shot-type-burst"), enable);
   enableDisabledShotType(document.getElementById("shot-type-side"), enable);
 }
 

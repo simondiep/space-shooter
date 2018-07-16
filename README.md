@@ -8,7 +8,6 @@ npm i && npm start
 
 # Ideas
 
-- Revamp shot modifiers
 - Shot Range stat
 - Longer projectiles that look cool but don't have additional power
 - Faster pace like videoball
@@ -16,6 +15,12 @@ npm i && npm start
 - More satisfying explosions
 - screen shake on death (with audio then transition to death screen)
 - stylize radio/checkboxes
+- on hold
+  - charge up shot
+  - auto-fire
+- on projectile hit effects
+  - explode
+- support more than 5 projectiles
 
 # Longer term
 

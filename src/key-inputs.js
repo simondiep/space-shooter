@@ -6,68 +6,53 @@ export function keyDownHandler(event) {
   switch (event.keyCode) {
     case 32: // Space
       switch (player.shotType) {
-        case "double":
-          addProjectile(
-            createProjectile({
-              y: player.y - player.size / 2,
-            }),
-          );
-          addProjectile(
-            createProjectile({
-              y: player.y + player.size / 2,
-            }),
-          );
+        case "overlap":
+          for (let i = 0; i < player.numberOfProjectiles; i++) {
+            addProjectile(createProjectile());
+          }
           break;
         case "ball":
-          addProjectile(
-            createProjectile({
-              vx: player.projectileSpeed / 2,
-              size: player.projectileSize * 4,
-            }),
-          );
-          break;
-        case "laser":
-          for (let i = 1; i <= 30; i++) {
+          for (let i = 0; i < player.numberOfProjectiles; i++) {
             addProjectile(
               createProjectile({
-                x: player.x + i * 10,
-                vx: player.projectileSpeed * 10,
-                size: player.projectileSize * 2,
+                vx: player.projectileSpeed / 2,
+                size: player.projectileSize * 4,
+              }),
+            );
+          }
+          break;
+        case "burst":
+          for (let i = 0; i < player.numberOfProjectiles; i++) {
+            addProjectile(
+              createProjectile({
+                x: player.x + i * player.projectileSize * 2,
               }),
             );
           }
           break;
         case "spread":
-          addProjectile(
-            createProjectile({
-              y: player.y - player.size / 2,
-              vy: -player.projectileSpeed / 2,
-            }),
-          );
-          addProjectile(createProjectile());
-          addProjectile(
-            createProjectile({
-              y: player.y + player.size / 2,
-              vy: player.projectileSpeed / 2,
-            }),
-          );
+          shootSpread(player);
           break;
         case "side":
-          addProjectile(
-            createProjectile({
-              vx: 0,
-              vy: -player.projectileSpeed,
-            }),
-          );
-          addProjectile(
-            createProjectile({
-              vx: 0,
-              vy: player.projectileSpeed,
-            }),
-          );
+          for (let i = 0; i < player.numberOfProjectiles; i++) {
+            addProjectile(
+              createProjectile({
+                x: player.x + (i * player.size) / 2,
+                vx: 0,
+                vy: -player.projectileSpeed,
+              }),
+            );
+            addProjectile(
+              createProjectile({
+                x: player.x + (i * player.size) / 2,
+                vx: 0,
+                vy: player.projectileSpeed,
+              }),
+            );
+          }
           break;
         default:
-          addProjectile(createProjectile());
+          shootStandard(player);
       }
       break;
     case 38: // up arrow
@@ -107,6 +92,174 @@ export function keyUpHandler(event) {
     case 39: // right arrow
     case 68: // D
       player.directionsPressed.RIGHT = false;
+      break;
+  }
+}
+
+function shootStandard(player) {
+  switch (player.numberOfProjectiles) {
+    case 1:
+      addProjectile(createProjectile());
+      break;
+    case 2:
+      addProjectile(
+        createProjectile({
+          y: player.y - player.size / 2,
+        }),
+      );
+      addProjectile(
+        createProjectile({
+          y: player.y + player.size / 2,
+        }),
+      );
+      break;
+    case 3:
+      addProjectile(
+        createProjectile({
+          y: player.y - player.size / 2,
+        }),
+      );
+      addProjectile(createProjectile());
+      addProjectile(
+        createProjectile({
+          y: player.y + player.size / 2,
+        }),
+      );
+      break;
+    case 4:
+      addProjectile(
+        createProjectile({
+          y: player.y - player.size / 2,
+        }),
+      );
+      addProjectile(
+        createProjectile({
+          y: player.y - player.size / 6,
+        }),
+      );
+      addProjectile(
+        createProjectile({
+          y: player.y + player.size / 6,
+        }),
+      );
+      addProjectile(
+        createProjectile({
+          y: player.y + player.size / 2,
+        }),
+      );
+      break;
+    case 5:
+      addProjectile(
+        createProjectile({
+          y: player.y - (player.size * 2) / 3,
+        }),
+      );
+      addProjectile(
+        createProjectile({
+          y: player.y - player.size / 3,
+        }),
+      );
+      addProjectile(createProjectile());
+      addProjectile(
+        createProjectile({
+          y: player.y + player.size / 3,
+        }),
+      );
+      addProjectile(
+        createProjectile({
+          y: player.y + (player.size * 2) / 3,
+        }),
+      );
+      break;
+  }
+}
+
+function shootSpread(player) {
+  switch (player.numberOfProjectiles) {
+    case 1:
+      addProjectile(createProjectile());
+      break;
+    case 2:
+      addProjectile(
+        createProjectile({
+          y: player.y - player.size / 2,
+          vy: -player.projectileSpeed / 12,
+        }),
+      );
+      addProjectile(
+        createProjectile({
+          y: player.y + player.size / 2,
+          vy: player.projectileSpeed / 12,
+        }),
+      );
+      break;
+    case 3:
+      addProjectile(
+        createProjectile({
+          y: player.y - player.size / 2,
+          vy: -player.projectileSpeed / 8,
+        }),
+      );
+      addProjectile(createProjectile());
+      addProjectile(
+        createProjectile({
+          y: player.y + player.size / 2,
+          vy: player.projectileSpeed / 8,
+        }),
+      );
+      break;
+    case 4:
+      addProjectile(
+        createProjectile({
+          y: player.y - player.size / 2,
+          vy: -player.projectileSpeed / 8,
+        }),
+      );
+      addProjectile(
+        createProjectile({
+          y: player.y - player.size / 4,
+          vy: -player.projectileSpeed / 12,
+        }),
+      );
+      addProjectile(
+        createProjectile({
+          y: player.y + player.size / 4,
+          vy: player.projectileSpeed / 12,
+        }),
+      );
+      addProjectile(
+        createProjectile({
+          y: player.y + player.size / 2,
+          vy: player.projectileSpeed / 8,
+        }),
+      );
+      break;
+    case 5:
+      addProjectile(
+        createProjectile({
+          y: player.y - player.size / 2,
+          vy: -player.projectileSpeed / 4,
+        }),
+      );
+      addProjectile(
+        createProjectile({
+          y: player.y - player.size / 4,
+          vy: -player.projectileSpeed / 8,
+        }),
+      );
+      addProjectile(createProjectile());
+      addProjectile(
+        createProjectile({
+          y: player.y + player.size / 4,
+          vy: player.projectileSpeed / 8,
+        }),
+      );
+      addProjectile(
+        createProjectile({
+          y: player.y + player.size / 2,
+          vy: player.projectileSpeed / 4,
+        }),
+      );
       break;
   }
 }

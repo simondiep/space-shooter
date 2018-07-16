@@ -44,7 +44,7 @@
 </head>
 
 <body>
-  <div>
+  <div style="text-align: center;">
     <label>
       Score:
       <label id="scoreLabel">0</label>
@@ -79,16 +79,16 @@
         <label> Credits</label>
       </div>
       <div>
-        <input type="radio" id="shot-type-single" name="shot-type" checked/>
-        <label for="shot-type-single">Single</label>
-        <input type="radio" id="shot-type-double" name="shot-type" />
-        <label for="shot-type-double">Double</label>
+        <input type="radio" id="shot-type-standard" name="shot-type" checked/>
+        <label for="shot-type-standard">Standard</label>
+        <input type="radio" id="shot-type-overlap" name="shot-type" />
+        <label for="shot-type-overlap">Overlap</label>
         <input type="radio" id="shot-type-spread" name="shot-type" />
         <label for="shot-type-spread">Spread</label>
         <input type="radio" id="shot-type-ball" name="shot-type" />
         <label for="shot-type-ball">Ball</label>
-        <input type="radio" id="shot-type-laser" name="shot-type" />
-        <label for="shot-type-laser">Laser</label>
+        <input type="radio" id="shot-type-burst" name="shot-type" />
+        <label for="shot-type-burst">Burst</label>
         <input type="radio" id="shot-type-side" name="shot-type" />
         <label for="shot-type-side">Side</label>
       </div>
@@ -108,6 +108,15 @@
       </div>
     </fieldset>
     <div id="shipCustomizeStats" style="display: table; margin: 10px auto; text-align: right;">
+      <label>Number of Projectiles: </label>
+      <label id="numberOfProjectiles" class="increaseStatValueLabel"></label>
+      <button id="increaseNumberOfProjectilesButton" class="increaseStatButton">Increase</button>
+      <div class="increaseStatCost">
+        <label>Cost: </label>
+        <label id="numberOfProjectilesCost" class="increaseStatValueLabel"></label>
+        <label> Credits</label>
+      </div>
+      <br/>
       <label>Projectile Size: </label>
       <label id="projectileSize" class="increaseStatValueLabel"></label>
       <button id="increaseProjectileSizeButton" class="increaseStatButton">Increase</button>
@@ -153,7 +162,7 @@
         <label> Credits</label>
       </div>
     </div>
-    <div style="text-align: center; font-size: 36px; margin-top: 20px; color: #fffbbc;">Press Space to Start Game</div>
+    <div style="text-align: center; font-size: 36px; margin-top: 10px; color: #fffbbc;">Press Space to Start Game</div>
   </div>
   <div id="assets" style="display: none">
     <img id="asteroidImage" src="assets/images/asteroid.png" />
