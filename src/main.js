@@ -7,7 +7,7 @@ import {
   spawnSpaceInvaderWave,
 } from "./enemy-spawner.js";
 import { keyDownHandler, keyUpHandler } from "./key-inputs.js";
-import { clearEnemies, clearProjectiles, clearScore, resetPlayer } from "./persistent-entities.js";
+import { clearEnemies, clearProjectiles, clearScore, resetPlayer, setGameOver } from "./persistent-entities.js";
 import { update } from "./game-loop.js";
 import { initializeCanvas, drawIntroScreen } from "./canvas-view.js";
 import {
@@ -16,7 +16,7 @@ import {
   populateShipCustomizationStats,
 } from "./ship-customization.js";
 import { muteSound } from "./sounds.js";
-import { playBackgroundMusic } from "./sounds.js";
+import { playBackgroundMusic, playBigExplosionSound } from "./sounds.js";
 
 let oneTimePlayerInit = false;
 let oneTimeCustomizationInit = false;
@@ -47,6 +47,11 @@ window.addEventListener("keydown", startGameEventListener);
 let gameIntervals = [];
 
 function startGame() {
+  for (let intervalId of gameIntervals) {
+    clearInterval(intervalId);
+  }
+  gameIntervals.length = 0;
+  setGameOver(false);
   window.removeEventListener("keydown", startGameEventListener);
   document.getElementById("canvas").style.display = "block";
   document.getElementById("customization").style.display = "none";
@@ -63,11 +68,9 @@ function startGame() {
   startGameIntervals();
 }
 
-export function stopGame() {
-  for (let intervalId of gameIntervals) {
-    clearInterval(intervalId);
-  }
-  gameIntervals.length = 0;
+export function onGameOver() {
+  setGameOver(true);
+  playBigExplosionSound();
   window.addEventListener("keydown", startGameEventListener);
 }
 

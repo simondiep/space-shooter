@@ -8,7 +8,7 @@ const projectileImage = document.getElementById("projectileImage");
 const PLAYER_DEFAULTS = {
   x: 50,
   y: CANVAS_HEIGHT / 2,
-  turnsAlive: 0,
+  turnCounter: 0,
   directionsPressed: {
     UP: false,
     DOWN: false,
@@ -35,6 +35,15 @@ let gameStartTime;
 let timeAliveInSeconds = 0;
 let longestTimeAliveInSeconds = 0;
 let nextProjectileId = 1;
+let gameOver = false;
+
+export function isGameOver() {
+  return gameOver;
+}
+
+export function setGameOver(isGameOver) {
+  gameOver = isGameOver;
+}
 
 /**************************
  * Score Helper Functions *

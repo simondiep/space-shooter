@@ -13,6 +13,10 @@ export function playBackgroundMusic() {
   }
 }
 
+export function playBigExplosionSound() {
+  playSound("sound-big-explosion");
+}
+
 export function playExplosionSound() {
   playSound("sound-explosion");
 }

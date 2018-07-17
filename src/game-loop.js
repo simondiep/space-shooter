@@ -6,14 +6,15 @@ import {
   getPlayer,
   getProjectiles,
   incrementScore,
+  isGameOver,
   removeEnemiesThatAreOffScreen,
   removeProjectilesThatAreOffScreen,
   updateTimeAliveInSeconds,
 } from "./persistent-entities.js";
-import { stopGame } from "./main.js";
+import { onGameOver } from "./main.js";
 import {
   drawBackground,
-  drawEnemyExplosion,
+  drawExplosion,
   drawGameOverScreen,
   drawImage,
   drawPlayer,
@@ -73,16 +74,20 @@ export function update() {
     player.y += player.vy;
   }
 
-  drawPlayer(player);
-  player.turnsAlive++;
+  if (isGameOver()) {
+    if (player.turnCounter % 10) {
+      drawExplosion(player.turnCounter, player.x, player.y, player.size);
+    }
+  } else {
+    drawPlayer(player);
+  }
+  player.turnCounter++;
   const enemyExplosions = getEnemyExplosions();
   for (let enemyExplosionIndex = enemyExplosions.length - 1; enemyExplosionIndex >= 0; enemyExplosionIndex--) {
     const enemyExplosion = enemyExplosions[enemyExplosionIndex];
-    drawEnemyExplosion(enemyExplosion.x, enemyExplosion.y, enemyExplosion.size);
+    drawExplosion(player.turnCounter, enemyExplosion.x, enemyExplosion.y, enemyExplosion.size);
     enemyExplosions.splice(enemyExplosionIndex, 1);
   }
-
-  let gameOver = false;
 
   // Move and draw enemies
   for (let enemyIndex = enemies.length - 1; enemyIndex >= 0; enemyIndex--) {
@@ -91,8 +96,8 @@ export function update() {
     enemy.y += enemy.vy;
 
     // check for collision of player
-    if (hasCollided(player, enemy)) {
-      gameOver = true;
+    if (!isGameOver() && hasCollided(player, enemy)) {
+      onGameOver();
     }
 
     let enemyHasBeenDestroyed = false;
@@ -175,9 +180,8 @@ export function update() {
       }
     }
 
-    if (gameOver) {
+    if (isGameOver()) {
       drawGameOverScreen();
-      stopGame();
     }
   }
 }

@@ -9,6 +9,8 @@ let screenShakeTranslatedY = 0;
 // Number of renders before resetting the screen to original state
 let screenShakeDuration = 0;
 const MAX_SCREEN_SHAKE_DURATION = 30;
+const explosion1Image = document.getElementById("explosion1Image");
+const explosion2Image = document.getElementById("explosion2Image");
 
 export function initializeCanvas() {
   const canvas = document.getElementById("canvas");
@@ -92,17 +94,12 @@ export function drawEnemy(enemy) {
   );
 }
 
-export function drawEnemyExplosion(x, y, size) {
-  drawFilledCircle(x, y, size, "red");
-  drawFilledCircle(x, y, size / 2, "orange");
-}
-
-function drawFilledCircle(x, y, radius, color) {
-  context.fillStyle = color;
-  context.beginPath();
-  context.arc(x, y, radius, 0, 2 * Math.PI);
-  context.closePath();
-  context.fill();
+export function drawExplosion(turnCounter, x, y, size) {
+  if (turnCounter % 5 === 0) {
+    context.drawImage(explosion2Image, x - size, y - size, size * 2, size * 2);
+  } else {
+    context.drawImage(explosion1Image, x - size, y - size, size * 2, size * 2);
+  }
 }
 
 export function drawImage(image, x, y, size) {
@@ -111,7 +108,7 @@ export function drawImage(image, x, y, size) {
 
 export function drawPlayer(player) {
   context.drawImage(
-    player.turnsAlive % 5 === 0 ? player.images.one : player.images.two,
+    player.turnCounter % 5 === 0 ? player.images.one : player.images.two,
     player.x - player.size,
     player.y - player.size,
     player.size * 2,
