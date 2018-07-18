@@ -98,9 +98,6 @@ function capitalizeFirstLetter(string) {
 
 function increaseStat(statName) {
   const player = getPlayer();
-  if (statName === "numberOfProjectiles" && player.numberOfProjectiles >= 5) {
-    return;
-  }
   spendCredits(STAT_PRICES[statName]);
   player[statName]++;
   populateShipCustomizationStats();
@@ -111,9 +108,6 @@ function increaseStatSpendAll(statName) {
   const player = getPlayer();
   while (getCredits() >= STAT_PRICES[statName]) {
     increaseStat(statName);
-    if (statName === "numberOfProjectiles" && player.numberOfProjectiles >= 5) {
-      break;
-    }
   }
 }
 
