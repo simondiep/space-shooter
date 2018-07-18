@@ -27,7 +27,7 @@ drawIntroScreen();
 function startGameEventListener(event) {
   event.preventDefault();
   switch (event.keyCode) {
-    case 32: // Space
+    case 82: // r
       startGame();
       break;
     case 67: // c
@@ -38,6 +38,7 @@ function startGameEventListener(event) {
         initializeStatIncreaseButtons();
         oneTimeCustomizationInit = true;
       }
+      clearGameIntervals();
       break;
   }
 }
@@ -46,11 +47,15 @@ window.addEventListener("keydown", startGameEventListener);
 
 let gameIntervals = [];
 
-function startGame() {
+function clearGameIntervals() {
   for (let intervalId of gameIntervals) {
     clearInterval(intervalId);
   }
   gameIntervals.length = 0;
+}
+
+function startGame() {
+  clearGameIntervals();
   setGameOver(false);
   window.removeEventListener("keydown", startGameEventListener);
   document.getElementById("canvas").style.display = "block";

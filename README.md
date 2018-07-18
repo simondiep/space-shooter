@@ -12,8 +12,6 @@ npm i && npm start
 - Longer projectiles that look cool but don't have additional power
 - Faster pace like videoball
 - Concept of waves of enemies
-- More satisfying explosions
-- screen shake on death (with audio then transition to death screen)
 - stylize radio/checkboxes
 - on hold
   - charge up shot

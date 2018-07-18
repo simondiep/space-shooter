@@ -19,8 +19,8 @@ const DECREASE_STAT_PRICES = {
   size: 2,
 };
 const STAT_PRICES = {
-  numberOfProjectiles: 30,
-  projectileSize: 5,
+  numberOfProjectiles: 100,
+  projectileSize: 10,
   projectileSpeed: 1,
   speed: 1,
   topSpeed: 2,

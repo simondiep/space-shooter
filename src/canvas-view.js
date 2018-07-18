@@ -23,14 +23,14 @@ export function initializeCanvas() {
 export function drawIntroScreen() {
   context.drawImage(backgroundImage, 0, 0, backgroundImage.width, backgroundImage.height);
   drawText(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 3, "#dbfaff", "Space Shooter");
-  drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 2) / 3, "#fffbbc", "Press Space to begin", 36);
+  drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 2) / 3, "#fffbbc", "Press 'r' to begin", 36);
   drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 4) / 5, "#dbdbdb", "WASD or Arrow keys to move, Space to shoot", 24);
 }
 
 export function drawGameOverScreen() {
   resetScreenShake();
   drawText(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 3, "#ffa0a0", "Game Over");
-  drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 2) / 3, "#fffbbc", "Press Space to restart", 36);
+  drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 2) / 3, "#fffbbc", "Press 'r' to restart", 36);
   drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 4) / 5, "#fffbbc", "Press 'c' to customize your ship", 36);
 }
 

@@ -1,7 +1,10 @@
-import { addProjectile, createProjectile, getPlayer } from "./persistent-entities.js";
+import { addProjectile, createProjectile, getPlayer, isGameOver } from "./persistent-entities.js";
 
 export function keyDownHandler(event) {
   event.preventDefault();
+  if (isGameOver()) {
+    return;
+  }
   const player = getPlayer();
   switch (event.keyCode) {
     case 32: // Space
