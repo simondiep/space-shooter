@@ -6,8 +6,9 @@ export const INITIAL_PLAYER_STATS = {
   speed: 1,
   topSpeed: 5,
   numberOfProjectiles: 1,
-  projectileSize: 5,
+  projectileSize: 10,
   projectileSpeed: 5,
+  projectileRange: 300,
   shotType: "standard",
   shotModifiers: {
     pierce: 0,
@@ -20,6 +21,7 @@ const DECREASE_STAT_PRICES = {
 };
 const STAT_PRICES = {
   numberOfProjectiles: 100,
+  projectileRange: 1,
   projectileSize: 10,
   projectileSpeed: 1,
   speed: 1,
@@ -40,6 +42,9 @@ export function initializeStatIncreaseButtons() {
     .getElementById("increaseNumberOfProjectilesButton")
     .addEventListener("click", () => increaseStat("numberOfProjectiles"));
   document
+    .getElementById("increaseProjectileRangeButton")
+    .addEventListener("click", () => increaseStat("projectileRange"));
+  document
     .getElementById("increaseProjectileSizeButton")
     .addEventListener("click", () => increaseStat("projectileSize"));
   document
@@ -57,6 +62,8 @@ export function populateShipCustomizationStats() {
   document.getElementById("shotModifierCost").innerHTML = MISC_PRICES.shotModifier;
   document.getElementById("numberOfProjectiles").innerHTML = player.numberOfProjectiles;
   document.getElementById("numberOfProjectilesCost").innerHTML = STAT_PRICES.numberOfProjectiles;
+  document.getElementById("projectileRange").innerHTML = player.projectileRange;
+  document.getElementById("projectileRangeCost").innerHTML = STAT_PRICES.projectileRange;
   document.getElementById("projectileSize").innerHTML = player.projectileSize;
   document.getElementById("projectileSizeCost").innerHTML = STAT_PRICES.projectileSize;
   document.getElementById("projectileSpeed").innerHTML = player.projectileSpeed;

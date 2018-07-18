@@ -10,6 +10,7 @@
 
     label {
       color: white;
+      font-weight: 600;
     }
 
     #customization {
@@ -34,6 +35,7 @@
       font-size: 12px;
       font-weight: 400px;
       display: inline-block;
+      padding-right: 30px;
     }
 
     .increaseStatValueLabel {
@@ -107,61 +109,86 @@
         <label for="shot-modifier-fork-once">Fork once</label>
       </div>
     </fieldset>
-    <div id="shipCustomizeStats" style="display: table; margin: 10px auto; text-align: right;">
-      <label>Number of Projectiles: </label>
-      <label id="numberOfProjectiles" class="increaseStatValueLabel"></label>
-      <button id="increaseNumberOfProjectilesButton" class="increaseStatButton">Increase</button>
-      <div class="increaseStatCost">
-        <label>Cost: </label>
-        <label id="numberOfProjectilesCost" class="increaseStatValueLabel"></label>
-        <label> Credits</label>
-      </div>
-      <br/>
-      <label>Projectile Size: </label>
-      <label id="projectileSize" class="increaseStatValueLabel"></label>
-      <button id="increaseProjectileSizeButton" class="increaseStatButton">Increase</button>
-      <div class="increaseStatCost">
-        <label>Cost: </label>
-        <label id="projectileSizeCost" class="increaseStatValueLabel"></label>
-        <label> Credits</label>
-      </div>
-      <br/>
-      <label>Projectile Speed: </label>
-      <label id="projectileSpeed" class="increaseStatValueLabel"></label>
-      <button id="increaseProjectileSpeedButton" class="increaseStatButton">Increase</button>
-      <div class="increaseStatCost">
-        <label>Cost: </label>
-        <label id="projectileSpeedCost" class="increaseStatValueLabel"></label>
-        <label> Credits</label>
-      </div>
-      <br/>
-      <label>Ship Size: </label>
-      <label id="shipSize" class="increaseStatValueLabel"></label>
-      <button id="decreaseSizeButton" class="increaseStatButton">Decrease</button>
-      <div class="increaseStatCost">
-        <label>Cost: </label>
-        <label id="shipSizeCost" class="increaseStatValueLabel"></label>
-        <label> Credits</label>
-      </div>
-      <br/>
-      <label>Ship Speed: </label>
-      <label id="shipSpeed" class="increaseStatValueLabel"></label>
-      <button id="increaseSpeedButton" class="increaseStatButton">Increase</button>
-      <div class="increaseStatCost">
-        <label>Cost: </label>
-        <label id="shipSpeedCost" class="increaseStatValueLabel"></label>
-        <label> Credits</label>
-      </div>
-      <br/>
-      <label>Ship Top Speed: </label>
-      <label id="shipTopSpeed" class="increaseStatValueLabel"></label>
-      <button id="increaseTopSpeedButton" class="increaseStatButton">Increase</button>
-      <div class="increaseStatCost">
-        <label>Cost: </label>
-        <label id="shipTopSpeedCost" class="increaseStatValueLabel"></label>
-        <label> Credits</label>
-      </div>
-    </div>
+    <table id="shipCustomizeStats" style="margin: 10px auto; text-align: right;">
+      <tr>
+        <td>
+          <label>Number of Projectiles: </label>
+          <label id="numberOfProjectiles" class="increaseStatValueLabel"></label>
+          <button id="increaseNumberOfProjectilesButton" class="increaseStatButton">Increase</button>
+          <div class="increaseStatCost">
+            <label>Cost: </label>
+            <label id="numberOfProjectilesCost" class="increaseStatValueLabel"></label>
+            <label> Credits</label>
+          </div>
+        </td>
+        <td>
+          <label>Projectile Range: </label>
+          <label id="projectileRange" class="increaseStatValueLabel"></label>
+          <button id="increaseProjectileRangeButton" class="increaseStatButton">Increase</button>
+          <div class="increaseStatCost">
+            <label>Cost: </label>
+            <label id="projectileRangeCost" class="increaseStatValueLabel"></label>
+            <label> Credits</label>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>Projectile Size: </label>
+          <label id="projectileSize" class="increaseStatValueLabel"></label>
+          <button id="increaseProjectileSizeButton" class="increaseStatButton">Increase</button>
+          <div class="increaseStatCost">
+            <label>Cost: </label>
+            <label id="projectileSizeCost" class="increaseStatValueLabel"></label>
+            <label> Credits</label>
+          </div>
+        </td>
+        <td>
+          <label>Projectile Speed: </label>
+          <label id="projectileSpeed" class="increaseStatValueLabel"></label>
+          <button id="increaseProjectileSpeedButton" class="increaseStatButton">Increase</button>
+          <div class="increaseStatCost">
+            <label>Cost: </label>
+            <label id="projectileSpeedCost" class="increaseStatValueLabel"></label>
+            <label> Credits</label>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>Ship Size: </label>
+          <label id="shipSize" class="increaseStatValueLabel"></label>
+          <button id="decreaseSizeButton" class="increaseStatButton">Decrease</button>
+          <div class="increaseStatCost">
+            <label>Cost: </label>
+            <label id="shipSizeCost" class="increaseStatValueLabel"></label>
+            <label> Credits</label>
+          </div>
+        </td>
+        <td>
+          <label>Ship Speed: </label>
+          <label id="shipSpeed" class="increaseStatValueLabel"></label>
+          <button id="increaseSpeedButton" class="increaseStatButton">Increase</button>
+          <div class="increaseStatCost">
+            <label>Cost: </label>
+            <label id="shipSpeedCost" class="increaseStatValueLabel"></label>
+            <label> Credits</label>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>Ship Top Speed: </label>
+          <label id="shipTopSpeed" class="increaseStatValueLabel"></label>
+          <button id="increaseTopSpeedButton" class="increaseStatButton">Increase</button>
+          <div class="increaseStatCost">
+            <label>Cost: </label>
+            <label id="shipTopSpeedCost" class="increaseStatValueLabel"></label>
+            <label> Credits</label>
+          </div>
+        </td>
+      </tr>
+    </table>
     <div style="text-align: center; font-size: 36px; margin-top: 10px; color: #fffbbc;">Press 'r' to Start Game</div>
   </div>
   <div id="assets" style="display: none">

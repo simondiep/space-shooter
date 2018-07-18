@@ -35,7 +35,8 @@ export function update() {
   const projectiles = getProjectiles();
 
   // Move and draw projectiles
-  for (const projectile of projectiles) {
+  for (let projIndex = projectiles.length - 1; projIndex >= 0; projIndex--) {
+    const projectile = projectiles[projIndex];
     projectile.x += projectile.vx;
     projectile.y += projectile.vy;
     drawImage(
@@ -44,6 +45,10 @@ export function update() {
       projectile.y - projectile.size / 2,
       projectile.size,
     );
+    if (projectile.x - projectile.originX > projectile.range) {
+      // Remove projectile
+      projectiles.splice(projIndex, 1);
+    }
   }
 
   // Player Movement

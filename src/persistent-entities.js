@@ -156,11 +156,13 @@ function getNextProjectileId() {
 export function createProjectile(options) {
   const defaultValues = {
     id: getNextProjectileId(),
+    originX: player.x,
     x: player.x,
     y: player.y,
     vx: player.projectileSpeed,
     vy: 0,
     size: player.projectileSize,
+    range: player.projectileRange,
     damage: 1,
     modifiers: getShotModifiers(),
   };
