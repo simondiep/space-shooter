@@ -38,21 +38,24 @@ const MISC_PRICES = {
  **************/
 
 export function initializeStatIncreaseButtons() {
-  document
-    .getElementById("increaseNumberOfProjectilesButton")
-    .addEventListener("click", () => increaseStat("numberOfProjectiles"));
-  document
-    .getElementById("increaseProjectileRangeButton")
-    .addEventListener("click", () => increaseStat("projectileRange"));
-  document
-    .getElementById("increaseProjectileSizeButton")
-    .addEventListener("click", () => increaseStat("projectileSize"));
-  document
-    .getElementById("increaseProjectileSpeedButton")
-    .addEventListener("click", () => increaseStat("projectileSpeed"));
-  document.getElementById("decreaseSizeButton").addEventListener("click", () => decreaseStat("size"));
-  document.getElementById("increaseSpeedButton").addEventListener("click", () => increaseStat("speed"));
-  document.getElementById("increaseTopSpeedButton").addEventListener("click", () => increaseStat("topSpeed"));
+  for (const statName of Object.keys(STAT_PRICES)) {
+    const upperCasedStatName = capitalizeFirstLetter(statName);
+    document
+      .getElementById(`increase${upperCasedStatName}Button`)
+      .addEventListener("click", () => increaseStat(statName));
+    document
+      .getElementById(`increase${upperCasedStatName}SpendAllButton`)
+      .addEventListener("click", () => increaseStatSpendAll(statName));
+  }
+  for (const statName of Object.keys(DECREASE_STAT_PRICES)) {
+    const upperCasedStatName = capitalizeFirstLetter(statName);
+    document
+      .getElementById(`decrease${upperCasedStatName}Button`)
+      .addEventListener("click", () => decreaseStat(statName));
+    document
+      .getElementById(`decrease${upperCasedStatName}SpendAllButton`)
+      .addEventListener("click", () => decreaseStatSpendAll(statName));
+  }
 }
 
 export function populateShipCustomizationStats() {
@@ -60,29 +63,29 @@ export function populateShipCustomizationStats() {
   document.getElementById("numberOfCredits").innerHTML = getCredits();
   document.getElementById("shotTypeCost").innerHTML = MISC_PRICES.shotType;
   document.getElementById("shotModifierCost").innerHTML = MISC_PRICES.shotModifier;
-  document.getElementById("numberOfProjectiles").innerHTML = player.numberOfProjectiles;
-  document.getElementById("numberOfProjectilesCost").innerHTML = STAT_PRICES.numberOfProjectiles;
-  document.getElementById("projectileRange").innerHTML = player.projectileRange;
-  document.getElementById("projectileRangeCost").innerHTML = STAT_PRICES.projectileRange;
-  document.getElementById("projectileSize").innerHTML = player.projectileSize;
-  document.getElementById("projectileSizeCost").innerHTML = STAT_PRICES.projectileSize;
-  document.getElementById("projectileSpeed").innerHTML = player.projectileSpeed;
-  document.getElementById("projectileSpeedCost").innerHTML = STAT_PRICES.projectileSpeed;
-  document.getElementById("shipSize").innerHTML = player.size;
-  document.getElementById("shipSizeCost").innerHTML = DECREASE_STAT_PRICES.size;
-  document.getElementById("shipSpeed").innerHTML = player.speed;
-  document.getElementById("shipSpeedCost").innerHTML = STAT_PRICES.speed;
-  document.getElementById("shipTopSpeed").innerHTML = player.topSpeed;
-  document.getElementById("shipTopSpeedCost").innerHTML = STAT_PRICES.topSpeed;
 
+  // Populate label values
+  for (const statName of Object.keys(STAT_PRICES)) {
+    document.getElementById(statName).innerHTML = player[statName];
+    document.getElementById(`${statName}Cost`).innerHTML = STAT_PRICES[statName];
+  }
+  // Populate label values
+  for (const statName of Object.keys(DECREASE_STAT_PRICES)) {
+    document.getElementById(statName).innerHTML = player[statName];
+    document.getElementById(`${statName}Cost`).innerHTML = DECREASE_STAT_PRICES[statName];
+  }
+
+  // Disable buttons if you don't have enough credits
   for (const [priceKey, priceValue] of Object.entries(STAT_PRICES)) {
     const upperCasedKey = capitalizeFirstLetter(priceKey);
     document.getElementById(`increase${upperCasedKey}Button`).disabled = getCredits() < priceValue;
+    document.getElementById(`increase${upperCasedKey}SpendAllButton`).disabled = getCredits() < priceValue;
   }
-
+  // Disable buttons if you don't have enough credits
   for (const [priceKey, priceValue] of Object.entries(DECREASE_STAT_PRICES)) {
     const upperCasedKey = capitalizeFirstLetter(priceKey);
     document.getElementById(`decrease${upperCasedKey}Button`).disabled = getCredits() < priceValue;
+    document.getElementById(`decrease${upperCasedKey}SpendAllButton`).disabled = getCredits() < priceValue;
   }
 
   enableDisabledShotTypes(getCredits() >= MISC_PRICES.shotType);
@@ -104,6 +107,16 @@ function increaseStat(statName) {
   playUpgradeSound();
 }
 
+function increaseStatSpendAll(statName) {
+  const player = getPlayer();
+  while (getCredits() >= STAT_PRICES[statName]) {
+    increaseStat(statName);
+    if (statName === "numberOfProjectiles" && player.numberOfProjectiles >= 5) {
+      break;
+    }
+  }
+}
+
 function decreaseStat(statName) {
   const player = getPlayer();
   if (player[statName] > 5) {
@@ -111,6 +124,13 @@ function decreaseStat(statName) {
     player[statName]--;
     populateShipCustomizationStats();
     playUpgradeSound();
+  }
+}
+
+function decreaseStatSpendAll(statName) {
+  const player = getPlayer();
+  while (getCredits() >= DECREASE_STAT_PRICES[statName] && player[statName] > 5) {
+    decreaseStat(statName);
   }
 }
 
