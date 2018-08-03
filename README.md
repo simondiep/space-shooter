@@ -8,7 +8,6 @@ npm i && npm start
 
 # Ideas
 
-- bulk buy
 - Longer projectiles that look cool but don't have additional power
 - Faster pace like videoball
 - Concept of waves of enemies
