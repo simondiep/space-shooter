@@ -51,6 +51,13 @@ export function spawnSpeedster() {
   );
 }
 
+export function spawnSpeedsterWave() {
+  const count = 5 + Math.floor(getTimeAliveInSeconds() / 10);
+  for (let i = 0; i < count; i++) {
+    spawnSpeedster();
+  }
+}
+
 export function spawnSpaceInvader() {
   const size = getRandomNumber(20, 40) + Math.floor(getTimeAliveInSeconds() / 20);
   const health = Math.floor(size / 10);

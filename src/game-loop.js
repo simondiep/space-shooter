@@ -140,6 +140,7 @@ export function update() {
         if (projectile.modifiers.fork) {
           projectile.modifiers.fork--;
           const forkedProj1 = createProjectile({
+            originX: projectile.x,
             x: projectile.x,
             y: projectile.y,
             vx: projectile.vx,
@@ -149,6 +150,7 @@ export function update() {
             modifiers: projectile.modifiers,
           });
           const forkedProj2 = createProjectile({
+            originX: projectile.x,
             x: projectile.x,
             y: projectile.y,
             vx: projectile.vx,

@@ -1,16 +1,15 @@
 let muted = false;
-let playingBackgroundMusic = false;
 
 export function muteSound() {
   muted = true;
+  const music = document.getElementById("music-background");
+  music.pause();
 }
 
 export function playBackgroundMusic() {
-  if (!playingBackgroundMusic) {
-    const music = document.getElementById("music-background");
-    music.volume = 0.2;
-    music.play();
-  }
+  const music = document.getElementById("music-background");
+  music.volume = 0.2;
+  music.play();
 }
 
 export function playBigExplosionSound() {
