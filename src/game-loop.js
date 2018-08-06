@@ -26,7 +26,9 @@ import {
 import { playHitSound, playExplosionSound } from "./sounds.js";
 
 export function update() {
-  updateTimeAliveInSeconds();
+  if (!isGameOver()) {
+    updateTimeAliveInSeconds();
+  }
   drawBackground();
 
   removeEnemiesThatAreOffScreen();
