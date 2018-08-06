@@ -14,6 +14,8 @@ export const INITIAL_PLAYER_STATS = {
     pierce: 0,
     fork: 0,
   },
+  unlockedBottomCannon: false,
+  unlockedTopCannon: false,
 };
 
 const DECREASE_STAT_PRICES = {
@@ -31,6 +33,7 @@ const STAT_PRICES = {
 const MISC_PRICES = {
   shotType: 50,
   shotModifier: 100,
+  extraCannon: 500,
 };
 
 /**************
@@ -63,6 +66,7 @@ export function populateShipCustomizationStats() {
   document.getElementById("numberOfCredits").innerHTML = getCredits();
   document.getElementById("shotTypeCost").innerHTML = MISC_PRICES.shotType;
   document.getElementById("shotModifierCost").innerHTML = MISC_PRICES.shotModifier;
+  document.getElementById("extraCannonCost").innerHTML = MISC_PRICES.extraCannon;
 
   // Populate label values
   for (const statName of Object.keys(STAT_PRICES)) {
@@ -88,7 +92,8 @@ export function populateShipCustomizationStats() {
     document.getElementById(`decrease${upperCasedKey}SpendAllButton`).disabled = getCredits() < priceValue;
   }
 
-  enableDisabledShotTypes(getCredits() >= MISC_PRICES.shotType);
+  enableDisableShotTypes(getCredits() >= MISC_PRICES.shotType);
+  enableDisableCannonPurchases(getCredits() >= MISC_PRICES.extraCannon);
   enableDisableShotModifiers(getCredits() >= MISC_PRICES.shotModifier);
 }
 
@@ -144,9 +149,12 @@ export function initializeShotTypesAndModifiers() {
     .getElementById("shot-modifier-pierce-once")
     .addEventListener("click", () => onShotModifierPierceOnceChange());
   document.getElementById("shot-modifier-fork-once").addEventListener("click", () => onShotModifierForkOnceChange());
+
+  document.getElementById("extra-cannon-bottom").addEventListener("click", () => onExtraCannonChange("bottom"));
+  document.getElementById("extra-cannon-top").addEventListener("click", () => onExtraCannonChange("top"));
 }
 
-export function enableDisabledShotTypes(enable) {
+export function enableDisableShotTypes(enable) {
   enableDisabledShotType(document.getElementById("shot-type-standard"), enable);
   enableDisabledShotType(document.getElementById("shot-type-overlap"), enable);
   enableDisabledShotType(document.getElementById("shot-type-spread"), enable);
@@ -161,6 +169,11 @@ function enableDisabledShotType(element, enable) {
   } else {
     element.disabled = !enable;
   }
+}
+
+function enableDisableCannonPurchases(enable) {
+  document.getElementById("extra-cannon-bottom").disabled = !enable;
+  document.getElementById("extra-cannon-top").disabled = !enable;
 }
 
 export function enableDisableShotModifiers(enable) {
@@ -195,6 +208,15 @@ function onShotModifierForkOnceChange() {
   } else {
     getPlayer().shotModifiers.fork = 0;
   }
+  populateShipCustomizationStats();
+  playUpgradeSound();
+}
+
+function onExtraCannonChange(cannonLocation) {
+  spendCredits(MISC_PRICES.extraCannon);
+  const cannonSelected = document.getElementById(`extra-cannon-${cannonLocation}`).checked;
+  const cannonAttributeName = `unlocked${capitalizeFirstLetter(cannonLocation)}Cannon`;
+  getPlayer()[cannonAttributeName] = cannonSelected;
   populateShipCustomizationStats();
   playUpgradeSound();
 }

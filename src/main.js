@@ -38,6 +38,7 @@ function startGameEventListener(event) {
       document.getElementById("customization").style.display = "block";
       if (!oneTimeCustomizationInit) {
         initializeStatIncreaseButtons();
+        initializeShotTypesAndModifiers();
         oneTimeCustomizationInit = true;
       }
       clearGameIntervals();
@@ -64,7 +65,6 @@ function startGame() {
   document.getElementById("customization").style.display = "none";
   if (!oneTimePlayerInit) {
     playBackgroundMusic();
-    initializeShotTypesAndModifiers();
 
     window.addEventListener("keydown", keyDownHandler);
     window.addEventListener("keyup", keyUpHandler);

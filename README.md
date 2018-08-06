@@ -10,7 +10,6 @@ npm i && npm start
 
 - Longer projectiles that look cool but don't have additional power
 - Faster pace like videoball
-- Concept of waves of enemies
 - stylize radio/checkboxes
 - on hold
   - charge up shot
@@ -19,21 +18,22 @@ npm i && npm start
   - explode
 - Easy to Difficult Levels
 - Doppelganger can shoot multiple projectiles
+- Support more than five projectiles for spread type
 
 # Longer term
 
-Display damage numbers
-Attack speed stat
-AoE
-Hotkeys to switch between weapons
-Rotating asteroids
-Non-circle projectiles
-Mouse movement
-Shield
-Twin ships
-Terrain that is collidable
-Reduce fire rate when space bar held down
-Progression system
+- Display damage numbers
+- Attack speed stat
+- AoE
+- Hotkeys to switch between weapons
+- Rotating asteroids
+- Non-circle projectiles
+- Mouse movement
+- Shield
+- Twin ships
+- Terrain that is collidable
+- Reduce fire rate when space bar held down
+- Progression system
 
 - Like Life-force?
 - Exp system

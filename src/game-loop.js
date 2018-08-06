@@ -169,7 +169,7 @@ export function update() {
         // Fork
         if (projectile.modifiers.fork) {
           projectile.modifiers.fork--;
-          const forkedProj1 = createProjectile({
+          const forkedProj1 = createProjectile(player, {
             originX: projectile.x,
             x: projectile.x,
             y: projectile.y,
@@ -179,7 +179,7 @@ export function update() {
             damage: projectile.damage,
             modifiers: projectile.modifiers,
           });
-          const forkedProj2 = createProjectile({
+          const forkedProj2 = createProjectile(player, {
             originX: projectile.x,
             x: projectile.x,
             y: projectile.y,
@@ -220,10 +220,7 @@ export function update() {
       if (enemy.shotsPerSecond) {
         if (!enemy.lastShotTime || Date.now() > enemy.lastShotTime + 1000 / enemy.shotsPerSecond) {
           addEnemyProjectile(
-            createProjectile({
-              originX: enemy.x,
-              x: enemy.x,
-              y: enemy.y,
+            createProjectile(enemy, {
               vx: -enemy.projectileSpeed,
               size: enemy.projectileSize,
               damage: 1,

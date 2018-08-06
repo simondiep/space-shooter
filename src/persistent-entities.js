@@ -169,16 +169,16 @@ function getNextProjectileId() {
   return nextProjectileId;
 }
 
-export function createProjectile(options) {
+export function createProjectile(entity, options) {
   const defaultValues = {
     id: getNextProjectileId(),
-    originX: player.x,
-    x: player.x,
-    y: player.y,
-    vx: player.projectileSpeed,
+    originX: entity.x + entity.size,
+    x: entity.x + entity.size,
+    y: entity.y,
+    vx: entity.projectileSpeed,
     vy: 0,
-    size: player.projectileSize,
-    range: player.projectileRange,
+    size: entity.projectileSize,
+    range: entity.projectileRange,
     damage: 1,
     modifiers: getShotModifiers(),
   };
