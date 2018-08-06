@@ -30,7 +30,7 @@ const STAT_PRICES = {
 
 const MISC_PRICES = {
   shotType: 50,
-  shotModifier: 30,
+  shotModifier: 100,
 };
 
 /**************

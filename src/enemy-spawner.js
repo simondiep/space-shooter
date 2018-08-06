@@ -1,7 +1,9 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants.js";
-import { addEnemy, getTimeAliveInSeconds } from "./persistent-entities.js";
+import { addEnemy, getPlayer, getTimeAliveInSeconds } from "./persistent-entities.js";
 
 const asteroidImage = document.getElementById("asteroidImage");
+const enemyShipImage = document.getElementById("enemyShipImage");
+const enemyShipDamagedImage = document.getElementById("enemyShipDamagedImage");
 const heartyImage = document.getElementById("heartyImage");
 const heartyDamagedImage = document.getElementById("heartyDamagedImage");
 const spaceInvaderImage = document.getElementById("spaceInvaderImage");
@@ -156,6 +158,32 @@ export function spawnAsteroid() {
       images: {
         normal: asteroidImage,
         damaged: asteroidImage,
+      },
+    }),
+  );
+}
+
+export function spawnDoppelganger() {
+  const player = getPlayer();
+  const size = player.size;
+  const health = Math.floor(getTimeAliveInSeconds() / 10);
+  addEnemy(
+    createEnemy({
+      vx: -player.speed,
+      vyFunction: () => getRandomNumber(-player.speed, player.speed),
+      size,
+      health,
+      score: health * 20,
+      shotsPerSecond: 1,
+      numberOfProjectiles: player.numberOfProjectiles,
+      projectileSize: player.projectileSize,
+      projectileSpeed: player.projectileSpeed,
+      projectileRange: player.projectileRange,
+      shotType: player.shotType,
+      shotModifiers: player.shotModifiers,
+      images: {
+        normal: enemyShipImage,
+        damaged: enemyShipDamagedImage,
       },
     }),
   );

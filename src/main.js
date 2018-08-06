@@ -6,6 +6,7 @@ import {
   spawnSpeedster,
   spawnSpeedsterWave,
   spawnSpaceInvaderWave,
+  spawnDoppelganger,
 } from "./enemy-spawner.js";
 import { keyDownHandler, keyUpHandler } from "./key-inputs.js";
 import { clearEnemies, clearProjectiles, clearScore, resetPlayer, setGameOver } from "./persistent-entities.js";
@@ -88,6 +89,8 @@ function startGameIntervals() {
   gameIntervals.push(setInterval(() => requestAnimationFrame(spawnSpaceInvader), 500));
   gameIntervals.push(setInterval(() => requestAnimationFrame(spawnSpeedster), 2000));
   gameIntervals.push(setInterval(() => requestAnimationFrame(spawnBoss), 10000));
+
+  gameIntervals.push(setInterval(() => requestAnimationFrame(spawnDoppelganger), 33000));
 
   gameIntervals.push(setInterval(() => requestAnimationFrame(spawnSpaceInvaderWave), 9000));
   gameIntervals.push(setInterval(() => requestAnimationFrame(spawnSpeedsterWave), 14000));

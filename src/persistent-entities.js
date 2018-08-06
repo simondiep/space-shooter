@@ -26,7 +26,8 @@ const PLAYER_DEFAULTS = {
 
 let player = Object.assign({}, PLAYER_DEFAULTS, INITIAL_PLAYER_STATS);
 let enemies = [];
-let projectiles = [];
+let playerProjectiles = [];
+let enemyProjectiles = [];
 let enemyExplosions = [];
 let score = 0;
 let highScore = 0;
@@ -127,22 +128,37 @@ export function resetPlayer() {
 /*******************************
  * Projectile Helper Functions *
  *******************************/
-export function addProjectile(proj) {
-  projectiles.push(proj);
+export function addPlayerProjectile(proj) {
+  playerProjectiles.push(proj);
   playShootSound();
 }
 
-export function getProjectiles() {
-  return projectiles;
+export function addEnemyProjectile(proj) {
+  enemyProjectiles.push(proj);
+  playShootSound();
+}
+
+export function getPlayerProjectiles() {
+  return playerProjectiles;
+}
+
+export function getEnemyProjectiles() {
+  return enemyProjectiles;
 }
 
 export function clearProjectiles() {
-  projectiles.length = 0;
+  playerProjectiles.length = 0;
+  enemyProjectiles.length = 0;
 }
 
 export function removeProjectilesThatAreOffScreen() {
-  projectiles = projectiles.filter(function(projectile) {
+  playerProjectiles = playerProjectiles.filter(function(projectile) {
     if (projectile.x < CANVAS_WIDTH + 20 && projectile.y > -20 && projectile.y < CANVAS_HEIGHT + 20) {
+      return true;
+    }
+  });
+  enemyProjectiles = enemyProjectiles.filter(function(projectile) {
+    if (projectile.x > -20 && projectile.y > -20 && projectile.y < CANVAS_HEIGHT + 20) {
       return true;
     }
   });

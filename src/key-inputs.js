@@ -1,4 +1,4 @@
-import { addProjectile, createProjectile, getPlayer, isGameOver } from "./persistent-entities.js";
+import { addPlayerProjectile, createProjectile, getPlayer, isGameOver } from "./persistent-entities.js";
 
 export function keyDownHandler(event) {
   event.preventDefault();
@@ -11,12 +11,12 @@ export function keyDownHandler(event) {
       switch (player.shotType) {
         case "overlap":
           for (let i = 0; i < player.numberOfProjectiles; i++) {
-            addProjectile(createProjectile());
+            addPlayerProjectile(createProjectile());
           }
           break;
         case "ball":
           for (let i = 0; i < player.numberOfProjectiles; i++) {
-            addProjectile(
+            addPlayerProjectile(
               createProjectile({
                 vx: player.projectileSpeed / 2,
                 size: player.projectileSize * 4,
@@ -26,7 +26,7 @@ export function keyDownHandler(event) {
           break;
         case "burst":
           for (let i = 0; i < player.numberOfProjectiles; i++) {
-            addProjectile(
+            addPlayerProjectile(
               createProjectile({
                 x: player.x + i * player.projectileSize * 2,
               }),
@@ -38,14 +38,14 @@ export function keyDownHandler(event) {
           break;
         case "side":
           for (let i = 0; i < player.numberOfProjectiles; i++) {
-            addProjectile(
+            addPlayerProjectile(
               createProjectile({
                 x: player.x + (i * player.size) / 2,
                 vx: 0,
                 vy: -player.projectileSpeed,
               }),
             );
-            addProjectile(
+            addPlayerProjectile(
               createProjectile({
                 x: player.x + (i * player.size) / 2,
                 vx: 0,
@@ -102,12 +102,12 @@ export function keyUpHandler(event) {
 function shootStandard(player) {
   if (player.numberOfProjectiles % 2 === 0) {
     for (let i = 1; i <= player.numberOfProjectiles / 2; i++) {
-      addProjectile(
+      addPlayerProjectile(
         createProjectile({
           y: player.y - (player.size * i) / (player.numberOfProjectiles / 2 + 1),
         }),
       );
-      addProjectile(
+      addPlayerProjectile(
         createProjectile({
           y: player.y + (player.size * i) / (player.numberOfProjectiles / 2 + 1),
         }),
@@ -123,14 +123,14 @@ function shootStandard(player) {
     // 5 : 1/3, 2/3
     // 7 : 1/4, 2/4, 3/4
     // 9 : 1/5, 2/5, 3/5, 4/5
-    addProjectile(createProjectile());
+    addPlayerProjectile(createProjectile());
     for (let i = 1; i <= (player.numberOfProjectiles - 1) / 2; i++) {
-      addProjectile(
+      addPlayerProjectile(
         createProjectile({
           y: player.y - (player.size * i) / ((player.numberOfProjectiles + 1) / 2),
         }),
       );
-      addProjectile(
+      addPlayerProjectile(
         createProjectile({
           y: player.y + (player.size * i) / ((player.numberOfProjectiles + 1) / 2),
         }),
@@ -142,16 +142,16 @@ function shootStandard(player) {
 function shootSpread(player) {
   switch (player.numberOfProjectiles) {
     case 1:
-      addProjectile(createProjectile());
+      addPlayerProjectile(createProjectile());
       break;
     case 2:
-      addProjectile(
+      addPlayerProjectile(
         createProjectile({
           y: player.y - player.size / 2,
           vy: -player.projectileSpeed / 12,
         }),
       );
-      addProjectile(
+      addPlayerProjectile(
         createProjectile({
           y: player.y + player.size / 2,
           vy: player.projectileSpeed / 12,
@@ -159,14 +159,14 @@ function shootSpread(player) {
       );
       break;
     case 3:
-      addProjectile(
+      addPlayerProjectile(
         createProjectile({
           y: player.y - player.size / 2,
           vy: -player.projectileSpeed / 8,
         }),
       );
-      addProjectile(createProjectile());
-      addProjectile(
+      addPlayerProjectile(createProjectile());
+      addPlayerProjectile(
         createProjectile({
           y: player.y + player.size / 2,
           vy: player.projectileSpeed / 8,
@@ -174,25 +174,25 @@ function shootSpread(player) {
       );
       break;
     case 4:
-      addProjectile(
+      addPlayerProjectile(
         createProjectile({
           y: player.y - player.size / 2,
           vy: -player.projectileSpeed / 8,
         }),
       );
-      addProjectile(
+      addPlayerProjectile(
         createProjectile({
           y: player.y - player.size / 4,
           vy: -player.projectileSpeed / 12,
         }),
       );
-      addProjectile(
+      addPlayerProjectile(
         createProjectile({
           y: player.y + player.size / 4,
           vy: player.projectileSpeed / 12,
         }),
       );
-      addProjectile(
+      addPlayerProjectile(
         createProjectile({
           y: player.y + player.size / 2,
           vy: player.projectileSpeed / 8,
@@ -202,26 +202,26 @@ function shootSpread(player) {
     case 5:
     default:
       // TODO
-      addProjectile(
+      addPlayerProjectile(
         createProjectile({
           y: player.y - player.size / 2,
           vy: -player.projectileSpeed / 4,
         }),
       );
-      addProjectile(
+      addPlayerProjectile(
         createProjectile({
           y: player.y - player.size / 4,
           vy: -player.projectileSpeed / 8,
         }),
       );
-      addProjectile(createProjectile());
-      addProjectile(
+      addPlayerProjectile(createProjectile());
+      addPlayerProjectile(
         createProjectile({
           y: player.y + player.size / 4,
           vy: player.projectileSpeed / 8,
         }),
       );
-      addProjectile(
+      addPlayerProjectile(
         createProjectile({
           y: player.y + player.size / 2,
           vy: player.projectileSpeed / 4,

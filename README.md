@@ -17,7 +17,8 @@ npm i && npm start
   - auto-fire
 - on projectile hit effects
   - explode
-- support more than 5 projectiles
+- Easy to Difficult Levels
+- Doppelganger can shoot multiple projectiles
 
 # Longer term
 

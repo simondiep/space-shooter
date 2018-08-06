@@ -4,12 +4,14 @@ import {
   getEnemies,
   getEnemyExplosions,
   getPlayer,
-  getProjectiles,
+  getEnemyProjectiles,
+  getPlayerProjectiles,
   incrementScore,
   isGameOver,
   removeEnemiesThatAreOffScreen,
   removeProjectilesThatAreOffScreen,
   updateTimeAliveInSeconds,
+  addEnemyProjectile,
 } from "./persistent-entities.js";
 import { onGameOver } from "./main.js";
 import {
@@ -32,11 +34,12 @@ export function update() {
 
   const enemies = getEnemies();
   const player = getPlayer();
-  const projectiles = getProjectiles();
+  const playerProjectiles = getPlayerProjectiles();
+  const enemyProjectiles = getEnemyProjectiles();
 
-  // Move and draw projectiles
-  for (let projIndex = projectiles.length - 1; projIndex >= 0; projIndex--) {
-    const projectile = projectiles[projIndex];
+  // Move and draw player projectiles
+  for (let projIndex = playerProjectiles.length - 1; projIndex >= 0; projIndex--) {
+    const projectile = playerProjectiles[projIndex];
     projectile.x += projectile.vx;
     projectile.y += projectile.vy;
     drawImage(
@@ -47,7 +50,29 @@ export function update() {
     );
     if (projectile.x - projectile.originX > projectile.range) {
       // Remove projectile
-      projectiles.splice(projIndex, 1);
+      playerProjectiles.splice(projIndex, 1);
+    }
+  }
+
+  // Move and draw enemy projectiles
+  for (let projIndex = enemyProjectiles.length - 1; projIndex >= 0; projIndex--) {
+    const projectile = enemyProjectiles[projIndex];
+    projectile.x += projectile.vx;
+    projectile.y += projectile.vy;
+    drawImage(
+      enemyProjectileImage,
+      projectile.x - projectile.size / 2,
+      projectile.y - projectile.size / 2,
+      projectile.size,
+    );
+    if (projectile.originX - projectile.x > projectile.range) {
+      // Remove projectile
+      enemyProjectiles.splice(projIndex, 1);
+    }
+
+    // check for collision of enemy projectile
+    if (!isGameOver() && hasCollided(player, projectile)) {
+      onGameOver();
     }
   }
 
@@ -99,6 +124,9 @@ export function update() {
     const enemy = enemies[enemyIndex];
     enemy.x += enemy.vx;
     enemy.y += enemy.vy;
+    if (enemy.vyFunction) {
+      enemy.y += enemy.vyFunction();
+    }
 
     // check for collision of player
     if (!isGameOver() && hasCollided(player, enemy)) {
@@ -107,8 +135,8 @@ export function update() {
 
     let enemyHasBeenDestroyed = false;
     // check for collision of projectile
-    for (let projIndex = projectiles.length - 1; projIndex >= 0; projIndex--) {
-      const projectile = projectiles[projIndex];
+    for (let projIndex = playerProjectiles.length - 1; projIndex >= 0; projIndex--) {
+      const projectile = playerProjectiles[projIndex];
       if (hasCollided(projectile, enemy)) {
         // Ensure a single projectile doesn't hit an enemy multiple times
         if (enemy.hitByProjectiles.includes(projectile.id)) {
@@ -134,7 +162,7 @@ export function update() {
           projectile.modifiers.pierce--;
         } else {
           // Remove projectile
-          projectiles.splice(projIndex, 1);
+          playerProjectiles.splice(projIndex, 1);
         }
         // Fork
         if (projectile.modifiers.fork) {
@@ -159,8 +187,8 @@ export function update() {
             damage: projectile.damage,
             modifiers: projectile.modifiers,
           });
-          projectiles.push(forkedProj1);
-          projectiles.push(forkedProj2);
+          playerProjectiles.push(forkedProj1);
+          playerProjectiles.push(forkedProj2);
           // The same enemy should not be hit by the forked projectiles
           enemy.hitByProjectiles.push(forkedProj1.id);
           enemy.hitByProjectiles.push(forkedProj2.id);
@@ -184,6 +212,24 @@ export function update() {
       if (enemy.recentlyDamaged) {
         playHitSound();
         enemy.recentlyDamaged = false;
+      }
+
+      // Enemy shoots
+      if (enemy.shotsPerSecond) {
+        if (!enemy.lastShotTime || Date.now() > enemy.lastShotTime + 1000 / enemy.shotsPerSecond) {
+          addEnemyProjectile(
+            createProjectile({
+              originX: enemy.x,
+              x: enemy.x,
+              y: enemy.y,
+              vx: -enemy.projectileSpeed,
+              size: enemy.projectileSize,
+              damage: 1,
+              modifiers: enemy.shotModifiers,
+            }),
+          );
+          enemy.lastShotTime = Date.now();
+        }
       }
     }
 
