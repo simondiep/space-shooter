@@ -1,5 +1,6 @@
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from "./constants.js";
 import {
+  createEnemyProjectile,
   createProjectile,
   getEnemies,
   getEnemyExplosions,
@@ -24,6 +25,7 @@ import {
   shakeScreen,
 } from "./canvas-view.js";
 import { playHitSound, playExplosionSound } from "./sounds.js";
+import { shoot } from "./shoot.js";
 
 export function update() {
   if (!isGameOver()) {
@@ -219,14 +221,7 @@ export function update() {
       // Enemy shoots
       if (enemy.shotsPerSecond) {
         if (!enemy.lastShotTime || Date.now() > enemy.lastShotTime + 1000 / enemy.shotsPerSecond) {
-          addEnemyProjectile(
-            createProjectile(enemy, {
-              vx: -enemy.projectileSpeed,
-              size: enemy.projectileSize,
-              damage: 1,
-              modifiers: enemy.shotModifiers,
-            }),
-          );
+          shoot(enemy, addEnemyProjectile, createEnemyProjectile);
           enemy.lastShotTime = Date.now();
         }
       }

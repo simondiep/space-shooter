@@ -166,7 +166,7 @@ export function spawnAsteroid() {
 export function spawnDoppelganger() {
   const player = getPlayer();
   const size = player.size;
-  const health = Math.floor(getTimeAliveInSeconds() / 10);
+  const health = Math.floor(getTimeAliveInSeconds() / 10) + 1;
   addEnemy(
     createEnemy({
       vx: -player.speed,

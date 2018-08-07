@@ -1,16 +1,14 @@
-import { createProjectile } from "./persistent-entities.js";
-
-export function shoot(entity, addProjectileFunction) {
+export function shoot(entity, addProjectileFunction, createProjectileFunction) {
   switch (entity.shotType) {
     case "overlap":
       for (let i = 0; i < entity.numberOfProjectiles; i++) {
-        addProjectileFunction(createProjectile(entity));
+        addProjectileFunction(createProjectileFunction(entity));
       }
       break;
     case "ball":
       for (let i = 0; i < entity.numberOfProjectiles; i++) {
         addProjectileFunction(
-          createProjectile(entity, {
+          createProjectileFunction(entity, {
             vx: entity.projectileSpeed / 2,
             size: entity.projectileSize * 4,
           }),
@@ -20,26 +18,26 @@ export function shoot(entity, addProjectileFunction) {
     case "burst":
       for (let i = 0; i < entity.numberOfProjectiles; i++) {
         addProjectileFunction(
-          createProjectile(entity, {
+          createProjectileFunction(entity, {
             x: entity.x + i * entity.projectileSize * 2,
           }),
         );
       }
       break;
     case "spread":
-      shootSpread(entity, addProjectileFunction);
+      shootSpread(entity, addProjectileFunction, createProjectileFunction);
       break;
     case "side":
       for (let i = 0; i < entity.numberOfProjectiles; i++) {
         addProjectileFunction(
-          createProjectile(entity, {
+          createProjectileFunction(entity, {
             x: entity.x + (i * entity.size) / 2,
             vx: 0,
             vy: -entity.projectileSpeed,
           }),
         );
         addProjectileFunction(
-          createProjectile(entity, {
+          createProjectileFunction(entity, {
             x: entity.x + (i * entity.size) / 2,
             vx: 0,
             vy: entity.projectileSpeed,
@@ -48,20 +46,20 @@ export function shoot(entity, addProjectileFunction) {
       }
       break;
     default:
-      shootStandard(entity, addProjectileFunction);
+      shootStandard(entity, addProjectileFunction, createProjectileFunction);
   }
 }
 
-function shootStandard(entity, addProjectileFunction) {
+function shootStandard(entity, addProjectileFunction, createProjectileFunction) {
   if (entity.numberOfProjectiles % 2 === 0) {
     for (let i = 1; i <= entity.numberOfProjectiles / 2; i++) {
       addProjectileFunction(
-        createProjectile(entity, {
+        createProjectileFunction(entity, {
           y: entity.y - (entity.size * i) / (entity.numberOfProjectiles / 2 + 1),
         }),
       );
       addProjectileFunction(
-        createProjectile(entity, {
+        createProjectileFunction(entity, {
           y: entity.y + (entity.size * i) / (entity.numberOfProjectiles / 2 + 1),
         }),
       );
@@ -76,15 +74,15 @@ function shootStandard(entity, addProjectileFunction) {
     // 5 : 1/3, 2/3
     // 7 : 1/4, 2/4, 3/4
     // 9 : 1/5, 2/5, 3/5, 4/5
-    addProjectileFunction(createProjectile(entity));
+    addProjectileFunction(createProjectileFunction(entity));
     for (let i = 1; i <= (entity.numberOfProjectiles - 1) / 2; i++) {
       addProjectileFunction(
-        createProjectile(entity, {
+        createProjectileFunction(entity, {
           y: entity.y - (entity.size * i) / ((entity.numberOfProjectiles + 1) / 2),
         }),
       );
       addProjectileFunction(
-        createProjectile(entity, {
+        createProjectileFunction(entity, {
           y: entity.y + (entity.size * i) / ((entity.numberOfProjectiles + 1) / 2),
         }),
       );
@@ -92,20 +90,20 @@ function shootStandard(entity, addProjectileFunction) {
   }
 }
 
-function shootSpread(entity, addProjectileFunction) {
+function shootSpread(entity, addProjectileFunction, createProjectileFunction) {
   switch (entity.numberOfProjectiles) {
     case 1:
-      addProjectileFunction(createProjectile(entity));
+      addProjectileFunction(createProjectileFunction(entity));
       break;
     case 2:
       addProjectileFunction(
-        createProjectile(entity, {
+        createProjectileFunction(entity, {
           y: entity.y - entity.size / 2,
           vy: -entity.projectileSpeed / 12,
         }),
       );
       addProjectileFunction(
-        createProjectile(entity, {
+        createProjectileFunction(entity, {
           y: entity.y + entity.size / 2,
           vy: entity.projectileSpeed / 12,
         }),
@@ -113,14 +111,14 @@ function shootSpread(entity, addProjectileFunction) {
       break;
     case 3:
       addProjectileFunction(
-        createProjectile(entity, {
+        createProjectileFunction(entity, {
           y: entity.y - entity.size / 2,
           vy: -entity.projectileSpeed / 8,
         }),
       );
-      addProjectileFunction(createProjectile(entity));
+      addProjectileFunction(createProjectileFunction(entity));
       addProjectileFunction(
-        createProjectile(entity, {
+        createProjectileFunction(entity, {
           y: entity.y + entity.size / 2,
           vy: entity.projectileSpeed / 8,
         }),
@@ -128,25 +126,25 @@ function shootSpread(entity, addProjectileFunction) {
       break;
     case 4:
       addProjectileFunction(
-        createProjectile(entity, {
+        createProjectileFunction(entity, {
           y: entity.y - entity.size / 2,
           vy: -entity.projectileSpeed / 8,
         }),
       );
       addProjectileFunction(
-        createProjectile(entity, {
+        createProjectileFunction(entity, {
           y: entity.y - entity.size / 4,
           vy: -entity.projectileSpeed / 12,
         }),
       );
       addProjectileFunction(
-        createProjectile(entity, {
+        createProjectileFunction(entity, {
           y: entity.y + entity.size / 4,
           vy: entity.projectileSpeed / 12,
         }),
       );
       addProjectileFunction(
-        createProjectile(entity, {
+        createProjectileFunction(entity, {
           y: entity.y + entity.size / 2,
           vy: entity.projectileSpeed / 8,
         }),
@@ -156,26 +154,26 @@ function shootSpread(entity, addProjectileFunction) {
     default:
       // TODO
       addProjectileFunction(
-        createProjectile(entity, {
+        createProjectileFunction(entity, {
           y: entity.y - entity.size / 2,
           vy: -entity.projectileSpeed / 4,
         }),
       );
       addProjectileFunction(
-        createProjectile(entity, {
+        createProjectileFunction(entity, {
           y: entity.y - entity.size / 4,
           vy: -entity.projectileSpeed / 8,
         }),
       );
-      addProjectileFunction(createProjectile(entity));
+      addProjectileFunction(createProjectileFunction(entity));
       addProjectileFunction(
-        createProjectile(entity, {
+        createProjectileFunction(entity, {
           y: entity.y + entity.size / 4,
           vy: entity.projectileSpeed / 8,
         }),
       );
       addProjectileFunction(
-        createProjectile(entity, {
+        createProjectileFunction(entity, {
           y: entity.y + entity.size / 2,
           vy: entity.projectileSpeed / 4,
         }),

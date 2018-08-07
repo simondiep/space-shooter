@@ -17,7 +17,6 @@ npm i && npm start
 - on projectile hit effects
   - explode
 - Easy to Difficult Levels
-- Doppelganger can shoot multiple projectiles
 - Support more than five projectiles for spread type
 
 # Longer term
@@ -25,6 +24,7 @@ npm i && npm start
 - Display damage numbers
 - Attack speed stat
 - AoE
+- Mutators
 - Hotkeys to switch between weapons
 - Rotating asteroids
 - Non-circle projectiles

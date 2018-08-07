@@ -180,11 +180,27 @@ export function createProjectile(entity, options) {
     size: entity.projectileSize,
     range: entity.projectileRange,
     damage: 1,
-    modifiers: getShotModifiers(),
+    modifiers: getShotModifiers(entity),
   };
   return Object.assign({}, defaultValues, options);
 }
 
-function getShotModifiers() {
-  return Object.assign({}, player.shotModifiers);
+export function createEnemyProjectile(entity, options) {
+  const defaultValues = {
+    id: getNextProjectileId(),
+    originX: entity.x - entity.size,
+    x: entity.x - entity.size,
+    y: entity.y,
+    vx: -entity.projectileSpeed,
+    vy: 0,
+    size: entity.projectileSize,
+    range: entity.projectileRange,
+    damage: 1,
+    modifiers: getShotModifiers(entity),
+  };
+  return Object.assign({}, defaultValues, options);
+}
+
+function getShotModifiers(entity) {
+  return Object.assign({}, entity.shotModifiers);
 }

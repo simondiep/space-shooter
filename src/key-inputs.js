@@ -1,4 +1,4 @@
-import { addPlayerProjectile, getPlayer, isGameOver } from "./persistent-entities.js";
+import { addPlayerProjectile, getPlayer, isGameOver, createProjectile } from "./persistent-entities.js";
 import { shoot } from "./shoot.js";
 
 export function keyDownHandler(event) {
@@ -9,18 +9,18 @@ export function keyDownHandler(event) {
   const player = getPlayer();
   switch (event.keyCode) {
     case 32: // Space
-      shoot(player, addPlayerProjectile);
+      shoot(player, addPlayerProjectile, createProjectile);
       if (player.unlockedBottomCannon) {
         const bottomCannon = Object.assign({}, player, {
           y: player.y + player.size,
         });
-        shoot(bottomCannon, addPlayerProjectile);
+        shoot(bottomCannon, addPlayerProjectile, createProjectile);
       }
       if (player.unlockedTopCannon) {
         const topCannon = Object.assign({}, player, {
           y: player.y - player.size,
         });
-        shoot(topCannon, addPlayerProjectile);
+        shoot(topCannon, addPlayerProjectile, createProjectile);
       }
       break;
     case 38: // up arrow
