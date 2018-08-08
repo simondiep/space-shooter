@@ -1,4 +1,20 @@
 export function shoot(entity, addProjectileFunction, createProjectileFunction) {
+  shootOnce(entity, addProjectileFunction, createProjectileFunction);
+  if (entity.unlockedBottomCannon) {
+    const bottomCannon = Object.assign({}, entity, {
+      y: entity.y + entity.size,
+    });
+    shootOnce(bottomCannon, addProjectileFunction, createProjectileFunction);
+  }
+  if (entity.unlockedTopCannon) {
+    const topCannon = Object.assign({}, entity, {
+      y: entity.y - entity.size,
+    });
+    shootOnce(topCannon, addProjectileFunction, createProjectileFunction);
+  }
+}
+
+function shootOnce(entity, addProjectileFunction, createProjectileFunction) {
   switch (entity.shotType) {
     case "overlap":
       for (let i = 0; i < entity.numberOfProjectiles; i++) {
@@ -9,7 +25,7 @@ export function shoot(entity, addProjectileFunction, createProjectileFunction) {
       for (let i = 0; i < entity.numberOfProjectiles; i++) {
         addProjectileFunction(
           createProjectileFunction(entity, {
-            vx: entity.projectileSpeed / 2,
+            range: entity.projectileRange / 2,
             size: entity.projectileSize * 4,
           }),
         );

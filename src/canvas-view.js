@@ -23,6 +23,34 @@ export function initializeCanvas() {
 export function drawIntroScreen() {
   context.drawImage(backgroundImage, 0, 0, backgroundImage.width, backgroundImage.height);
   drawText(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 3, "#dbfaff", "Space Shooter");
+  drawText(
+    CANVAS_WIDTH / 2,
+    (CANVAS_HEIGHT * 2) / 5,
+    "#ccbaa9",
+    "The year is 20xx.  Mankind has been decimated by alien invasions.",
+    18,
+  );
+  drawText(
+    CANVAS_WIDTH / 2,
+    (CANVAS_HEIGHT * 2) / 5 + 20,
+    "#ccbaa9",
+    "You are part of the few remaining humans struggling to survive.",
+    18,
+  );
+  drawText(
+    CANVAS_WIDTH / 2,
+    (CANVAS_HEIGHT * 2) / 5 + 40,
+    "#ccbaa9",
+    "Destroy aliens and gather their remains in order to improve your spaceship.",
+    18,
+  );
+  drawText(
+    CANVAS_WIDTH / 2,
+    (CANVAS_HEIGHT * 2) / 5 + 60,
+    "#ccbaa9",
+    "Build a ship powerful enough to wipe out the alien threat.",
+    18,
+  );
   drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 2) / 3, "#fffbbc", "Press 'r' to begin", 36);
   drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 4) / 5, "#dbdbdb", "WASD or Arrow keys to move, Space to shoot", 24);
 }

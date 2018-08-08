@@ -181,6 +181,8 @@ export function spawnDoppelganger() {
       projectileRange: player.projectileRange,
       shotType: player.shotType,
       shotModifiers: player.shotModifiers,
+      unlockedBottomCannon: player.unlockedBottomCannon,
+      unlockedTopCannon: player.unlockedTopCannon,
       images: {
         normal: enemyShipImage,
         damaged: enemyShipDamagedImage,

@@ -10,18 +10,6 @@ export function keyDownHandler(event) {
   switch (event.keyCode) {
     case 32: // Space
       shoot(player, addPlayerProjectile, createProjectile);
-      if (player.unlockedBottomCannon) {
-        const bottomCannon = Object.assign({}, player, {
-          y: player.y + player.size,
-        });
-        shoot(bottomCannon, addPlayerProjectile, createProjectile);
-      }
-      if (player.unlockedTopCannon) {
-        const topCannon = Object.assign({}, player, {
-          y: player.y - player.size,
-        });
-        shoot(topCannon, addPlayerProjectile, createProjectile);
-      }
       break;
     case 38: // up arrow
     case 87: // W
