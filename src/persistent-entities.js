@@ -30,7 +30,6 @@ let playerProjectiles = [];
 let enemyProjectiles = [];
 let enemyExplosions = [];
 let score = 0;
-let highScore = 0;
 let credits = 0;
 let gameStartTime;
 let timeAliveInSeconds = 0;
@@ -56,14 +55,15 @@ export function clearScore() {
   timeAliveInSeconds = 0;
 }
 
+export function getScore() {
+  return score;
+}
+
 export function incrementScore(scoreToAdd) {
   score += scoreToAdd;
   credits += scoreToAdd;
   document.getElementById("scoreLabel").innerHTML = score;
-  if (score > highScore) {
-    highScore = score;
-    document.getElementById("highScoreLabel").innerHTML = highScore;
-  }
+  document.getElementById("creditsLabel").innerHTML = credits;
 }
 
 export function getTimeAliveInSeconds() {
@@ -119,6 +119,10 @@ export function getEnemyExplosions() {
  ***************************/
 export function getPlayer() {
   return player;
+}
+
+export function setPlayerName(name) {
+  player.name = name;
 }
 
 export function resetPlayer() {

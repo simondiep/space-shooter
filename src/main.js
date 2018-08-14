@@ -9,30 +9,55 @@ import {
   spawnDoppelganger,
 } from "./enemy-spawner.js";
 import { keyDownHandler, keyUpHandler } from "./key-inputs.js";
-import { clearEnemies, clearProjectiles, clearScore, resetPlayer, setGameOver } from "./persistent-entities.js";
+import {
+  clearEnemies,
+  clearProjectiles,
+  clearScore,
+  getPlayer,
+  resetPlayer,
+  setGameOver,
+  setPlayerName,
+  getScore,
+} from "./persistent-entities.js";
 import { update } from "./game-loop.js";
+import { HIGH_SCORES_API_URL, displayHighScores, hideHighScores, pushHighScore } from "./high-scores.js";
 import { initializeCanvas, drawIntroScreen } from "./canvas-view.js";
 import {
   initializeShotTypesAndModifiers,
   initializeStatIncreaseButtons,
   populateShipCustomizationStats,
 } from "./ship-customization.js";
-import { muteSound } from "./sounds.js";
-import { playBackgroundMusic, playBigExplosionSound } from "./sounds.js";
+import { muteSound, playBackgroundMusic, playBigExplosionSound } from "./sounds.js";
 
 let oneTimePlayerInit = false;
 let oneTimeCustomizationInit = false;
+let playerEnteredName = false;
 
 initializeCanvas();
 drawIntroScreen();
+document.getElementById("nameInputDiv").style.display = "inline-block";
 
 function startGameEventListener(event) {
-  event.preventDefault();
+  if (playerEnteredName) {
+    event.preventDefault();
+  }
   switch (event.keyCode) {
     case 82: // r
+      if (!playerEnteredName) {
+        break;
+      }
+    case 13: // enter
+      if (!playerEnteredName) {
+        playerEnteredName = true;
+        document.getElementById("nameInputDiv").style.display = "none";
+        setPlayerName(document.getElementById("nameInput").value);
+      }
       startGame();
       break;
     case 67: // c
+      if (!playerEnteredName) {
+        break;
+      }
       document.getElementById("canvas").style.display = "none";
       populateShipCustomizationStats();
       document.getElementById("customization").style.display = "block";
@@ -63,6 +88,7 @@ function startGame() {
   window.removeEventListener("keydown", startGameEventListener);
   document.getElementById("canvas").style.display = "block";
   document.getElementById("customization").style.display = "none";
+  hideHighScores();
   if (!oneTimePlayerInit) {
     playBackgroundMusic();
 
@@ -75,9 +101,14 @@ function startGame() {
   startGameIntervals();
 }
 
-export function onGameOver() {
+export async function onGameOver() {
   setGameOver(true);
   playBigExplosionSound();
+  if (HIGH_SCORES_API_URL) {
+    if (await pushHighScore(getPlayer().name, getScore())) {
+      displayHighScores();
+    }
+  }
   window.addEventListener("keydown", startGameEventListener);
 }
 

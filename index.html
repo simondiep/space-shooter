@@ -27,6 +27,26 @@
       margin: 10px auto;
     }
 
+    #highScores {
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: white;
+      width: 200px;
+      background-color: black;
+    }
+
+    #highScoresTable {
+      position: absolute;
+      top: 20;
+      left: 0;
+      color: white;
+      text-align: center;
+      background-color: gray;
+      border: 1px solid white;
+      border-radius: 5px;
+    }
+
     .increaseStatButton {
       margin: 5px;
     }
@@ -41,19 +61,32 @@
     .increaseStatValueLabel {
       color: #fffbbc;
     }
+
+    #nameInputDiv {
+      color: white;
+      display: none;
+      position: absolute;
+      top: 360;
+      left: 550;
+    }
   </style>
   <script src="src/main.js" type="module"></script>
 </head>
 
 <body>
+  <div id="introScreen" style="display:none">
+    <label>
+      <input id="nameLabel" type="text" value="Player 1" />
+    </label>
+  </div>
   <div style="text-align: center;">
     <label>
       Score:
       <label id="scoreLabel">0</label>
     </label>
     <label style="padding-left: 20px">
-      High Score:
-      <label id="highScoreLabel">0</label>
+      Credits:
+      <label id="creditsLabel">0</label>
     </label>
     <label style="padding-left: 20px">
       Time Alive (seconds):
@@ -211,6 +244,14 @@
       </tr>
     </table>
     <div style="text-align: center; font-size: 36px; margin-top: 10px; color: #fffbbc;">Press 'r' to Start Game</div>
+  </div>
+  <div id="nameInputDiv">
+    Name:
+    <input id="nameInput" type="text" value="Player"></input>
+  </div>
+  <div id="highScores" style="display: none">
+    High Scores
+    <table id="highScoresTable"></table>
   </div>
   <div id="assets" style="display: none">
     <img id="asteroidImage" src="assets/images/asteroid.png" />
