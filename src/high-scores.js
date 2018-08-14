@@ -1,5 +1,6 @@
 // Put your webtask URL here
-export const HIGH_SCORES_API_URL = "";
+export const HIGH_SCORES_API_URL =
+  "https://wt-82e23ef79ade2a8d8cfed3117b878cdb-0.sandbox.auth0-extend.com/space-shooter-highscores";
 
 export async function displayHighScores() {
   // Retrieve high scores and display them
