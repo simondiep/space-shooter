@@ -35,7 +35,7 @@ let playerEnteredName = false;
 
 initializeCanvas();
 drawIntroScreen();
-document.getElementById("nameInputDiv").style.display = "inline-block";
+document.getElementById("nameInputDiv").style.display = "block";
 
 function startGameEventListener(event) {
   if (playerEnteredName) {
@@ -75,6 +75,13 @@ window.addEventListener("keydown", startGameEventListener);
 
 let gameIntervals = [];
 
+function clearEnemyIntervals() {
+  for (let i = 1; i < gameIntervals.length; i++) {
+    clearInterval(gameIntervals[i]);
+  }
+  gameIntervals.length = 1;
+}
+
 function clearGameIntervals() {
   for (let intervalId of gameIntervals) {
     clearInterval(intervalId);
@@ -103,6 +110,7 @@ function startGame() {
 
 export async function onGameOver() {
   setGameOver(true);
+  clearEnemyIntervals();
   playBigExplosionSound();
   if (HIGH_SCORES_API_URL) {
     if (await pushHighScore(getPlayer().name, getScore())) {
