@@ -36,7 +36,6 @@ export function update() {
   removeEnemiesThatAreOffScreen();
   removeProjectilesThatAreOffScreen();
 
-  const enemies = getEnemies();
   const player = getPlayer();
   const playerProjectiles = getPlayerProjectiles();
   const enemyProjectiles = getEnemyProjectiles();
@@ -123,7 +122,18 @@ export function update() {
     enemyExplosions.splice(enemyExplosionIndex, 1);
   }
 
-  // Move and draw enemies
+  moveAndDrawEnemiesWhileCheckingCollisions();
+
+  if (isGameOver()) {
+    drawGameOverScreen();
+  }
+}
+
+function moveAndDrawEnemiesWhileCheckingCollisions() {
+  const enemies = getEnemies();
+  const player = getPlayer();
+  const playerProjectiles = getPlayerProjectiles();
+
   for (let enemyIndex = enemies.length - 1; enemyIndex >= 0; enemyIndex--) {
     const enemy = enemies[enemyIndex];
     enemy.x += enemy.vx;
@@ -202,7 +212,7 @@ export function update() {
     }
 
     if (enemyHasBeenDestroyed) {
-      enemyExplosions.push(enemy);
+      getEnemyExplosions().push(enemy);
       shakeScreen(2);
       playExplosionSound();
       incrementScore(enemy.score);
@@ -225,10 +235,6 @@ export function update() {
           enemy.lastShotTime = Date.now();
         }
       }
-    }
-
-    if (isGameOver()) {
-      drawGameOverScreen();
     }
   }
 }
