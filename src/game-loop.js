@@ -4,7 +4,6 @@ import {
   createProjectile,
   getEnemies,
   getEnemyExplosions,
-  getPlayer,
   getEnemyProjectiles,
   getPlayerProjectiles,
   incrementScore,
@@ -14,14 +13,15 @@ import {
   updateTimeAliveInSeconds,
   addEnemyProjectile,
 } from "./persistent-entities.js";
+import { getPlayer, renderPlayer } from "./entities/player.js";
 import { onGameOver } from "./main.js";
 import {
   drawBackground,
   drawExplosion,
   drawGameOverScreen,
   drawImage,
-  drawPlayer,
   drawEnemy,
+  getContext,
   shakeScreen,
 } from "./canvas-view.js";
 import { playHitSound, playExplosionSound } from "./sounds.js";
@@ -112,7 +112,7 @@ export function update() {
       drawExplosion(player.turnCounter, player.x, player.y, player.size);
     }
   } else {
-    drawPlayer(player);
+    renderPlayer(getContext());
   }
   player.turnCounter++;
   const enemyExplosions = getEnemyExplosions();

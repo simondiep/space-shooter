@@ -9,16 +9,8 @@ import {
   spawnDoppelganger,
 } from "./enemy-spawner.js";
 import { keyDownHandler, keyUpHandler } from "./key-inputs.js";
-import {
-  clearEnemies,
-  clearProjectiles,
-  clearScore,
-  getPlayer,
-  resetPlayer,
-  setGameOver,
-  setPlayerName,
-  getScore,
-} from "./persistent-entities.js";
+import { clearEnemies, clearProjectiles, clearScore, setGameOver, getScore } from "./persistent-entities.js";
+import { getPlayer, resetPlayer, setPlayerName } from "./entities/player.js";
 import { update } from "./game-loop.js";
 import { HIGH_SCORES_API_URL, displayHighScores, hideHighScores, pushHighScore } from "./high-scores.js";
 import { initializeCanvas, drawIntroScreen } from "./canvas-view.js";

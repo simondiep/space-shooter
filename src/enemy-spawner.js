@@ -1,5 +1,6 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants.js";
-import { addEnemy, getPlayer, getTimeAliveInSeconds } from "./persistent-entities.js";
+import { addEnemy, getTimeAliveInSeconds } from "./persistent-entities.js";
+import { getPlayer } from "./entities/player.js";
 
 const asteroidImage = document.getElementById("asteroidImage");
 const enemyShipImage = document.getElementById("enemyShipImage");

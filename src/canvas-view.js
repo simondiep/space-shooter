@@ -20,6 +20,10 @@ export function initializeCanvas() {
   backgroundImage = document.getElementById("backgroundImage");
 }
 
+export function getContext() {
+  return context;
+}
+
 export function drawIntroScreen() {
   context.drawImage(backgroundImage, 0, 0, backgroundImage.width, backgroundImage.height);
   drawText(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 3, "#dbfaff", "Space Shooter");
@@ -126,16 +130,6 @@ export function drawExplosion(turnCounter, x, y, size) {
 
 export function drawImage(image, x, y, size) {
   context.drawImage(image, x, y, size, size);
-}
-
-export function drawPlayer(player) {
-  context.drawImage(
-    player.turnCounter % 5 === 0 ? player.images.one : player.images.two,
-    player.x - player.size,
-    player.y - player.size,
-    player.size * 2,
-    player.size * 2,
-  );
 }
 
 export function shakeScreen(scale) {
