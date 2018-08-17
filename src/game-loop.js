@@ -111,7 +111,7 @@ export function update() {
       drawAnimatedEntity(player, player.images.dead);
     }
   } else {
-    drawAnimatedEntity(player, player.images.ship);
+    drawAnimatedEntity(player, player.images.ship, true);
   }
   player.turnCounter++;
   const recentlyKilledEnemies = getRecentlyKilledEnemies();
