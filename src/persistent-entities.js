@@ -2,9 +2,9 @@ import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants.js";
 import { playShootSound } from "./sounds.js";
 
 let enemies = [];
+let recentlyKilledEnemies = [];
 let playerProjectiles = [];
 let enemyProjectiles = [];
-let enemyExplosions = [];
 let score = 0;
 let credits = 0;
 let gameStartTime;
@@ -86,8 +86,8 @@ export function removeEnemiesThatAreOffScreen() {
   });
 }
 
-export function getEnemyExplosions() {
-  return enemyExplosions;
+export function getRecentlyKilledEnemies() {
+  return recentlyKilledEnemies;
 }
 
 /*******************************

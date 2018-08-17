@@ -13,11 +13,14 @@ const PLAYER_DEFAULTS = {
   vx: 0,
   vy: 0,
   images: {
-    shipImages: [ship1Image, ship2Image],
+    ship: {
+      images: [ship1Image, ship2Image],
+      tickCount: 0,
+      ticksPerImage: 5,
+      displayedImageIndex: 0,
+    },
+    dead: getDeadImages(),
     projectile: projectileImage,
-    tickCount: 0,
-    ticksPerImage: 5,
-    displayedImageIndex: 0,
   },
 };
 
@@ -46,6 +49,7 @@ export function getPlayer() {
 
 export function resetPlayer() {
   player = Object.assign(player, PLAYER_DEFAULTS);
+  player.images.dead = getDeadImages();
 }
 
 export function setPlayerName(name) {
@@ -53,20 +57,50 @@ export function setPlayerName(name) {
 }
 
 export function renderPlayer(context) {
+  const playerShip = player.images.ship;
   context.drawImage(
-    player.images.shipImages[player.images.displayedImageIndex],
+    playerShip.images[playerShip.displayedImageIndex],
     player.x - player.size,
     player.y - player.size,
     player.size * 2,
     player.size * 2,
   );
-  player.images.tickCount += 1;
-  if (player.images.tickCount > player.images.ticksPerImage) {
-    player.images.tickCount = 0;
-    if (player.images.displayedImageIndex < player.images.shipImages.length - 1) {
-      player.images.displayedImageIndex += 1;
+  playerShip.tickCount += 1;
+  if (playerShip.tickCount > playerShip.ticksPerImage) {
+    playerShip.tickCount = 0;
+    if (playerShip.displayedImageIndex < playerShip.images.length - 1) {
+      playerShip.displayedImageIndex += 1;
     } else {
-      player.images.displayedImageIndex = 0;
+      playerShip.displayedImageIndex = 0;
     }
   }
+}
+
+export function renderDeadPlayer(context) {
+  const playerDead = player.images.dead;
+  context.drawImage(
+    playerDead.images[playerDead.displayedImageIndex],
+    player.x - player.size,
+    player.y - player.size,
+    player.size * 2,
+    player.size * 2,
+  );
+  playerDead.tickCount += 1;
+  if (playerDead.tickCount > playerDead.ticksPerImage) {
+    playerDead.tickCount = 0;
+    if (playerDead.displayedImageIndex < playerDead.images.length - 1) {
+      playerDead.displayedImageIndex += 1;
+    } else {
+      playerDead.displayedImageIndex = 0;
+    }
+  }
+}
+
+function getDeadImages() {
+  return {
+    images: [explosion1Image, explosion2Image, explosion3Image, explosion4Image],
+    tickCount: 0,
+    ticksPerImage: 5,
+    displayedImageIndex: 0,
+  };
 }

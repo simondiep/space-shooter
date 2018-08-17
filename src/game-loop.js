@@ -3,7 +3,7 @@ import {
   createEnemyProjectile,
   createProjectile,
   getEnemies,
-  getEnemyExplosions,
+  getRecentlyKilledEnemies,
   getEnemyProjectiles,
   getPlayerProjectiles,
   incrementScore,
@@ -13,15 +13,14 @@ import {
   updateTimeAliveInSeconds,
   addEnemyProjectile,
 } from "./persistent-entities.js";
-import { getPlayer, renderPlayer } from "./entities/player.js";
+import { getPlayer } from "./entities/player.js";
 import { onGameOver } from "./main.js";
 import {
+  drawAnimatedEntity,
   drawBackground,
-  drawExplosion,
   drawGameOverScreen,
   drawImage,
   drawEnemy,
-  getContext,
   shakeScreen,
 } from "./canvas-view.js";
 import { playHitSound, playExplosionSound } from "./sounds.js";
@@ -108,18 +107,20 @@ export function update() {
   }
 
   if (isGameOver()) {
-    if (player.turnCounter % 10) {
-      drawExplosion(player.turnCounter, player.x, player.y, player.size);
+    if (!player.images.dead.finishedAnimation) {
+      drawAnimatedEntity(player, player.images.dead);
     }
   } else {
-    renderPlayer(getContext());
+    drawAnimatedEntity(player, player.images.ship);
   }
   player.turnCounter++;
-  const enemyExplosions = getEnemyExplosions();
-  for (let enemyExplosionIndex = enemyExplosions.length - 1; enemyExplosionIndex >= 0; enemyExplosionIndex--) {
-    const enemyExplosion = enemyExplosions[enemyExplosionIndex];
-    drawExplosion(player.turnCounter, enemyExplosion.x, enemyExplosion.y, enemyExplosion.size);
-    enemyExplosions.splice(enemyExplosionIndex, 1);
+  const recentlyKilledEnemies = getRecentlyKilledEnemies();
+  for (let enemyIndex = recentlyKilledEnemies.length - 1; enemyIndex >= 0; enemyIndex--) {
+    const recentlyKilledEnemy = recentlyKilledEnemies[enemyIndex];
+    drawAnimatedEntity(recentlyKilledEnemy, recentlyKilledEnemy.images.dead);
+    if (recentlyKilledEnemy.images.dead.finishedAnimation) {
+      recentlyKilledEnemies.splice(enemyIndex, 1);
+    }
   }
 
   moveAndDrawEnemiesWhileCheckingCollisions();
@@ -212,7 +213,7 @@ function moveAndDrawEnemiesWhileCheckingCollisions() {
     }
 
     if (enemyHasBeenDestroyed) {
-      getEnemyExplosions().push(enemy);
+      getRecentlyKilledEnemies().push(enemy);
       shakeScreen(2);
       playExplosionSound();
       incrementScore(enemy.score);

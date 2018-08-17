@@ -2,16 +2,6 @@ import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants.js";
 import { addEnemy, getTimeAliveInSeconds } from "./persistent-entities.js";
 import { getPlayer } from "./entities/player.js";
 
-const asteroidImage = document.getElementById("asteroidImage");
-const enemyShipImage = document.getElementById("enemyShipImage");
-const enemyShipDamagedImage = document.getElementById("enemyShipDamagedImage");
-const heartyImage = document.getElementById("heartyImage");
-const heartyDamagedImage = document.getElementById("heartyDamagedImage");
-const spaceInvaderImage = document.getElementById("spaceInvaderImage");
-const spaceInvaderDamagedImage = document.getElementById("spaceInvaderDamagedImage");
-const speedsterImage = document.getElementById("speedsterImage");
-const speedsterDamagedImage = document.getElementById("speedsterDamagedImage");
-
 const MAX_Y_SPAWN = CANVAS_HEIGHT - 30;
 
 export function spawnHearty() {
@@ -29,6 +19,7 @@ export function spawnHearty() {
       images: {
         normal: heartyImage,
         damaged: heartyDamagedImage,
+        dead: getDeadImages(),
       },
     }),
   );
@@ -49,6 +40,7 @@ export function spawnSpeedster() {
       images: {
         normal: speedsterImage,
         damaged: speedsterDamagedImage,
+        dead: getDeadImages(),
       },
     }),
   );
@@ -73,6 +65,7 @@ export function spawnSpaceInvader() {
       images: {
         normal: spaceInvaderImage,
         damaged: spaceInvaderDamagedImage,
+        dead: getDeadImages(),
       },
     }),
   );
@@ -101,6 +94,7 @@ export function spawnBoss() {
           images: {
             normal: spaceInvaderImage,
             damaged: spaceInvaderDamagedImage,
+            dead: getDeadImages(),
           },
         }),
       );
@@ -121,6 +115,7 @@ export function spawnBoss() {
           images: {
             normal: speedsterImage,
             damaged: speedsterDamagedImage,
+            dead: getDeadImages(),
           },
         }),
       );
@@ -141,6 +136,7 @@ export function spawnBoss() {
           images: {
             normal: heartyImage,
             damaged: heartyDamagedImage,
+            dead: getDeadImages(),
           },
         }),
       );
@@ -159,6 +155,7 @@ export function spawnAsteroid() {
       images: {
         normal: asteroidImage,
         damaged: asteroidImage,
+        dead: getDeadImages(),
       },
     }),
   );
@@ -187,6 +184,7 @@ export function spawnDoppelganger() {
       images: {
         normal: enemyShipImage,
         damaged: enemyShipDamagedImage,
+        dead: getDeadImages(),
       },
     }),
   );
@@ -209,5 +207,14 @@ function createEnemy(overrides) {
     turnsToDisplayDamage: 0,
     hitByProjectiles: [],
     ...overrides,
+  };
+}
+
+function getDeadImages() {
+  return {
+    images: [explosion1Image, explosion2Image, explosion3Image, explosion4Image],
+    tickCount: 0,
+    ticksPerImage: 3,
+    displayedImageIndex: 0,
   };
 }
