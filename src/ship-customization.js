@@ -1,22 +1,6 @@
-import { getCredits, getPlayer, spendCredits } from "./persistent-entities.js";
+import { getCredits, spendCredits } from "./persistent-entities.js";
+import { getPlayer } from "./entities/player.js";
 import { playUpgradeSound } from "./sounds.js";
-
-export const INITIAL_PLAYER_STATS = {
-  size: 50,
-  speed: 1,
-  topSpeed: 5,
-  numberOfProjectiles: 1,
-  projectileSize: 10,
-  projectileSpeed: 5,
-  projectileRange: 300,
-  shotType: "standard",
-  shotModifiers: {
-    pierce: 0,
-    fork: 0,
-  },
-  unlockedBottomCannon: false,
-  unlockedTopCannon: false,
-};
 
 const DECREASE_STAT_PRICES = {
   size: 2,

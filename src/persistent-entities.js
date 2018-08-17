@@ -1,34 +1,10 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants.js";
 import { playShootSound } from "./sounds.js";
-import { INITIAL_PLAYER_STATS } from "./ship-customization.js";
 
-const ship1Image = document.getElementById("ship1Image");
-const ship2Image = document.getElementById("ship2Image");
-const projectileImage = document.getElementById("projectileImage");
-const PLAYER_DEFAULTS = {
-  x: 50,
-  y: CANVAS_HEIGHT / 2,
-  turnCounter: 0,
-  directionsPressed: {
-    UP: false,
-    DOWN: false,
-    LEFT: false,
-    RIGHT: false,
-  },
-  vx: 0,
-  vy: 0,
-  images: {
-    one: ship1Image,
-    two: ship2Image,
-    projectile: projectileImage,
-  },
-};
-
-let player = Object.assign({}, PLAYER_DEFAULTS, INITIAL_PLAYER_STATS);
 let enemies = [];
+let recentlyKilledEnemies = [];
 let playerProjectiles = [];
 let enemyProjectiles = [];
-let enemyExplosions = [];
 let score = 0;
 let credits = 0;
 let gameStartTime;
@@ -110,23 +86,8 @@ export function removeEnemiesThatAreOffScreen() {
   });
 }
 
-export function getEnemyExplosions() {
-  return enemyExplosions;
-}
-
-/***************************
- * Player Helper Functions *
- ***************************/
-export function getPlayer() {
-  return player;
-}
-
-export function setPlayerName(name) {
-  player.name = name;
-}
-
-export function resetPlayer() {
-  player = Object.assign(player, PLAYER_DEFAULTS);
+export function getRecentlyKilledEnemies() {
+  return recentlyKilledEnemies;
 }
 
 /*******************************

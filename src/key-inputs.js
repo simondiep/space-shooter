@@ -1,4 +1,5 @@
-import { addPlayerProjectile, getPlayer, isGameOver, createProjectile } from "./persistent-entities.js";
+import { addPlayerProjectile, isGameOver, createProjectile } from "./persistent-entities.js";
+import { getPlayer } from "./entities/player.js";
 import { shoot } from "./shoot.js";
 
 export function keyDownHandler(event) {

@@ -9,8 +9,6 @@ let screenShakeTranslatedY = 0;
 // Number of renders before resetting the screen to original state
 let screenShakeDuration = 0;
 const MAX_SCREEN_SHAKE_DURATION = 30;
-const explosion1Image = document.getElementById("explosion1Image");
-const explosion2Image = document.getElementById("explosion2Image");
 
 export function initializeCanvas() {
   const canvas = document.getElementById("canvas");
@@ -106,6 +104,27 @@ export function drawBackground() {
   );
 }
 
+export function drawAnimatedEntity(entity, entityImageBase, loop = false) {
+  context.drawImage(
+    entityImageBase.images[entityImageBase.displayedImageIndex],
+    entity.x - entity.size,
+    entity.y - entity.size,
+    entity.size * 2,
+    entity.size * 2,
+  );
+  entityImageBase.tickCount += 1;
+  if (entityImageBase.tickCount > entityImageBase.ticksPerImage) {
+    entityImageBase.tickCount = 0;
+    if (entityImageBase.displayedImageIndex < entityImageBase.images.length - 1) {
+      entityImageBase.displayedImageIndex += 1;
+    } else if (loop) {
+      entityImageBase.displayedImageIndex = 0;
+    } else {
+      entityImageBase.finishedAnimation = true;
+    }
+  }
+}
+
 export function drawEnemy(enemy) {
   context.drawImage(
     enemy.turnsToDisplayDamage > 0 ? enemy.images.damaged : enemy.images.normal,
@@ -116,26 +135,8 @@ export function drawEnemy(enemy) {
   );
 }
 
-export function drawExplosion(turnCounter, x, y, size) {
-  if (turnCounter % 5 === 0) {
-    context.drawImage(explosion2Image, x - size, y - size, size * 2, size * 2);
-  } else {
-    context.drawImage(explosion1Image, x - size, y - size, size * 2, size * 2);
-  }
-}
-
 export function drawImage(image, x, y, size) {
   context.drawImage(image, x, y, size, size);
-}
-
-export function drawPlayer(player) {
-  context.drawImage(
-    player.turnCounter % 5 === 0 ? player.images.one : player.images.two,
-    player.x - player.size,
-    player.y - player.size,
-    player.size * 2,
-    player.size * 2,
-  );
 }
 
 export function shakeScreen(scale) {
