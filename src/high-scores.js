@@ -1,6 +1,8 @@
 // Put your webtask URL here
 export const HIGH_SCORES_API_URL = "";
 
+let lastPushedHighScore = {};
+
 export async function displayHighScores() {
   // Retrieve high scores and display them
   const response = await fetch(HIGH_SCORES_API_URL);
@@ -21,7 +23,15 @@ export async function displayHighScores() {
   highscoresTable.appendChild(headerRow);
 
   for (const highscoreObject of highscoresObject.highscores) {
+    let highlightRow = false;
+    if (highscoreObject.name === lastPushedHighScore.name && highscoreObject.score === lastPushedHighScore.score) {
+      highlightRow = true;
+    }
+
     const highscoreRow = document.createElement("tr");
+    if (highlightRow) {
+      highscoreRow.classList.add("highlightedHighScoreRow");
+    }
     const nameDiv = document.createElement("td");
     nameDiv.innerHTML = highscoreObject.name;
     highscoreRow.appendChild(nameDiv);
@@ -46,6 +56,7 @@ export async function pushHighScore(name, score) {
       },
       body: JSON.stringify({ name, score }),
     });
+    lastPushedHighScore = { name, score };
     return true;
   } catch (e) {
     return false;

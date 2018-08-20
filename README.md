@@ -18,7 +18,6 @@ This game leverages an external store (webtask.io) for high scores. To set up yo
 
 # Ideas
 
-- Colorize player's name in high score table
 - Easy to Difficult Levels
 
 # Longer term
