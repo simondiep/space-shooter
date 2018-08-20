@@ -21,13 +21,25 @@ import {
 } from "./ship-customization.js";
 import { muteSound, playBackgroundMusic, playBigExplosionSound } from "./sounds.js";
 
+const LOCAL_STORAGE_PLAYER_NAME_KEY = "space-shooter-player-name";
 let oneTimePlayerInit = false;
 let oneTimeCustomizationInit = false;
 let playerEnteredName = false;
+let gameIntervals = [];
 
 initializeCanvas();
 drawIntroScreen();
-document.getElementById("nameInputDiv").style.display = "block";
+initializeAndShowPlayerNameInput();
+
+window.addEventListener("keydown", startGameEventListener);
+
+function initializeAndShowPlayerNameInput() {
+  const locallyStoredName = localStorage.getItem(LOCAL_STORAGE_PLAYER_NAME_KEY);
+  if (locallyStoredName) {
+    document.getElementById("nameInput").value = locallyStoredName;
+  }
+  document.getElementById("nameInputDiv").style.display = "block";
+}
 
 function startGameEventListener(event) {
   if (playerEnteredName) {
@@ -42,7 +54,9 @@ function startGameEventListener(event) {
       if (!playerEnteredName) {
         playerEnteredName = true;
         document.getElementById("nameInputDiv").style.display = "none";
-        setPlayerName(document.getElementById("nameInput").value);
+        const enteredPlayerName = document.getElementById("nameInput").value;
+        setPlayerName(enteredPlayerName);
+        localStorage.setItem(LOCAL_STORAGE_PLAYER_NAME_KEY, enteredPlayerName);
       }
       startGame();
       break;
@@ -62,10 +76,6 @@ function startGameEventListener(event) {
       break;
   }
 }
-
-window.addEventListener("keydown", startGameEventListener);
-
-let gameIntervals = [];
 
 function clearEnemyIntervals() {
   for (let i = 1; i < gameIntervals.length; i++) {
