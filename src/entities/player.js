@@ -3,7 +3,6 @@ import { CANVAS_HEIGHT } from "../constants.js";
 const PLAYER_DEFAULTS = {
   x: 50,
   y: CANVAS_HEIGHT / 2,
-  turnCounter: 0,
   directionsPressed: {
     UP: false,
     DOWN: false,

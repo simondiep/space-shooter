@@ -35,7 +35,7 @@ export function drawIntroScreen() {
     "You are part of the few remaining humans struggling to survive.",
     18,
   );
-  drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 2) / 5 + 40, "#ccbaa9", "Avoid asteroids and shoot everything else", 18);
+  drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 2) / 5 + 40, "#ccbaa9", "Shoot everything, avoid asteroids", 18);
   drawText(
     CANVAS_WIDTH / 2,
     (CANVAS_HEIGHT * 2) / 5 + 60,

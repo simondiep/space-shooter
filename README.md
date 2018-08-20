@@ -18,18 +18,7 @@ This game leverages an external store (webtask.io) for high scores. To set up yo
 
 # Ideas
 
-- Explain more about game at intro
-- Colorize player's name in high score table
-- Longer projectiles that look cool but don't have additional power
-- Faster pace like videoball
-- stylize radio/checkboxes
-- on hold
-  - charge up shot
-  - auto-fire
-- on projectile hit effects
-  - explode
 - Easy to Difficult Levels
-- Support more than five projectiles for spread type
 
 # Longer term
 
@@ -45,7 +34,15 @@ This game leverages an external store (webtask.io) for high scores. To set up yo
 - Twin ships
 - Terrain that is collidable
 - Reduce fire rate when space bar held down
-- Progression system
+- Longer projectiles that look cool but don't have additional power
+- Faster pace like videoball
+- stylize radio/checkboxes
+- on hold
+  - charge up shot
+  - auto-fire
+- on projectile hit effects
+  - explode
+- Support more than five projectiles for spread type
 
 - Like Life-force?
 - Exp system

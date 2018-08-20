@@ -113,7 +113,6 @@ export function update() {
   } else {
     drawAnimatedEntity(player, player.images.ship, true);
   }
-  player.turnCounter++;
   const recentlyKilledEnemies = getRecentlyKilledEnemies();
   for (let enemyIndex = recentlyKilledEnemies.length - 1; enemyIndex >= 0; enemyIndex--) {
     const recentlyKilledEnemy = recentlyKilledEnemies[enemyIndex];
