@@ -18,7 +18,16 @@ This game leverages an external store (webtask.io) for high scores. To set up yo
 
 # Ideas
 
-- Easy to Difficult Levels
+- Endless vs Arcade mode
+  - Level 1
+    - introduce player to controls
+    - introduce game mechanic - What is the special game mechanic?
+    - introduce single enemy type and quirk/pattern
+    - midboss for that enemy type - apply all that you've learned so far
+  - Level 2
+    - introduce single enemy type and quirk/pattern
+    - mix up enemy types
+    - boss
 
 # Longer term
 
