@@ -20,6 +20,7 @@ import {
   populateShipCustomizationStats,
 } from "./ship-customization.js";
 import { muteSound, playBackgroundMusic, playBigExplosionSound } from "./sounds.js";
+import { startLevel } from "./levels/level-manager.js";
 
 const LOCAL_STORAGE_PLAYER_NAME_KEY = "space-shooter-player-name";
 let oneTimePlayerInit = false;
@@ -125,16 +126,22 @@ export async function onGameOver() {
 function startGameIntervals() {
   gameIntervals.push(setInterval(() => requestAnimationFrame(update), 1000 / 60));
 
-  gameIntervals.push(setInterval(() => requestAnimationFrame(spawnAsteroid), 1000));
-  gameIntervals.push(setInterval(() => requestAnimationFrame(spawnHearty), 1000));
-  gameIntervals.push(setInterval(() => requestAnimationFrame(spawnSpaceInvader), 500));
-  gameIntervals.push(setInterval(() => requestAnimationFrame(spawnSpeedster), 2000));
-  gameIntervals.push(setInterval(() => requestAnimationFrame(spawnBoss), 10000));
+  startLevel();
+  // spawnSpaceInvader();
+  // if (spaceInvaderDies) {
+  //   spawnAsteroid();
+  // }
 
-  gameIntervals.push(setInterval(() => requestAnimationFrame(spawnDoppelganger), 33000));
+  // gameIntervals.push(setInterval(() => requestAnimationFrame(spawnAsteroid), 1000));
+  // gameIntervals.push(setInterval(() => requestAnimationFrame(spawnHearty), 1000));
+  // gameIntervals.push(setInterval(() => requestAnimationFrame(spawnSpaceInvader), 500));
+  // gameIntervals.push(setInterval(() => requestAnimationFrame(spawnSpeedster), 2000));
+  // gameIntervals.push(setInterval(() => requestAnimationFrame(spawnBoss), 10000));
 
-  gameIntervals.push(setInterval(() => requestAnimationFrame(spawnSpaceInvaderWave), 9000));
-  gameIntervals.push(setInterval(() => requestAnimationFrame(spawnSpeedsterWave), 14000));
+  // gameIntervals.push(setInterval(() => requestAnimationFrame(spawnDoppelganger), 33000));
+
+  // gameIntervals.push(setInterval(() => requestAnimationFrame(spawnSpaceInvaderWave), 9000));
+  // gameIntervals.push(setInterval(() => requestAnimationFrame(spawnSpeedsterWave), 14000));
 }
 
 function resetGameState() {
