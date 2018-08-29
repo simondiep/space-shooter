@@ -25,7 +25,12 @@ import {
 } from "./canvas-view.js";
 import { playHitSound, playExplosionSound } from "./sounds.js";
 import { shoot } from "./shoot.js";
-import { checkIfLevelIsComplete, onLevelComplete } from "./levels/level-manager.js";
+import {
+  checkIfLevelIsComplete,
+  isTutorialInProgress,
+  onLevelComplete,
+  runLevelLogic,
+} from "./levels/tutorial-level-manager.js";
 
 export function update() {
   if (!isGameOver()) {
@@ -33,8 +38,12 @@ export function update() {
   }
   drawBackground();
 
-  if (checkIfLevelIsComplete()) {
-    onLevelComplete();
+  if (isTutorialInProgress()) {
+    if (checkIfLevelIsComplete()) {
+      onLevelComplete();
+    } else {
+      runLevelLogic();
+    }
   }
 
   loopEnemiesThatAreOffScreen();
@@ -130,7 +139,7 @@ export function update() {
   moveAndDrawEnemiesWhileCheckingCollisions();
 
   if (isGameOver()) {
-    drawGameOverScreen();
+    drawGameOverScreen(isTutorialInProgress());
   }
 }
 
