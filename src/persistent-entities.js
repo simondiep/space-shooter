@@ -78,12 +78,18 @@ export function clearEnemies() {
   enemies.length = 0;
 }
 
-export function removeEnemiesThatAreOffScreen() {
-  enemies = enemies.filter(function(enemy) {
-    if (enemy.x > -30) {
-      return true;
+export function loopEnemiesThatAreOffScreen() {
+  for (const enemy of enemies) {
+    if (enemy.x < -30) {
+      enemy.x = CANVAS_WIDTH + 10;
     }
-  });
+    if (enemy.y < -20) {
+      enemy.y = CANVAS_HEIGHT + 10;
+    }
+    if (enemy.y > CANVAS_HEIGHT + 20) {
+      enemy.y = -10;
+    }
+  }
 }
 
 export function getRecentlyKilledEnemies() {

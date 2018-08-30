@@ -8,7 +8,7 @@ import {
   getPlayerProjectiles,
   incrementScore,
   isGameOver,
-  removeEnemiesThatAreOffScreen,
+  loopEnemiesThatAreOffScreen,
   removeProjectilesThatAreOffScreen,
   updateTimeAliveInSeconds,
   addEnemyProjectile,
@@ -25,6 +25,12 @@ import {
 } from "./canvas-view.js";
 import { playHitSound, playExplosionSound } from "./sounds.js";
 import { shoot } from "./shoot.js";
+import {
+  checkIfLevelIsComplete,
+  isTutorialInProgress,
+  onLevelComplete,
+  runLevelLogic,
+} from "./levels/tutorial-level-manager.js";
 
 export function update() {
   if (!isGameOver()) {
@@ -32,7 +38,15 @@ export function update() {
   }
   drawBackground();
 
-  removeEnemiesThatAreOffScreen();
+  if (isTutorialInProgress()) {
+    if (checkIfLevelIsComplete()) {
+      onLevelComplete();
+    } else {
+      runLevelLogic();
+    }
+  }
+
+  loopEnemiesThatAreOffScreen();
   removeProjectilesThatAreOffScreen();
 
   const player = getPlayer();
@@ -125,7 +139,7 @@ export function update() {
   moveAndDrawEnemiesWhileCheckingCollisions();
 
   if (isGameOver()) {
-    drawGameOverScreen();
+    drawGameOverScreen(isTutorialInProgress());
   }
 }
 

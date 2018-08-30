@@ -43,15 +43,21 @@ export function drawIntroScreen() {
     "Build a ship powerful enough to wipe out the alien threat.",
     18,
   );
-  drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 2) / 3, "#fffbbc", "Press 'Enter' to begin", 36);
-  drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 4) / 5, "#dbdbdb", "WASD or Arrow keys to move, Space to shoot", 24);
+  drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 2) / 3, "#fffbbc", "Press 'Tab' to begin tutorial", 36);
+  drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 3) / 4, "#fffbbc", "Press 'Enter' to begin game", 36);
+  drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 5) / 6, "#dbdbdb", "WASD or Arrow keys to move, Space to shoot", 24);
 }
 
-export function drawGameOverScreen() {
+export function drawGameOverScreen(tutorialInProgress = false) {
   resetScreenShake();
-  drawText(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 3, "#ffa0a0", "Game Over");
-  drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 2) / 3, "#fffbbc", "Press 'Enter' or 'r' to restart", 36);
-  drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 4) / 5, "#fffbbc", "Press 'c' to customize your ship", 36);
+  if (tutorialInProgress) {
+    drawText(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 3, "#ffa0a0", "Whoops!");
+    drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 2) / 3, "#fffbbc", "Press 'Tab' to retry", 36);
+  } else {
+    drawText(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 3, "#ffa0a0", "Game Over");
+    drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 2) / 3, "#fffbbc", "Press 'Enter' or 'r' to restart", 36);
+    drawText(CANVAS_WIDTH / 2, (CANVAS_HEIGHT * 4) / 5, "#fffbbc", "Press 'c' to customize your ship", 36);
+  }
 }
 
 function drawText(centerX, centerY, color, text, fontSize = 72) {
@@ -149,6 +155,10 @@ export function shakeScreen(scale) {
   context.translate(dx, dy);
   screenShakeTranslatedX += dx;
   screenShakeTranslatedY += dy;
+}
+
+export function getContext() {
+  return context;
 }
 
 function getRandomNumber(min, max) {

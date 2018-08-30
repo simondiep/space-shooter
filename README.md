@@ -18,6 +18,11 @@ This game leverages an external store (webtask.io) for high scores. To set up yo
 
 # Ideas
 
+- Have three different game modes
+  - Tutorial - done
+  - Arcade
+  - Endless - done
+- reduce hitbox of player
 - Endless vs Arcade mode
   - Level 1
     - introduce player to controls
