@@ -45,8 +45,25 @@ function setLevelLogicDone(isDone) {
 }
 
 const levels = {
-  // TODO first level to check player presses WASD/arrow keys and space
   1: {
+    start: () => {
+      initializeFadeInText("Press WASD or arrow keys to move");
+    },
+    levelLogic: () => {
+      if (levelLogicDone) {
+        return;
+      }
+      if (fadeInText.isDoneRendering()) {
+        setLevelLogicDone(true);
+      } else {
+        fadeInText.render(getContext());
+      }
+    },
+    isComplete: () => {
+      return levelLogicDone;
+    },
+  },
+  2: {
     start: () => {
       initializeFadeInText("Shoot enemies with space bar");
     },
@@ -65,7 +82,7 @@ const levels = {
       return levelLogicDone && getEnemies().length == 0;
     },
   },
-  2: {
+  3: {
     start: () => {
       initializeFadeInText("Avoid Asteroids");
     },
@@ -89,9 +106,9 @@ const levels = {
       return false;
     },
   },
-  3: {
+  4: {
     start: () => {
-      initializeFadeInText("Shoot everything and avoid collisions");
+      initializeFadeInText("Shoot everything. Avoid collisions.");
     },
     levelLogic: () => {
       if (levelLogicDone) {
@@ -109,7 +126,7 @@ const levels = {
       return levelLogicDone && getEnemies().length == 0;
     },
   },
-  4: {
+  5: {
     start: () => {
       initializeFadeInText("Tutorial Completed!");
     },
