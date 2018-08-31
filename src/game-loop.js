@@ -9,6 +9,7 @@ import {
   incrementScore,
   isGameOver,
   loopEnemiesThatAreOffScreen,
+  removeEnemiesThatAreOffScreen,
   removeProjectilesThatAreOffScreen,
   updateTimeAliveInSeconds,
   addEnemyProjectile,
@@ -44,9 +45,11 @@ export function update() {
     } else {
       runLevelLogic();
     }
+    loopEnemiesThatAreOffScreen();
+  } else {
+    removeEnemiesThatAreOffScreen();
   }
 
-  loopEnemiesThatAreOffScreen();
   removeProjectilesThatAreOffScreen();
 
   const player = getPlayer();
