@@ -48,12 +48,14 @@ function startGameEventListener(event) {
   }
   let tabPressedToStartTutorial = false;
   switch (event.keyCode) {
+    case 9: // tab
+      event.preventDefault();
+      tabPressedToStartTutorial = true;
+    // FALL-THROUGH
     case 82: // r
-      if (!playerEnteredName) {
+      if (!tabPressedToStartTutorial && !playerEnteredName) {
         break;
       }
-    case 9: // tab
-      tabPressedToStartTutorial = true;
     // FALL-THROUGH
     case 13: // enter
       if (!playerEnteredName) {

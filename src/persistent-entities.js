@@ -83,12 +83,25 @@ export function loopEnemiesThatAreOffScreen() {
     if (enemy.x < -30) {
       enemy.x = CANVAS_WIDTH + 10;
     }
-    if (enemy.y < -20) {
-      enemy.y = CANVAS_HEIGHT + 10;
+    loopEnemyIfAboveOrBelowScreen(enemy);
+  }
+}
+
+export function removeEnemiesThatAreOffScreen() {
+  enemies = enemies.filter(function(enemy) {
+    if (enemy.x > -30) {
+      return true;
     }
-    if (enemy.y > CANVAS_HEIGHT + 20) {
-      enemy.y = -10;
-    }
+    loopEnemyIfAboveOrBelowScreen(enemy);
+  });
+}
+
+function loopEnemyIfAboveOrBelowScreen(enemy) {
+  if (enemy.y < -20) {
+    enemy.y = CANVAS_HEIGHT + 10;
+  }
+  if (enemy.y > CANVAS_HEIGHT + 20) {
+    enemy.y = -10;
   }
 }
 
