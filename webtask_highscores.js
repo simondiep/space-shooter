@@ -9,9 +9,10 @@ module.exports = async function(context, cb) {
 
     const name = context.body.name;
     const score = context.body.score;
+    const numberOfDeaths = context.body.numberOfDeaths;
     if (name && score) {
       const highscores = highscoresObject.highscores;
-      highscores.push({ name, score: parseInt(score, 10) });
+      highscores.push({ name, score: parseInt(score, 10), numberOfDeaths: parseInt(numberOfDeaths, 10) });
       highscores.sort(function(a, b) {
         return b.score - a.score;
       });

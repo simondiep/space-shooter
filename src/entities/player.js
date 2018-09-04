@@ -103,3 +103,10 @@ function getDeadImages() {
     displayedImageIndex: 0,
   };
 }
+
+export function incrementDeathCount() {
+  if (!player.hasOwnProperty("numberOfDeaths")) {
+    player.numberOfDeaths = 0;
+  }
+  player.numberOfDeaths++;
+}
