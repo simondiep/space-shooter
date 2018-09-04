@@ -20,11 +20,18 @@ export async function displayHighScores() {
   const headerScore = document.createElement("th");
   headerScore.innerHTML = "Score";
   headerRow.appendChild(headerScore);
+  const headerNumDeaths = document.createElement("th");
+  headerNumDeaths.innerHTML = "Deaths";
+  headerRow.appendChild(headerNumDeaths);
   highscoresTable.appendChild(headerRow);
 
   for (const highscoreObject of highscoresObject.highscores) {
     let highlightRow = false;
-    if (highscoreObject.name === lastPushedHighScore.name && highscoreObject.score === lastPushedHighScore.score) {
+    if (
+      highscoreObject.name === lastPushedHighScore.name &&
+      highscoreObject.score === lastPushedHighScore.score &&
+      highscoreObject.numberOfDeaths === lastPushedHighScore.numberOfDeaths
+    ) {
       highlightRow = true;
     }
 
@@ -38,6 +45,9 @@ export async function displayHighScores() {
     const highscoreDiv = document.createElement("td");
     highscoreDiv.innerHTML = highscoreObject.score;
     highscoreRow.appendChild(highscoreDiv);
+    const numberOfDeathsDiv = document.createElement("td");
+    numberOfDeathsDiv.innerHTML = highscoreObject.numberOfDeaths;
+    highscoreRow.appendChild(numberOfDeathsDiv);
     highscoresTable.appendChild(highscoreRow);
   }
   document.getElementById("highScores").style.display = "block";
@@ -47,16 +57,16 @@ export function hideHighScores() {
   document.getElementById("highScores").style.display = "none";
 }
 
-export async function pushHighScore(name, score) {
+export async function pushHighScore(name, score, numberOfDeaths) {
   try {
     await fetch(HIGH_SCORES_API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
       },
-      body: JSON.stringify({ name, score }),
+      body: JSON.stringify({ name, score, numberOfDeaths }),
     });
-    lastPushedHighScore = { name, score };
+    lastPushedHighScore = { name, score, numberOfDeaths };
     return true;
   } catch (e) {
     return false;
