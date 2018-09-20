@@ -2,6 +2,8 @@
 
 Choose your weapon and shoot space aliens in your spaceship
 
+![demo preview](./preview.gif?raw=true)
+
 # How to start
 
 npm i && npm start
