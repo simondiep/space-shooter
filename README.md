@@ -18,7 +18,7 @@ This game leverages an external store (webtask.io) for high scores. To set up yo
 4.  Grab the public URL for your webtask at the bottom of the webtask editor
 5.  Replace the value of `HIGH_SCORES_API_URL` inside `high-scores.js`
 
-# Ideas
+## Ideas
 
 - Have three different game modes
   - Tutorial - done
@@ -36,7 +36,7 @@ This game leverages an external store (webtask.io) for high scores. To set up yo
     - mix up enemy types
     - boss
 
-# Longer term
+## Longer term
 
 - Display damage numbers
 - Attack speed stat
@@ -70,3 +70,9 @@ Dynamic difficulty
 
 - target survival time of 1 min
 - if over x games, user averages a longer survival time, bump up enemy health and speed
+
+## Credits
+
+Music from Josh Penn-Pierson
+
+https://github.com/OpenSourceMusic/Death-Sword
